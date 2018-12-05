@@ -3000,8 +3000,14 @@ and(-webkit-min-device-pixel-ratio:0) { @media
 }}
 /*fin safari*/
 
-
-
+.boton{
+    display: table;
+    padding: 5px 13px;
+    border: 6px solid #000;
+}
+.texto a.boton{
+    text-decoration: initial;
+}
 .btn_home_app{
     display: none!important;
 }

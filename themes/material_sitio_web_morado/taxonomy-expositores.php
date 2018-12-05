@@ -22,7 +22,7 @@ $id_term_expositores=43;
 
 $current_year=get_terms('expositores',array('parent'=>$id_term_expositores,'order'=>'DESC'))[0];
 
-if ($current_year->name!=$term) {}else{
+if (isset($current_year) && ! empty($current_year) && $current_year->name==$term) {
 $page_current_year_description=get_page_by_path('descripcion-expositores/expositores-'.$current_year->name,OBJECT, 'page');
 
 ?>
@@ -30,7 +30,7 @@ $page_current_year_description=get_page_by_path('descripcion-expositores/exposit
 
 				<div class="clear"></div>
 					<div class="columna">
-						<div class="texto">
+						<div class="texto t_uno">
 							 
 							<h2><?php echo __($page_current_year_description->post_title); ?></h2>
 							<?php echo apply_filters( 'the_content',$page_current_year_description->post_content ); ?>
@@ -58,7 +58,7 @@ foreach ($set_jueces as $jueces => $juez) {
 	$slug_juez=explode('-',$juez->slug)[3];
 	($slug_juez==$term)?$term_juez_current=$juez:'';
 }
-echo (!$term_juez_current)?'':'<div class="texto"><h2>'.$term_juez_current->name.'</h2></div>';
+echo (!$term_juez_current)?'':'<div class="texto t_dos"><h2>'.$term_juez_current->name.'</h2></div>';
 ?>		
 				
 <?php

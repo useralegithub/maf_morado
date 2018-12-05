@@ -121,10 +121,10 @@
                                     <h2><?= $language == 'es' ? 'Statement del Stand' : 'Stand Statement'; ?></h2>
                                     <p><?= nl2br(get_post_meta($post->ID, '_ep_statement_stand_' . $language, TRUE)); ?></p>
                                 </div>
-                                <div class="ei_parrafo">
-                                    <h2><?= $language == 'es' ? 'Statement del Stand' : 'Artists Bios'; ?></h2>
+                                <!--<div class="ei_parrafo">
+                                    <h2><?= $language == 'es' ? 'Biografías de Artistas' : 'Artists Bios'; ?></h2>
                                     <p><?= nl2br(get_post_meta($post->ID, '_ep_artists_bios_' . $language, TRUE)); ?></p>
-                                </div>
+                                </div>-->
                                 <div class="ei_parrafo">
                                     <h2><?= $language == 'es' ? 'Statement de la Galería' : 'Gallery Statement'; ?></h2>
                                     <p><?= nl2br(get_post_meta($post->ID, '_ep_statement_maf_' . $language, TRUE)); ?></p>

@@ -4,7 +4,7 @@
 <title>Material Art Fair</title>
 <meta name="lang" content="es" />
 <meta charset="utf-8" />
-<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="format-detection" content="address=no,email=no,telephone=no">
 <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
 
@@ -215,6 +215,29 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 					<ul>
 						<li class=""><?php qtranxf_generateLanguageSelectCode('text'); ?></li>
 					</ul>
+				</div>
+				<div class="menu_botones">
+					<div class="columna_n_botones">
+						<p>Login:</p>
+					</div>
+					<div class="columna_n_botones">
+						<a href="<?php echo __('[:es]https://material-fair.com/2019/es/login/[:en]https://material-fair.com/2019/login/[:]'); ?>">
+							<div class="boton_login">
+								<?php echo __('[:es]Prensa[:en]Press[:]'); ?>
+							</div>
+						</a>
+						<!--<a href="https://material-fair.com/prensa/login">
+							<div class="boton_login">
+								PRENSA							</div>
+						</a>--> 
+						<a href="<?php echo __('[:es]https://material-fair.com/2019/es/login/[:en]https://material-fair.com/2019/en/login/[:]'); ?>">
+							<div class="boton_login">
+								<?php echo __('[:es]EXPOSITORES[:en]EXHIBITORS[:]'); ?>
+								
+							</div>
+						</a>
+					</div>
+					
 				</div>
 
 				

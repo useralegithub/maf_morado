@@ -1289,9 +1289,13 @@ if (is_numeric($pagina)) {
 }
 
 global $wpdb;
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
+$estatus_registrado=1;
+$estatus_aprobado=3;
+$estatus_rechazado=4;
+$estatus_eliminado=7;
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
 $wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
 $paginas=ceil($wp_users_vip_count_row/$registros);
@@ -1311,13 +1315,13 @@ foreach ($wp_users_vip as $key => $value) {$i++;
 
 $k=($wp_users_vip_count_row+1-(($pagina-1)*$registros))-$i;
 
-/*if ($value->users_vip_estatus=='') {
+if ($value->users_vip_estatus==1) {
     $wpdb->update('wp_users_vip', array( 
-                                        'users_vip_estatus'=>1
+                                        'users_vip_estatus'=>3
                                     ), array('id'=>$value->id)
                 );
 
-}*/
+}
 
 
 echo '<tr>';
@@ -1328,10 +1332,10 @@ echo '
       <td class="td_center_hori_vert" >'.$value->users_vip_category.'</td>';
 
 /* colum estatus*/
-if ($value->users_vip_estatus==1) {
+if ($value->users_vip_estatus==$estatus_aprobado) {
     echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="aprobado">Aprobado</span></td>';
 }
-if ($value->users_vip_estatus==2) {
+if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
     echo '<form
                     name="users_vip_form_pendiente"
@@ -1349,7 +1353,7 @@ if ($value->users_vip_estatus==2) {
 /* END colum estatus */
 
 /* colum recuperar contraseña */
-if ($value->users_vip_estatus==1) {
+if ($value->users_vip_estatus==$estatus_aprobado) {
 
     echo  '<td class="td_center_hori_vert recuperar_contrasena">';
     echo  '<form
@@ -1366,7 +1370,7 @@ if ($value->users_vip_estatus==1) {
     echo  '</td>';
  
 }
-if ($value->users_vip_estatus==2) {
+if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert no_habilitado"><span>No Disponible</span></td>';
 }
 /* END colum recuperar contraseña */
@@ -1951,6 +1955,25 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
+                            <td>Imágenes</td>
+                            <td colspan="2">
+                                <?php
+                                $images = get_post_meta($post->ID, '_ep_images', TRUE);
+
+                                if(count($images) > 0){ ?>
+                                    <ul>
+                                        <?php foreach($images as $image){ ?>
+                                            <li style="display: inline-block;">
+                                                <img style="max-width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                <?php }else{ ?>
+                                    <p>No hay imágenes cargadas.</p>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>Ubicación</td>
                             <td>
                                 <textarea name="_ep_location_es"><?= get_post_meta($postId, '_ep_location_es', TRUE); ?></textarea>
@@ -2013,7 +2036,7 @@ add_action('add_meta_boxes', function(){
                                 <textarea name="_ep_statement_stand_es"><?= get_post_meta($postId, '_ep_statement_stand_es', TRUE); ?></textarea>
                             </td>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td>Biografías de los artistas</td>
                             <td>
                                 <textarea name="_ep_artists_bios_en"><?= get_post_meta($postId, '_ep_artists_bios_en', TRUE); ?></textarea>
@@ -2021,7 +2044,7 @@ add_action('add_meta_boxes', function(){
                             <td>
                                 <textarea name="_ep_artists_bios_es"><?= get_post_meta($postId, '_ep_artists_bios_es', TRUE); ?></textarea>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td>Artistas en MAF 2018</td>
                             <td colspan="2">
@@ -2034,8 +2057,8 @@ add_action('add_meta_boxes', function(){
                                 <textarea name="_ep_represented_artists"><?= get_post_meta($postId, '_ep_represented_artists', TRUE); ?></textarea>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Off site nombre</td>
+                        <!--<tr>
+                            <td>Offsite nombre</td>
                             <td>
                                 <input name="_ep_off_site_name_en" type="text" value="<?= get_post_meta($postId, '_ep_off_site_name_en', TRUE); ?>">
                             </td>
@@ -2044,12 +2067,25 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Off site descripción</td>
+                            <td>Offsite descripción</td>
                             <td>
                                 <textarea name="_ep_off_site_description_en"><?= get_post_meta($postId, '_ep_off_site_description_en', TRUE); ?></textarea>
                             </td>
                             <td>
                                 <textarea name="_ep_off_site_description_es"><?= get_post_meta($postId, '_ep_off_site_description_es', TRUE); ?></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Offsite imagen</td>
+                            <td colspan="2">
+                                <?php
+                                $image = get_post_meta($post->ID, '_ep_off_site_image', TRUE);
+
+                                if(! empty($image) > 0){ ?>
+                                    <img style="max-width: 200px; max-height: 200px;" src="<?= $image; ?>">
+                                <?php }else{ ?>
+                                    <p>No hay imagen cargada.</p>
+                                <?php } ?>
                             </td>
                         </tr>
                         <tr>
@@ -2087,7 +2123,7 @@ add_action('add_meta_boxes', function(){
                             <td>
                                 <textarea name="_ep_off_site_additional_info_en"><?= get_post_meta($postId, '_ep_off_site_additional_info_en', TRUE); ?></textarea>
                             </td>
-                        </tr>
+                        </tr>-->
                     </tbody>
                 </table>
             <?php

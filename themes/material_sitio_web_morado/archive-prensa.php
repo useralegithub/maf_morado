@@ -40,6 +40,10 @@ $term_prensa_latest=$terms_years_prensas[0];
 						</h2>
 						<?php echo apply_filters('the_content', get_post(61)->post_content); ?>
 
+					<a href="<?php echo __('[:es]https://material-fair.com/2019/es/press/register/[:en]https://material-fair.com/2019/press/register/[:]'); ?>" target="_blank" class="btn_prensa boton">
+						<?php echo __('[:es]Registro de Prensa[:en]Press Register[:]'); ?>
+					</a>
+
 					</div>
 				</div>
 				<div class="columna">
