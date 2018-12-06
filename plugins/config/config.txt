@@ -1,0 +1,2 @@
+C:\xampp\php\php.ini
+C:\xampp\sendmail\sendmail.ini

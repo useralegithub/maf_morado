@@ -1175,14 +1175,42 @@ $wpdb->insert('wp_users_vip', array(
         /*font-weight: bold;*/
         /*border-radius: 5px;*/
     }
-    .aprobado{
+    .estatus_aprobado{
         background-color: green;
         border: none;
         color: white;
-        padding: 16px 15px;
+        padding: 5px 8px;
         text-decoration: none;
         margin: 4px 2px;
         /*cursor: pointer;*/
+    }
+    .estatus_pendiente{
+        background-color: orange;
+        border: none;
+        color: white;
+        padding: 5px 8px;
+        text-decoration: none;
+        margin: 4px 2px;
+        /*cursor: pointer;*/
+    }
+    .btn_elimina{
+        background-color: #c70404;
+        border: none;
+        color: white;
+        padding: 5px 13px;
+        /* padding: 16px 32px; */
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    .no_disponible{
+        background-color: #868484;
+        border: none;
+        color: white;
+        padding: 5px 5px;
+        text-decoration: none;
+        margin: 4px 2px;
+        /* cursor: pointer; */
     }
     .vip_usuario_pendiente{
         /*background-color: #bdb500;*/
@@ -1228,7 +1256,7 @@ $wpdb->insert('wp_users_vip', array(
         background-color: #007575;
         border: none;
         color: white;
-        padding: 16px 15px;
+        padding: 5px 8px;
         text-decoration: none;
         margin: 4px 2px;
         cursor: pointer;
@@ -1244,18 +1272,39 @@ $wpdb->insert('wp_users_vip', array(
     .td_center_hori_vert{
         text-align: center;
         vertical-align: middle !important;
-        padding: 25px!important;
+        /*padding: 25px!important;*/
     }
     .btn_user_editar{
         background-color: #795548;
         border: none;
         color: white;
-        padding: 16px 25px;
+        padding: 5px 18px;
         /*padding: 16px 32px;*/
         text-decoration: none;
         margin: 4px 2px;
         cursor: pointer;
 
+    }
+    .btn_confirma_aprobar{
+        background-color: #06ad06;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        /* padding: 16px 32px; */
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    .btn_confirma_rechazar{
+        background-color: red;
+        border: none;
+        color: white;
+        padding: 5px 12px;
+        /* padding: 16px 32px; */
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
     }
 
 </style>
@@ -1269,8 +1318,10 @@ $wpdb->insert('wp_users_vip', array(
             <td class="td_center_hori_vert" >email</td>
             <td class="td_center_hori_vert" >Categoría</td>
             <td class="td_center_hori_vert" >Estatus</td>
+            <td class="td_center_hori_vert" colspan="2">Cambiar Estatus</td>
             <td class="td_center_hori_vert" >Contraseña</td>
-            <td class="td_center_hori_vert"  colspan="2">Modificar</td>
+            <td class="td_center_hori_vert" >Modificar</td>
+            <td class="td_center_hori_vert" >Eliminar</td>
         </tr>
 <?php
 
@@ -1289,9 +1340,17 @@ if (is_numeric($pagina)) {
 }
 
 global $wpdb;
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
+$estatus_registrado = 1;
+$estatus_aprobado   = 3;
+$estatus_rechazado  = 4;
+$estatus_eliminado  = 7;
+
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+
 $wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
+
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
 $paginas=ceil($wp_users_vip_count_row/$registros);
@@ -1311,27 +1370,51 @@ foreach ($wp_users_vip as $key => $value) {$i++;
 
 $k=($wp_users_vip_count_row+1-(($pagina-1)*$registros))-$i;
 
-/*if ($value->users_vip_estatus=='') {
+if ($value->users_vip_category=='') {
     $wpdb->update('wp_users_vip', array( 
-                                        'users_vip_estatus'=>1
+                                        'users_vip_category'=>1
                                     ), array('id'=>$value->id)
                 );
 
-}*/
+}
 
 
 echo '<tr>';
 echo '
       <td class="td_center_hori_vert" >'.$value->users_vip_nombre.'</td>
       <td class="td_center_hori_vert" >'.$value->users_vip_apellido.'</td>
-      <td class="td_center_hori_vert" >'.$value->users_vip_email.'</td>
-      <td class="td_center_hori_vert" >'.$value->users_vip_category.'</td>';
+      <td class="td_center_hori_vert" >'.$value->users_vip_email.'</td>';
+
+/* colum categoría*/
+
+
+ ($value->users_vip_category==1)?$categoria ='Coleccionista':'';
+ ($value->users_vip_category==2)?$categoria ='Curador':'';
+ ($value->users_vip_category==3)?$categoria ='Personal de Museo o Institucional':'';
+ ($value->users_vip_category==4)?$categoria ='Asesor':'';
+ ($value->users_vip_category==5)?$categoria ='Galerista':'';
+ ($value->users_vip_category==6)?$categoria ='Artista':'';
+ ($value->users_vip_category==7)?$categoria ='Otro':'';
+
+echo '<td class="td_center_hori_vert" >'.$categoria.'</td>';
+/*end colum categoría*/
 
 /* colum estatus*/
-if ($value->users_vip_estatus==1) {
-    echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="aprobado">Aprobado</span></td>';
+if ($value->users_vip_estatus==$estatus_aprobado) {
+    echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="estatus_aprobado">Aprobado</span></td>';
 }
-if ($value->users_vip_estatus==2) {
+if ($value->users_vip_estatus==$estatus_registrado) {
+    echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="estatus_pendiente">Pendiente</span></td>';
+}
+/* END colum estatus */
+
+
+
+/* colum cambiar estatus*/
+if ($value->users_vip_estatus==$estatus_aprobado) {
+    echo  '<td class="td_center_hori_vert " colspan="2"><span class="no_disponible">No Disponible</span></td>';
+}
+if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
     echo '<form
                     name="users_vip_form_pendiente"
@@ -1342,14 +1425,27 @@ if ($value->users_vip_estatus==2) {
                     <input type="hidden" name="users_vip_pendiente_id" value="'.$value->id.'">
                     <input type="hidden" name="users_vip_pendiente_nombre" value="'.$value->users_vip_nombre.'">
                     <input type="hidden" name="users_vip_pendiente_apellido" value="'.$value->users_vip_apellido.'">
-                    <input type="submit"  value="Pendiente" class="btn_confirma_pendiente submit_pendiente">
+                    <input type="submit"  value="¿Aprobar?" class="btn_confirma_aprobar submit_pendiente">
+                </form>';
+    echo '</td>';
+    echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
+    echo '<form
+                    name="users_vip_form_pendiente"
+                    id="users_vip_form_pendiente"
+                    method="post"
+                    action="">
+                    <input type="hidden" name="page" value="usuarios_vip">
+                    <input type="hidden" name="users_vip_pendiente_id" value="'.$value->id.'">
+                    <input type="hidden" name="users_vip_pendiente_nombre" value="'.$value->users_vip_nombre.'">
+                    <input type="hidden" name="users_vip_pendiente_apellido" value="'.$value->users_vip_apellido.'">
+                    <input type="submit"  value="Rechazar" class="btn_confirma_rechazar submit_pendiente">
                 </form>';
     echo '</td>';
 }
-/* END colum estatus */
+/* END colum cambiar estatus */
 
 /* colum recuperar contraseña */
-if ($value->users_vip_estatus==1) {
+if ($value->users_vip_estatus==$estatus_aprobado) {
 
     echo  '<td class="td_center_hori_vert recuperar_contrasena">';
     echo  '<form
@@ -1366,8 +1462,8 @@ if ($value->users_vip_estatus==1) {
     echo  '</td>';
  
 }
-if ($value->users_vip_estatus==2) {
-    echo  '<td class="td_center_hori_vert no_habilitado"><span>No Disponible</span></td>';
+if ($value->users_vip_estatus==$estatus_registrado) {
+    echo  '<td class="td_center_hori_vert"><span class="no_disponible">No Disponible</span></td>';
 }
 /* END colum recuperar contraseña */
 
@@ -1396,7 +1492,7 @@ echo  '<td class="td_center_hori_vert" >
                 <input type="hidden" name="users_vip_delete_id" value="'.$value->id.'">
                 <input type="hidden" name="users_vip_delete_nombre" value="'.$value->users_vip_nombre.'">
                 <input type="hidden" name="users_vip_delete_apellido" value="'.$value->users_vip_apellido.'">
-                <input type="submit"  value="X" class="btn_confirma">
+                <input type="submit"  value="X" class="btn_confirma btn_elimina">
             </form>
            
        </td>';
