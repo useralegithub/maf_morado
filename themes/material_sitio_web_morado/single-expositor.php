@@ -109,7 +109,7 @@
                         ?>
                             <div class="ei_galeria">
                                 <?php foreach($images as $image){ ?>
-                                    <div class="ei_g_imagen" data-caption="<?= $image['caption']; ?>">
+                                    <div class="ei_g_imagen" data-caption="<?= $image['caption_' . $language]; ?>">
                                         <img src="<?= $image['url']; ?>">
                                     </div>
                                 <?php } ?>
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="ei_parrafo">
                                     <h2><?= $language == 'es' ? 'Sitio Web' : 'Website'; ?></h2>
-                                    <p><?= get_post_meta($post->ID, '_ep_website', TRUE); ?></p>
+                                    <p><a href="<?= get_post_meta($post->ID, '_ep_website', TRUE); ?>" target="_blank"><?= get_post_meta($post->ID, '_ep_website', TRUE); ?></a></p>
                                 </div>
                                 <div class="ei_artistas">
                                     <h3><?= $language == 'es' ? 'Redes Sociales' : 'Social Networks'; ?></h3>
@@ -161,7 +161,7 @@
 
                                         if(! empty($facebook)){
                                             ?>
-                                            <li>Facebook: <?= $facebook; ?></li>
+                                            <li><p><span class="red_expositores">Fb:</span> <a href="<?= $facebook; ?>" target="_blank"><?= $facebook; ?></a></p></li>
                                             <?php
                                         }
 
@@ -169,7 +169,7 @@
 
                                         if(! empty($twitter)){
                                             ?>
-                                            <li>Twitter: <?= $twitter; ?></li>
+                                            <li><p><span class="red_expositores">Tw:</span> <a href="<?= $twitter; ?>" target="_blank"><?= $twitter; ?></a></p></li>
                                             <?php
                                         }
 
@@ -177,7 +177,7 @@
 
                                         if(! empty($instagram)){
                                             ?>
-                                            <li>Instagram: <?= $instagram; ?></li>
+                                            <li><p><span class="red_expositores">Ig:</span> <a href="<?= $instagram; ?>" target="_blank"><?= $instagram; ?></a></p></li>
                                         <?php } ?>
                                     </ul>
                                 </div>

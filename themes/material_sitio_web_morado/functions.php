@@ -1289,13 +1289,9 @@ if (is_numeric($pagina)) {
 }
 
 global $wpdb;
-$estatus_registrado=1;
-$estatus_aprobado=3;
-$estatus_rechazado=4;
-$estatus_eliminado=7;
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
 $wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = 1 OR users_vip_estatus = 2 ORDER BY id DESC LIMIT  $inicio,$registros");
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
 $paginas=ceil($wp_users_vip_count_row/$registros);
@@ -1315,13 +1311,13 @@ foreach ($wp_users_vip as $key => $value) {$i++;
 
 $k=($wp_users_vip_count_row+1-(($pagina-1)*$registros))-$i;
 
-if ($value->users_vip_estatus==1) {
+/*if ($value->users_vip_estatus=='') {
     $wpdb->update('wp_users_vip', array( 
-                                        'users_vip_estatus'=>3
+                                        'users_vip_estatus'=>1
                                     ), array('id'=>$value->id)
                 );
 
-}
+}*/
 
 
 echo '<tr>';
@@ -1332,10 +1328,10 @@ echo '
       <td class="td_center_hori_vert" >'.$value->users_vip_category.'</td>';
 
 /* colum estatus*/
-if ($value->users_vip_estatus==$estatus_aprobado) {
+if ($value->users_vip_estatus==1) {
     echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="aprobado">Aprobado</span></td>';
 }
-if ($value->users_vip_estatus==$estatus_registrado) {
+if ($value->users_vip_estatus==2) {
     echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
     echo '<form
                     name="users_vip_form_pendiente"
@@ -1353,7 +1349,7 @@ if ($value->users_vip_estatus==$estatus_registrado) {
 /* END colum estatus */
 
 /* colum recuperar contraseña */
-if ($value->users_vip_estatus==$estatus_aprobado) {
+if ($value->users_vip_estatus==1) {
 
     echo  '<td class="td_center_hori_vert recuperar_contrasena">';
     echo  '<form
@@ -1370,7 +1366,7 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
     echo  '</td>';
  
 }
-if ($value->users_vip_estatus==$estatus_registrado) {
+if ($value->users_vip_estatus==2) {
     echo  '<td class="td_center_hori_vert no_habilitado"><span>No Disponible</span></td>';
 }
 /* END colum recuperar contraseña */
@@ -1956,15 +1952,33 @@ add_action('add_meta_boxes', function(){
                         </tr>
                         <tr>
                             <td>Imágenes</td>
-                            <td colspan="2">
+                            <td>
                                 <?php
                                 $images = get_post_meta($post->ID, '_ep_images', TRUE);
 
                                 if(count($images) > 0){ ?>
                                     <ul>
                                         <?php foreach($images as $image){ ?>
-                                            <li style="display: inline-block;">
-                                                <img style="max-width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
+                                            <li style="display: inline-block; text-align: center;">
+                                                <img style="width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
+                                                <textarea style="width: 200px;" name="_ep_images_captions_en[]"><?= $image['caption_en']; ?></textarea>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                <?php }else{ ?>
+                                    <p>No hay imágenes cargadas.</p>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <?php
+                                $images = get_post_meta($post->ID, '_ep_images', TRUE);
+
+                                if(count($images) > 0){ ?>
+                                    <ul>
+                                        <?php foreach($images as $image){ ?>
+                                            <li style="display: inline-block; text-align: center;">
+                                                <img style="width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
+                                                <textarea style="width: 200px;" name="_ep_images_captions_es[]"><?= $image['caption_es']; ?></textarea>
                                             </li>
                                         <?php } ?>
                                     </ul>
@@ -2140,11 +2154,23 @@ add_action('save_post', function($postId){
         delete_post_meta($postId, '_ep_translated');
     }
 
+    $images = get_post_meta($postId, '_ep_images', TRUE);
+
     foreach($_POST as $key => $value){
         if(strpos($key, '_ep_') === 0){
-            update_post_meta($postId, $key, $value);
+            if(strpos($key, '_ep_images_captions') === 0){
+                $iso = substr($key, -2, 2);
+
+                for($i = 0; $i < count($images); $i ++){
+                    $images[$i]['caption_' . $iso] = $value[$i];
+                }
+            }else{
+                update_post_meta($postId, $key, $value);
+            }
         }
     }
+
+    update_post_meta($postId, '_ep_images', $images);
 });
 
 add_filter('xmlrpc_enabled', '__return_false');
