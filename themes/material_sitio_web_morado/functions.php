@@ -846,9 +846,9 @@ jQuery(document).ready(function($){
       $(".users_vip_style_del,.users_vip_style_aprobado").hide( "1000" );
     });
 
-        $('.btn_confirma').click(function(){
+        $('.btn_confirma_eliminar').click(function(){
 
-            if (confirm("Por favor confirma en \"Aceptar\" para eliminar")) {
+            if (confirm("Por favor confirma en \"Aceptar\" para Eliminar")) {
                 return true;
             } else {
                 return false;
@@ -856,9 +856,19 @@ jQuery(document).ready(function($){
             }
         });
 
-        $('.btn_confirma_pendiente').click(function(){
+        $('.btn_confirma_aprobar').click(function(){
 
-            if (confirm("Por favor confirma en \"Aceptar\" para aprobar")) {
+            if (confirm("Por favor confirma en \"Aceptar\" para Aprobar")) {
+                return true;
+            } else {
+                return false;
+                
+            }
+        });
+
+        $('.btn_confirma_rechazar').click(function(){
+
+            if (confirm("Por favor confirma en \"Aceptar\" para Rechazar")) {
                 return true;
             } else {
                 return false;
@@ -868,7 +878,7 @@ jQuery(document).ready(function($){
 
         $('.btn_recupera_contrasena').click(function(){
 
-            if (confirm("Por favor confirma en \"Aceptar\" para recuperar")) {
+            if (confirm("Por favor confirma en \"Aceptar\" para Recuperar")) {
                 return true;
             } else {
                 return false;
@@ -939,21 +949,24 @@ $wpdb->update('wp_users_vip', array(
 ?>
 <?php
 global $wpdb;
-
 //echo "the_post_g\n";
 //print_r($_POST);
 
-if ($_POST['users_vip_pendiente_id']) {
+if ($_POST['users_vip_aprobar_id']) {
 //echo "\n sisi \n";
-    $users_vip_pendiente_id = $_POST['users_vip_pendiente_id'];
-    $users_vip_pendiente_nombre = $_POST['users_vip_pendiente_nombre'];
-    $users_vip_pendiente_apellido = $_POST['users_vip_pendiente_apellido'];
+    $users_vip_aprobar_id       = $_POST['users_vip_aprobar_id'];
+    $users_vip_aprobar_nombre   = $_POST['users_vip_aprobar_nombre'];
+    $users_vip_aprobar_apellido = $_POST['users_vip_aprobar_apellido'];
+    $users_vip_aprobar_email    = $_POST['users_vip_aprobar_email'];
+    $code                       = $_POST['users_vip_aprobar_code'];
+    $spam    = $_POST['spam'];
+
     $table = 'wp_users_vip';
     //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
 
 $wpdb->update('wp_users_vip', array( 
-                                    'users_vip_estatus'=>1
-                                ), array('id'=>$users_vip_pendiente_id)
+                                    'users_vip_estatus'=>3
+                                ), array('id'=>$users_vip_aprobar_id)
             );
 
 
@@ -983,12 +996,60 @@ $wpdb->update('wp_users_vip', array(
 
     echo "\n";
     echo ' <div class="users_vip_style_aprobado"'.$users_vip_style_aprobado.' >';
-    echo 'El registro '.$users_vip_pendiente_id.' - '.$users_vip_pendiente_nombre.' - '.$users_vip_pendiente_apellido.' se APROBÓ';
+    echo 'El registro '.$users_vip_aprobar_id.' - '.$users_vip_aprobar_nombre.' - '.$users_vip_aprobar_apellido.' se APROBÓ';
             echo '<div '.$users_vip_style_button_del.' class="users_vip_button_del">';
             echo 'X';
             echo '</div>'; 
     echo '</div>';
     echo "\n";
+                if($spam == '' && $users_vip_aprobar_email != '' ){
+                    $email=$users_vip_aprobar_email;
+                    $to = $email;
+
+                    $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
+
+                    $link_establece = get_permalink( $post_establece ).'?c='.$code;
+ 
+                    $subject = 'Solicitud Aprobada'; //El asunto del correo
+                    $message = '
+                    <html>
+                    <body>
+                    
+                    <p>
+                        Felcidades tu cuenta ha sido aprobada.
+                    </p>
+
+                    <p>
+                        Por favor escribe una contraseña para acceder a VIP.
+                    </p>
+                    <p>
+                        Tu contraseña debe tener almenos ocho caracteres e incluir letras mayúsculas, minúsculas y números.
+                    </p>
+
+                    <p>Ahora que sabes esto por favor da clic en el siguiente enlace "<a href="'.$link_establece.'">Escribir Contraseña</a> para establecer tú contraseña" </p>
+
+                    
+
+                    </body>
+                    </html>
+                    ';
+                    //$message=base64_encode($message);
+                    $contenido=utf8_decode($message);
+                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+                    $mailheader .= "Reply-To: " .$email."\r\n"; 
+                    $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+
+                    $headers = "From:" . $email . "\r\n";
+                    $headers .="Reply-To: " .$email . "\r\n";
+                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $headers .= 'MIME-Version: 1.0' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+                    mail($to, $subject, $contenido, $mailheader);
+
+                }
+
+                //echo "email: ".$email."\n";
+
    // print_r($_GET['users_vip_delete_id']);
 // End pendiente operations
 }?>
@@ -1417,15 +1478,19 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
 if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
     echo '<form
-                    name="users_vip_form_pendiente"
-                    id="users_vip_form_pendiente"
+                    name="users_vip_form_aprobar"
+                    id="users_vip_form_aprobar"
                     method="post"
                     action="">
                     <input type="hidden" name="page" value="usuarios_vip">
-                    <input type="hidden" name="users_vip_pendiente_id" value="'.$value->id.'">
-                    <input type="hidden" name="users_vip_pendiente_nombre" value="'.$value->users_vip_nombre.'">
-                    <input type="hidden" name="users_vip_pendiente_apellido" value="'.$value->users_vip_apellido.'">
-                    <input type="submit"  value="¿Aprobar?" class="btn_confirma_aprobar submit_pendiente">
+                    <input type="hidden" name="users_vip_aprobar_id" value="'.$value->id.'">
+                    <input type="hidden" name="users_vip_aprobar_nombre" value="'.$value->users_vip_nombre.'">
+                    <input type="hidden" name="users_vip_aprobar_apellido" value="'.$value->users_vip_apellido.'">
+                    <input type="hidden" name="users_vip_aprobar_email" value="'.$value->users_vip_email.'">
+                    <input type="hidden" name="users_vip_aprobar_code" value="'.$value->users_vip_pass_recovery.'">
+
+                    <input type="hidden" name="spam" value="">
+                    <input type="submit"  value="¿Aprobar?" class="btn_confirma_aprobar submit_aprobar">
                 </form>';
     echo '</td>';
     echo  '<td class="td_center_hori_vert vip_usuario_pendiente">';
@@ -1435,9 +1500,9 @@ if ($value->users_vip_estatus==$estatus_registrado) {
                     method="post"
                     action="">
                     <input type="hidden" name="page" value="usuarios_vip">
-                    <input type="hidden" name="users_vip_pendiente_id" value="'.$value->id.'">
-                    <input type="hidden" name="users_vip_pendiente_nombre" value="'.$value->users_vip_nombre.'">
-                    <input type="hidden" name="users_vip_pendiente_apellido" value="'.$value->users_vip_apellido.'">
+                    <input type="hidden" name="users_vip_rechazar_id" value="'.$value->id.'">
+                    <input type="hidden" name="users_vip_rechazar_nombre" value="'.$value->users_vip_nombre.'">
+                    <input type="hidden" name="users_vip_rechazar_apellido" value="'.$value->users_vip_apellido.'">
                     <input type="submit"  value="Rechazar" class="btn_confirma_rechazar submit_pendiente">
                 </form>';
     echo '</td>';
@@ -1469,7 +1534,9 @@ if ($value->users_vip_estatus==$estatus_registrado) {
 
 
 //echo '<td style="text-align: center;" >Recuperar</td>';
-      
+
+/* colum editar */
+if ($value->users_vip_estatus==$estatus_aprobado) {
 echo  '<td class="td_center_hori_vert" >
 
         <form
@@ -1480,8 +1547,15 @@ echo  '<td class="td_center_hori_vert" >
             <input type="submit" value="Editar" class="btn_user_editar"> 
         </form>
 
-       </td>
-      <td class="td_center_hori_vert">
+       </td>';
+    
+}
+if ($value->users_vip_estatus==$estatus_registrado) {
+    echo  '<td class="td_center_hori_vert " ><span class="no_disponible">No Disponible</span></td>';
+}
+/* end colum editar */
+
+echo '<td class="td_center_hori_vert">
 
             <form
                 name="users_vip_form_delete"
@@ -1492,7 +1566,7 @@ echo  '<td class="td_center_hori_vert" >
                 <input type="hidden" name="users_vip_delete_id" value="'.$value->id.'">
                 <input type="hidden" name="users_vip_delete_nombre" value="'.$value->users_vip_nombre.'">
                 <input type="hidden" name="users_vip_delete_apellido" value="'.$value->users_vip_apellido.'">
-                <input type="submit"  value="X" class="btn_confirma btn_elimina">
+                <input type="submit"  value="X" class="btn_confirma_eliminar btn_elimina">
             </form>
            
        </td>';

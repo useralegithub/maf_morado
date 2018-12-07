@@ -1,6 +1,6 @@
 <?php include 'header.php';?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper page_acreditacion_prensa">
+<div class="wrapper single-vip-registro">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -21,13 +21,25 @@
 
 global $wpdb;
 $wpdb_response='';
+$estatus_registrado = 1;
+$estatus_aprobado   = 3;
+$estatus_rechazado  = 4;
+$estatus_eliminado  = 7;
+
+echo "\n<!--latest register:_\n";
+//SELECT * FROM wp_users_vip ORDER BY id DESC
+
+echo "\n-->\n";
+
 if ($_POST['email']) {
 
 $nombre     = strip_tags(trim( $_POST['nombre']    ));
 $apellido   = strip_tags(trim( $_POST['apellido']  ));
 $email 	    = strip_tags(trim( $_POST['email']     ));
-$categoria  = strip_tags(trim( $_POST['categoria'] ));
-$contrasena = strip_tags(trim( $_POST['contrasena']));
+$pais_residencia  = strip_tags(trim( $_POST['pais_residencia'] ));
+$rango_edad = strip_tags(trim( $_POST['rango_edad']));
+$categoria  = strip_tags(trim( $_POST['categoria']));
+$afiliacion = strip_tags(trim( $_POST['afiliacion']));
 $spam 		= $_POST['spam'];
 
 if ($spam=='') { // if validate spam
@@ -40,17 +52,17 @@ $wpdb_vip_user=$wpdb_email[0];
 
 	if($email==$wpdb_vip_user->users_vip_email){
 
-		if ($wpdb_vip_user->users_vip_estatus==3) {
+		if ($wpdb_vip_user->users_vip_estatus==$estatus_aprobado) {
 
 			$wpdb_response = 'No necesitas volver a registrarte '.$wpdb_vip_user->users_vip_nombre.', puedes acceder a VIP en el siguiente link con tu correo: '.$wpdb_vip_user->users_vip_email.' o recuperar tu contraseña.';
 		}
 
-		if ($wpdb_vip_user->users_vip_estatus==1) {
+		if ($wpdb_vip_user->users_vip_estatus==$estatus_registrado) {
 			
 		$wpdb_response = 'Ya existe una petición con el correo '.$wpdb_vip_user->users_vip_email.' y nombre: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.'  por favor espera a que se apruebe tu petición.';
 		}
 
-		if ($wpdb_vip_user->users_vip_estatus==4) {
+		if ($wpdb_vip_user->users_vip_estatus==$estatus_rechazado) {
 			
 			$wpdb_response = 'Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.';
 		}
@@ -64,7 +76,8 @@ $wpdb_vip_user=$wpdb_email[0];
 	//}else{
 
 
-			if ($nombre!=''||$apellido!=''||$categoria!=''||$email!=''||$contrasena!='') {
+			//if ($nombre!=''||$apellido!=''||$categoria!=''||$email!=''||$contrasena!='') {
+			if ($nombre!=''&&$apellido!=''&&$email!=''&&$pais_residencia!=''&&$rango_edad!='') {
 
 
 				function randomRecovery($length = 6) {
@@ -79,11 +92,16 @@ $wpdb_vip_user=$wpdb_email[0];
 					return $str;
 				}
 
-				$recovery = randomRecovery(20);
+				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
+				$latest_plus_one = $latest_regiter->id+1;
+				$latest_plus_one;
+
+				$recovery = $latest_plus_one.''.randomRecovery(20);
 
 				$lang=qtranxf_getLanguage();
 
-				$hash = wp_hash_password( $contrasena );
+				//$hash = wp_hash_password( $contrasena );
+				$hash = '';
 
 
 
@@ -103,6 +121,41 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
 
 			 	$wpdb_response = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
+			 	if($spam == '' && $email != '' ){
+
+					$from = $email;
+					$to = $email;
+ 
+					$subject = 'Solicitud Pendiente'; //El asunto del correo
+					$message = '
+					<html>
+					<body>
+					
+					<p>
+					Gracias por registrarte. Tan pronto como su estado VIP haya sido aprobado, te lo notificaremos por correo electrónico. Por favor agrega vip@material-fair.com como contacto para asegurarte de recibir nuestra comunicación.
+					</p>
+
+					<p>
+					Tu tarjeta VIP estará disponible para recoger en el VIP Desk, ubicado en el lobby del Frontón México. La tarjeta te otorgará a ti y a un invitado acceso a Feria de Arte Material para el VIP Preview el jueves 7 de febrero de 12 pm a 3 pm y durante todos los horarios al público. También te otorgará acceso a las actividades del Programa VIP, aunque algunos pueden requerir RSVP adicionales para garantizar admisión.
+					</p>
+
+					</body>
+					</html>
+					';
+					//$message=base64_encode($message);
+					$contenido=utf8_decode($message);
+					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+					$mailheader .= "Reply-To: " .$email."\r\n"; 
+					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+
+					$headers = "From:" . $email . "\r\n";
+					$headers .="Reply-To: " .$email . "\r\n";
+					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$headers .= 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+					mail($to, $subject, $contenido, $mailheader);
+
+			 	}//close if for send email
 			
 			}
 
@@ -143,6 +196,8 @@ $wpdb_vip_user=$wpdb_email[0];
 						$categoria  = '';
 						$contrasena = '';
 						$pais_residencia = '';
+						$rango_edad = '';
+						$afiliacion = '';
 
 						if ($_POST) {
 
@@ -152,6 +207,8 @@ $wpdb_vip_user=$wpdb_email[0];
 							$categoria  = strip_tags(trim( $_POST['categoria'] ));
 							$contrasena = strip_tags(trim( $_POST['contrasena']));
 							$pais_residencia = strip_tags(trim( $_POST['pais_residencia']));
+							$rango_edad = strip_tags(trim( $_POST['rango_edad']));
+							$afiliacion = strip_tags(trim( $_POST['afiliacion']));
 
 						}
 
@@ -231,7 +288,7 @@ $wpdb_vip_user=$wpdb_email[0];
 										echo __('[:es]País de Residencia*[:en]Country of Residence*[:]');
 									}else{
 
-									if (empty($email)){
+									if (empty($pais_residencia)){
 											echo __('[:es]País de Residencia<span class="campo_vacio">*</span>[:en]Country of Residence<span class="campo_vacio">*</span>[:]');
 									}else{
 											echo __('[:es]País de Residencia*[:en]Country of Residence*[:]');
@@ -261,14 +318,37 @@ $wpdb_vip_user=$wpdb_email[0];
 
 						<div class="colum_dos">
 							<label>
-									<?php echo __('[:es]Rango de edad[:en]Age Range:]'); ?>
+								<?php
+
+									if (count($_POST)==0) {
+										echo __('[:es]Rango de edad*[:en]Age Range*[:]');
+									}else{
+
+									if (empty($rango_edad)){
+											echo __('[:es]Rango de edad<span class="campo_vacio">*</span>[:en]Age Range<span class="campo_vacio">*</span>[:]');
+									}else{
+											echo __('[:es]Rango de edad*[:en]Age Range*[:]');
+
+										}
+										
+									}
+								
+								?>
 							</label>
 
 							<select name="rango_edad" >
-								  <option value="18-24">18-24</option>
-								  <option value="25-34">25-34</option>
-								  <option value="35-44">35-44</option>
-								  <option value="45+">45+</option>
+							<?php
+								$rango_edad_args = array("18-24","25-34","35-44","45+");
+
+								foreach ($rango_edad_args as $key_edad => $edad) {
+									//$selected = ($pais_residencia==$pais->id)?'selected':'';
+									$selected = ($rango_edad==$edad)?'selected':'';
+									echo '<option value="'.$edad.'" '.$selected.'>'.$edad.'</option>';
+									//print_r($edad);
+								}
+							?>
+								  
+								 
 							</select>
 						</div>
 
@@ -298,7 +378,9 @@ $wpdb_vip_user=$wpdb_email[0];
 							<label>
 								<?php
 
-									if (count($_POST)==0) {
+								echo __('[:es]Afiliación Organizacional[:en]Organizational Affiliations[:]');
+
+									/*if (count($_POST)==0) {
 										echo __('[:es]Afiliación Organizacional*[:en]Organizational Affiliations*[:]');
 									}else{
 
@@ -309,11 +391,11 @@ $wpdb_vip_user=$wpdb_email[0];
 
 										}
 										
-									}
+									}*/
 								
 								?>
 							</label>
-							<input type="text" name="email" value="<?php echo $email; ?>">
+							<input type="text" name="afiliacion" value="<?php echo $afiliacion; ?>">
 						</div>
 						
 						<input type="hidden" name="spam">
