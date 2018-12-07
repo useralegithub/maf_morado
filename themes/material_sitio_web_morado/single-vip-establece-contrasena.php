@@ -28,6 +28,7 @@
 			<?php
 				//print_r($_POST);echo "\n\n";
 				$code=$_GET[c];
+				//condition for $code
 				$user_vip=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code' ORDER BY id DESC ")[0];
 				//echo "user vip";
 				//print_r($user_vip);
