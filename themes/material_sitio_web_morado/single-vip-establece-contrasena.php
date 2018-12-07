@@ -47,7 +47,11 @@
 
 					if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
 
-						if (strlen($_POST['password_one']) >= 8 && preg_match('/[A-Za-z]/', $_POST['password_one']) && preg_match('/[0-9]/',$_POST['password_one']) ){
+						if (strlen($_POST['password_one']) >= 8
+							&& preg_match('/[a-z]/', $_POST['password_one'])
+							&& preg_match('/[A-Z]/', $_POST['password_one'])
+							&& preg_match('/[0-9]/',$_POST['password_one'])
+						){
 
 								$hash = wp_hash_password( $_POST['password_one'] );
 
@@ -97,8 +101,6 @@
 		                    mail($to, $subject, $contenido, $mailheader);
 
 		                } //close key sen email
-
-
 
 						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							

@@ -1120,8 +1120,10 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 //echo "\n sisi \n";
 
     $users_vip_recupera_id       = $_POST['users_vip_recupera_contrasena_id'];
-    $users_vip_rechazar_nombre   = $_POST['users_vip_recupera_contrasena_nombre'];
-    $users_vip_rechazar_apellido = $_POST['users_vip_recupera_contrasena_apellido'];
+    $users_vip_recupera_nombre   = $_POST['users_vip_recupera_contrasena_nombre'];
+    $users_vip_recupera_apellido = $_POST['users_vip_recupera_contrasena_apellido'];
+    $users_vip_recupera_email    = $_POST['users_vip_recupera_contrasena_email'];
+    $spam = $_POST['users_vip_recupera_contrasena_spam'];
 
     function randomRecovery($length = 6) {
         $str = "";
@@ -1145,8 +1147,8 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                 );
 
 
-                if($spam == '' && $users_vip_aprobar_email != '' ){
-                    $email=$users_vip_aprobar_email;
+                if($spam == '' && $users_vip_recupera_email != '' ){
+                    $email=$users_vip_recupera_email;
                     $to = $email;
 
                     $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
@@ -1168,6 +1170,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     ';
                     //$message=base64_encode($message);
                     $contenido=utf8_decode($message);
+                    $subject=utf8_decode($subject);
                     $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
                     $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
@@ -1207,7 +1210,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 
     echo "\n";
     echo ' <div class="users_vip_style_aprobado"'.$users_vip_style_recupera.' >';
-    echo 'Se envío un email de reperación para '.$users_vip_rechazar_id.' - '.$users_vip_rechazar_nombre.' - '.$users_vip_rechazar_apellido.' con éxito.';
+    echo 'Se envío un email de reperación para '.$users_vip_recupera_id.' - '.$users_vip_recupera_nombre.' - '.$users_vip_recupera_apellido.' con éxito.';
             echo '<div '.$users_vip_style_button_del.' class="users_vip_button_del">';
             echo 'X';
             echo '</div>'; 
@@ -1701,6 +1704,8 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
                     <input type="hidden" name="users_vip_recupera_contrasena_id" value="'.$value->id.'">
                     <input type="hidden" name="users_vip_recupera_contrasena_nombre" value="'.$value->users_vip_nombre.'">
                     <input type="hidden" name="users_vip_recupera_contrasena_apellido" value="'.$value->users_vip_apellido.'">
+                    <input type="hidden" name="users_vip_recupera_contrasena_email" value="'.$value->users_vip_email.'">
+                    <input type="hidden" name="users_vip_recupera_contrasena_spam" value="">
                     <input type="submit"  value="Recuperar" class="btn_recupera_contrasena">
                 </form>';
     echo  '</td>';
@@ -1819,6 +1824,7 @@ if ($user_vip_edit_id!='') {
     $users_vip_edit_name=$wp_users_vip_edit_query[0]->users_vip_nombre;
     $users_vip_edit_apellido=$wp_users_vip_edit_query[0]->users_vip_apellido;
     $users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category;
+    $users_vip_edit_pais=$wp_users_vip_edit_query[0]->users_vip_pais;
     $users_vip_edit_rango_edad=$wp_users_vip_edit_query[0]->users_vip_rango_edad;
     $users_vip_edit_afiliacion=$wp_users_vip_edit_query[0]->users_vip_afiliacion;
     $users_vip_edit_email=$wp_users_vip_edit_query[0]->users_vip_email;
@@ -1830,6 +1836,8 @@ if ($user_vip_edit_id!='') {
 if ($_POST) {
    // print_r($_POST);
     //$user_vip_edit_id=$_POST['users-vip-id'];
+    $echo_wrong='';
+    $wrong_email='';
     $users_vip_edit_name=stripslashes_deep($_POST['users-vip-nombre']);
     $users_vip_edit_apellido=stripslashes_deep($_POST['users-vip-apellido']);
     $users_vip_edit_category=stripslashes_deep($_POST['users-vip-categoria']);
@@ -1843,8 +1851,44 @@ if ($_POST) {
     if ($users_vip_edit_pass=='') {
         $hash = $wp_users_vip_edit_query[0]->users_vip_pass;
     }else{
-        $hash = wp_hash_password( $users_vip_edit_pass );
+
+        if ($users_vip_edit_pass >= 8
+                            && preg_match('/[a-z]/', $users_vip_edit_pass)
+                            && preg_match('/[A-Z]/', $users_vip_edit_pass)
+                            && preg_match('/[0-9]/',$users_vip_edit_pass)
+            ){
+
+            $hash = wp_hash_password( $users_vip_edit_pass );
+
+        }else{
+            $echo_wrong = 'Tu contraseña debe de ser mayor a 8 caracteres e incluir minúsculas y mayúsculas.';
+        }
+
     }
+
+function is_valid_email($str)
+{
+  $result = (false !== filter_var($str, FILTER_VALIDATE_EMAIL));
+  
+  if ($result)
+  {
+    list($user, $domain) = split('@', $str);
+    
+    $result = checkdnsrr($domain, 'MX');
+  }
+  
+  return $result;
+}
+
+    if ($users_vip_edit_email!=''&&filter_var($users_vip_edit_email, FILTER_VALIDATE_EMAIL)&&is_valid_email($users_vip_edit_email)){
+
+        $email=$users_vip_edit_email;
+
+    }else{
+        $wrong_email='email no valido';
+         $email=$wp_users_vip_edit_query[0]->users_vip_email;
+    }
+
 
     
 
@@ -1856,10 +1900,11 @@ $wpdb->update('wp_users_vip', array(
                                     
                                     'users_vip_nombre'=>$users_vip_edit_name,
                                     'users_vip_apellido'=>$users_vip_edit_apellido, 
-                                    'users_vip_category'=>$users_vip_edit_category, 
+                                    'users_vip_category'=>$users_vip_edit_category,
+                                    'users_vip_pais'    =>$users_vip_edit_pais,
                                     'users_vip_rango_edad'=>$users_vip_edit_rango_edad, 
-                                    'users_vip_afiliacion'=>$users_vip_edit_afiliacion, 
-                                    'users_vip_email'=>$users_vip_edit_email,  
+                                    'users_vip_afiliacion'=>$users_vip_edit_afiliacion,
+                                    'users_vip_email'=>$email,  
                                     'users_vip_pass'=>$hash,
                                     'users_vip_lang'=>$users_vip_edit_lang
                                 ), array('id'=>$user_vip_edit_id)
@@ -1870,6 +1915,7 @@ $wpdb->update('wp_users_vip', array(
         <h2>Editar</h2>
         <form name="users_vip_form_edit" action="" method="post">
         <table style="width:100%">
+    <?php echo ($_POST&&$echo_wrong==''&&$wrong_email=='')?'<tr><td style="text-align: center;color: green;font-size: 15px;font-weight: bold;">Cambios Hechos</td></tr>':''; ?>
     <tr>
         <td style="width: 150px;">
             <label for="users-vip-id">
@@ -1976,7 +2022,6 @@ $wpdb->update('wp_users_vip', array(
             </label>
         </td>
         <td>
-
         <select name="users-vip-pais" >
           <?php
 
@@ -1984,7 +2029,7 @@ $wpdb->update('wp_users_vip', array(
                 $wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
 
                 foreach ($wpdb_paises as $key_pais => $pais) {
-                    $key_pais=$key_pais+1;
+                    //$key_pais=$key_pais+1;
                     $selected = ($users_vip_edit_pais==$pais->id)?'selected':'';
                     echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
                 }
@@ -2019,16 +2064,16 @@ $wpdb->update('wp_users_vip', array(
         </td>
         <td>
             <input
-            type="text" 
+            type="email" 
             name="users-vip-email" 
             id="users-vip-email" 
             placeholder="email"
-            value="<?php echo $users_vip_edit_email; ?>"  
+            value="<?php echo ($wrong_email!='')?$email:$users_vip_edit_email; ?>"  
             />
         </td>
     </tr>
 
-    <tr>
+    <!-- <tr>
         <td style="width: 150px;">
             <label for="users-vip-lang">
                 <?php _e( 'Idioma Lang: ', 'uv_users-vip-textdomain' )?>
@@ -2043,13 +2088,14 @@ $wpdb->update('wp_users_vip', array(
             value="<?php echo $users_vip_edit_lang; ?>"  
             />
         </td>
-    </tr>
+    </tr> -->
 
     <tr>
         <td style="width: 150px;">
             <label for="users-vip-pass">
                 <?php _e( 'Pass: ', 'uv_users-vip-textdomain' )?>
             </label>
+            
         </td>
         <td>
             <input
@@ -2061,6 +2107,19 @@ $wpdb->update('wp_users_vip', array(
             />
         </td>
     </tr>
+    <tr><td colspan="2"><label style="
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+"><?php echo $echo_wrong; ?></label></td></tr>
+
+
+    <tr><td colspan="2"><label style="
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+"><?php echo $wrong_email; ?></label></td></tr>
+
 
     <tr>
         <td>
@@ -2077,7 +2136,7 @@ $wpdb->update('wp_users_vip', array(
             name="users-vip-submit" 
             id="users-vip-submit" 
             placeholder="submit"
-            value="<?php echo 'GUARDAR'; ?>"  
+            value="<?php echo 'GUARDAR'; ?>"
             />
         </td>
     </tr>

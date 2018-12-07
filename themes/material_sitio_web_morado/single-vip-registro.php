@@ -39,6 +39,20 @@ function randomRecovery($length = 6) {
 	return $str;
 }
 
+function is_valid_email($str)
+{
+  $result = (false !== filter_var($str, FILTER_VALIDATE_EMAIL));
+  
+  if ($result)
+  {
+    list($user, $domain) = split('@', $str);
+    
+    $result = checkdnsrr($domain, 'MX');
+  }
+  
+  return $result;
+}
+
 echo "\n<!--latest register:_\n";
 //SELECT * FROM wp_users_vip ORDER BY id DESC
 
@@ -48,7 +62,7 @@ if ($_POST['email']) {
 
 $nombre     = strip_tags(trim( $_POST['nombre']    ));
 $apellido   = strip_tags(trim( $_POST['apellido']  ));
-$email 	    = strip_tags(trim( $_POST['email']     ));
+$email 	    = filter_var(strip_tags(trim( $_POST['email'])), FILTER_SANITIZE_EMAIL  );
 $pais_residencia  = strip_tags(trim( $_POST['pais_residencia'] ));
 $rango_edad = strip_tags(trim( $_POST['rango_edad']));
 $categoria  = strip_tags(trim( $_POST['categoria']));
@@ -77,27 +91,39 @@ $wpdb_vip_user=$wpdb_email[0];
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_eliminado) {
 
-			$recovery = $wpdb_vip_user->id.''.randomRecovery(20);
+				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
+				$latest_plus_one = $latest_regiter->id+1;
+				$latest_plus_one;
 
-		    $wpdb->update('wp_users_vip', array(
-												'users_vip_nombre'         => $nombre,
-												'users_vip_apellido'       => $apellido,
-												'users_vip_category'       => $categoria,
-												'users_vip_rango_edad'     => $rango_edad,
-												'users_vip_afiliacion'     => $afiliacion,
-												'users_vip_pais'     	   => $pais_residencia,
-												'users_vip_email'          => $email,
-												'users_vip_pass'     	   => '',
-												'users_vip_estatus'=>$estatus_registrado,
-												'users_vip_pass_recovery'  => $recovery,
-												'users_vip_lang'  	   	   => $lang
-		                                        
-		                                    ), array('id'=>$wpdb_vip_user->id)
-		                );
+				$recovery = $latest_plus_one.''.randomRecovery(20);
 
-		$wpdb_response = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
+				$lang=qtranxf_getLanguage();
+
+				//$hash = wp_hash_password( $contrasena );
+				$hash = '';
+
+			 	$register_user = array(
+										'users_vip_nombre'         => $nombre,
+										'users_vip_apellido'       => $apellido,
+										'users_vip_category'       => $categoria,
+										'users_vip_rango_edad'     => $rango_edad,
+										'users_vip_afiliacion'     => $afiliacion,
+										'users_vip_pais'     	   => $pais_residencia,
+										'users_vip_email'          => $email,
+										'users_vip_pass'     	   => $hash,
+										'users_vip_estatus'  	   => '1',
+										'users_vip_pass_recovery'  => $recovery,
+										'users_vip_lang'  	   	   => $lang
+										);
+			 	print_r($register_user);
+
+			 	$format_regiter = array('%s','%s','%s','%s','%s','%s');
+
+			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
+
+		$wpdb_response = 'Muchas *** gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
 			 	$class_form='visibility_form';
-			 	if($spam == '' && $email != '' ){
+			 	if($spam == '' && $email != '' && filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email)){
 
 					$to = $email;
  
@@ -148,7 +174,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 
 			//if ($nombre!=''||$apellido!=''||$categoria!=''||$email!=''||$contrasena!='') {
-			if ($nombre!=''&&$apellido!=''&&$email!=''&&$pais_residencia!=''&&$rango_edad!='') {
+			if ($nombre!=''&&$apellido!=''&&$email!=''&&filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email)&&$pais_residencia!=''&&$rango_edad!='') {
 
 
 				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
@@ -161,9 +187,6 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				//$hash = wp_hash_password( $contrasena );
 				$hash = '';
-
-
-
 
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
@@ -185,7 +208,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 			 	$wpdb_response = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
 			 	$class_form='visibility_form';
-			 	if($spam == '' && $email != '' ){
+			 	if($spam == '' && $email != ''&& filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email) ){
 
 					$from = $email;
 					$to = $email;
@@ -272,7 +295,7 @@ $wpdb_vip_user=$wpdb_email[0];
 							$contrasena = strip_tags(trim( $_POST['contrasena']));
 							$pais_residencia = strip_tags(trim( $_POST['pais_residencia']));
 							$rango_edad = strip_tags(trim( $_POST['rango_edad']));
-							$afiliacion = strip_tags(trim( $_POST['afiliacion']));
+							$afiliacion = substr(strip_tags(trim( $_POST['afiliacion'])),64);
 
 						}
 
@@ -330,7 +353,7 @@ $wpdb_vip_user=$wpdb_email[0];
 										echo __('[:es]E-mail*[:en]E-mail*[:]');
 									}else{
 
-									if (empty($email)){
+									if (empty($email)||!filter_var($email, FILTER_VALIDATE_EMAIL)||!is_valid_email($email)){
 											echo __('[:es]E-mail<span class="campo_vacio">*</span>[:en]E-mail<span class="campo_vacio">*</span>[:]');
 									}else{
 											echo __('[:es]E-mail*[:en]E-mail*[:]');
@@ -341,7 +364,7 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
-							<input type="text" name="email" value="<?php echo $email; ?>">
+							<input type="email" name="email" value="<?php echo $email; ?>">
 						</div>
 
 						<div class="colum_dos">
@@ -459,7 +482,7 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
-							<input type="text" name="afiliacion" value="<?php echo $afiliacion; ?>">
+							<input type="text" name="afiliacion" maxlength="64" value="<?php echo $afiliacion; ?>">
 						</div>
 						
 						<input type="hidden" name="spam">

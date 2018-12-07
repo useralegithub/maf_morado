@@ -1,0 +1,30 @@
+.addeventatc_dropdown .copyx {
+
+    display: none!important;
+}
+.section_int .texto.sponsors {
+
+    display: none;
+}
+
+.img_pie_foto{
+    font-size: 12px;
+}
+
+
+.img_pie_foto.prensa{
+    font-size: 12px;
+    color:#e6d2f9;
+}
+
+span.campo_vacio{
+	color:red;
+	background-color: transparent;
+}
+
+.campo_vacio{
+	background-color:red;
+}
+.visibility_form{
+	visibility: hidden;
+}
