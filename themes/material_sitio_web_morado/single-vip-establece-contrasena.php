@@ -25,34 +25,43 @@
 
 				<div class="formularios">
 
-					<?php
-						//print_r($_POST);echo "\n\n";
-						$code=$_GET[c];
+			<?php
+				//print_r($_POST);echo "\n\n";
+				$code=$_GET[c];
+				$user_vip=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code' ORDER BY id DESC ")[0];
+				//echo "user vip";
+				//print_r($user_vip);
+				$mensaje_invalido=__('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]');
 
-						$page_login = get_page_by_path( 'vip-login' );
+				$page_login = get_page_by_path( 'vip-login' );
 
-						$page_login_link = get_permalink( $page_login->ID);
+				$page_login_link = get_permalink( $page_login->ID);
 
-						$establece_true = __('[:es]Bien hecho has establecido tu contraseña. Puedes acceder desde aquí <a href="'.$page_login_link.'">VIP</a>[:en]Well done you have established your password. You can access from here <a href="'.$page_login_link.'">VIP</a>');
+				$establece_true = __('[:es]Bien hecho has establecido tu contraseña. Puedes acceder desde aquí <a href="'.$page_login_link.'">VIP</a>[:en]Well done you have established your password. You can access from here <a href="'.$page_login_link.'">VIP</a>');
 
 
 
-						if (!empty($_POST)){
+				if (!empty($_POST)){
 
-							if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
+
+					if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
+
+						if (strlen($_POST['password_one']) >= 8 && preg_match('/[A-Za-z]/', $_POST['password_one']) && preg_match('/[0-9]/',$_POST['password_one']) ){
 
 								$hash = wp_hash_password( $_POST['password_one'] );
 
 								global $wpdb;
 
 							    $wpdb->update('wp_users_vip', array(
-							                                        'users_vip_pass'=>$hash
-							                                    ), array('users_vip_pass_recovery'=>$code)
-											                );
-								$wp_users_vip_email = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
+							                                        'users_vip_pass'=>$hash,
+							                                        'users_vip_pass_recovery'=>'NULL'
 
-								$vip_email=$wp_users_vip_email[0]->users_vip_email;
-								$vip_nombre=$wp_users_vip_email[0]->users_vip_nombre;
+							                                    ), array('id'=>$user_vip->id)
+											                );
+								//$wp_users_vip_email = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
+
+								$vip_email=$user_vip->users_vip_email;
+								$vip_nombre=$user_vip->users_vip_nombre;
 
 		                if($spam == '' && $vip_email != '' ){
 		                    $email=$vip_email;
@@ -86,13 +95,24 @@
 		                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 		                    mail($to, $subject, $contenido, $mailheader);
 
-		                }
+		                } //close key sen email
 
-							}
 
-						}else{} //close key if empty
 
-					?>
+						}else{//close key if password more strlen>=8 and cointaint letters and numbers
+							
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres e incluir minúsculas y mayúsculas.[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
+						}
+
+					}else{//close key if spam=0 and same password
+							
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be the same in both fields.[:]');
+
+					}
+
+				}else{} //close key if empty
+
+			?>
 
 				<p>
 
@@ -109,23 +129,28 @@
 				</p>
 
 				<?php
-				global $wpdb;
-				$wp_users_vip_pass = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
+				//global $wpdb;
+				$users_vip_recovery = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
 
-				$pass_user=$wp_users_vip_pass[0]->users_vip_pass;
-
-				//print_r();
+				//$pass_user=$user_vip->users_vip_pass;
+				//echo "string string";
+				//print_r($pass_user);
 
 				?>
 				<?php
 
-					if ($pass_user=='') {
+					//if ($pass_user=='') {
+					if (!empty($users_vip_recovery)) {
 
 				?>
 
 				<p>
-					<?php echo __('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]'); ?>
+					<?php //echo __('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]'); ?>
 
+				</p>
+
+				<p>
+					<?php echo $mensaje_invalido; ?>
 				</p>
 
 					<form action="" method="post" name="form_establece_password" >

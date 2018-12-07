@@ -21,10 +21,23 @@
 
 global $wpdb;
 $wpdb_response='';
+$class_form   ='';
 $estatus_registrado = 1;
 $estatus_aprobado   = 3;
 $estatus_rechazado  = 4;
 $estatus_eliminado  = 7;
+
+function randomRecovery($length = 6) {
+	$str = "";
+	//$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
+	$characters = array_merge(range('a','z'), range('0','9'));
+	$max = count($characters) - 1;
+	for ($i = 0; $i < $length; $i++) {
+		$rand = mt_rand(0, $max);
+		$str .= $characters[$rand];
+	}
+	return $str;
+}
 
 echo "\n<!--latest register:_\n";
 //SELECT * FROM wp_users_vip ORDER BY id DESC
@@ -62,6 +75,64 @@ $wpdb_vip_user=$wpdb_email[0];
 		$wpdb_response = 'Ya existe una petición con el correo '.$wpdb_vip_user->users_vip_email.' y nombre: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.'  por favor espera a que se apruebe tu petición.';
 		}
 
+		if ($wpdb_vip_user->users_vip_estatus==$estatus_eliminado) {
+
+			$recovery = $wpdb_vip_user->id.''.randomRecovery(20);
+
+		    $wpdb->update('wp_users_vip', array(
+												'users_vip_nombre'         => $nombre,
+												'users_vip_apellido'       => $apellido,
+												'users_vip_category'       => $categoria,
+												'users_vip_rango_edad'     => $rango_edad,
+												'users_vip_afiliacion'     => $afiliacion,
+												'users_vip_pais'     	   => $pais_residencia,
+												'users_vip_email'          => $email,
+												'users_vip_pass'     	   => '',
+												'users_vip_estatus'=>$estatus_registrado,
+												'users_vip_pass_recovery'  => $recovery,
+												'users_vip_lang'  	   	   => $lang
+		                                        
+		                                    ), array('id'=>$wpdb_vip_user->id)
+		                );
+
+		$wpdb_response = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
+			 	$class_form='visibility_form';
+			 	if($spam == '' && $email != '' ){
+
+					$to = $email;
+ 
+					$subject = 'Solicitud Pendiente'; //El asunto del correo
+					$message = '
+					<html>
+					<body>
+					
+					<p>
+					Gracias por registrarte. Tan pronto como su estado VIP haya sido aprobado, te lo notificaremos por correo electrónico. Por favor agrega vip@material-fair.com como contacto para asegurarte de recibir nuestra comunicación.
+					</p>
+
+					<p>
+					Tu tarjeta VIP estará disponible para recoger en el VIP Desk, ubicado en el lobby del Frontón México. La tarjeta te otorgará a ti y a un invitado acceso a Feria de Arte Material para el VIP Preview el jueves 7 de febrero de 12 pm a 3 pm y durante todos los horarios al público. También te otorgará acceso a las actividades del Programa VIP, aunque algunos pueden requerir RSVP adicionales para garantizar admisión.
+					</p>
+
+					</body>
+					</html>
+					';
+					//$message=base64_encode($message);
+					$contenido=utf8_decode($message);
+					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+					$mailheader .= "Reply-To: " .$email."\r\n"; 
+					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+
+					$headers = "From:" . $email . "\r\n";
+					$headers .="Reply-To: " .$email . "\r\n";
+					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$headers .= 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+					mail($to, $subject, $contenido, $mailheader);
+
+			 	}//close if for send email
+		}//close key if estatus " if ($wpdb_vip_user->users_vip_estatus==$estatus_eliminado) { "
+
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_rechazado) {
 			
 			$wpdb_response = 'Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.';
@@ -80,18 +151,6 @@ $wpdb_vip_user=$wpdb_email[0];
 			if ($nombre!=''&&$apellido!=''&&$email!=''&&$pais_residencia!=''&&$rango_edad!='') {
 
 
-				function randomRecovery($length = 6) {
-					$str = "";
-					//$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
-					$characters = array_merge(range('a','z'), range('0','9'));
-					$max = count($characters) - 1;
-					for ($i = 0; $i < $length; $i++) {
-						$rand = mt_rand(0, $max);
-						$str .= $characters[$rand];
-					}
-					return $str;
-				}
-
 				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
 				$latest_plus_one = $latest_regiter->id+1;
 				$latest_plus_one;
@@ -105,10 +164,14 @@ $wpdb_vip_user=$wpdb_email[0];
 
 
 
+
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
 										'users_vip_category'       => $categoria,
+										'users_vip_rango_edad'     => $rango_edad,
+										'users_vip_afiliacion'     => $afiliacion,
+										'users_vip_pais'     	   => $pais_residencia,
 										'users_vip_email'          => $email,
 										'users_vip_pass'     	   => $hash,
 										'users_vip_estatus'  	   => '1',
@@ -121,6 +184,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
 
 			 	$wpdb_response = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
+			 	$class_form='visibility_form';
 			 	if($spam == '' && $email != '' ){
 
 					$from = $email;
@@ -187,7 +251,7 @@ $wpdb_vip_user=$wpdb_email[0];
 					
 				</p>
 
-					<form action="" method="post" name="form_registro" >
+					<form action="" method="post" name="form_registro" class="<?php echo $class_form; ?>" >
 					<?php
 
 						$nombre     = '';

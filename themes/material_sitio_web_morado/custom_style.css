@@ -25,3 +25,6 @@ span.campo_vacio{
 .campo_vacio{
 	background-color:red;
 }
+.visibility_form{
+	visibility: hidden;
+}

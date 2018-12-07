@@ -907,7 +907,7 @@ if ($_POST['users_vip_delete_id']) {
     //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
 
 $wpdb->update('wp_users_vip', array( 
-                                    'users_vip_estatus'=>4
+                                    'users_vip_estatus'=>7
                                 ), array('id'=>$users_vip_delete_id)
             );
 
@@ -1052,7 +1052,171 @@ $wpdb->update('wp_users_vip', array(
 
    // print_r($_GET['users_vip_delete_id']);
 // End pendiente operations
-}?>
+}
+?>
+<?php
+global $wpdb;
+//echo "the_post_g\n";
+//print_r($_POST);
+
+if ($_POST['users_vip_rechazar_id']){
+//echo "\n sisi \n";
+
+    $users_vip_rechazar_id       = $_POST['users_vip_rechazar_id'];
+    $users_vip_rechazar_nombre   = $_POST['users_vip_rechazar_nombre'];
+    $users_vip_rechazar_apellido = $_POST['users_vip_rechazar_apellido'];
+
+    $table = 'wp_users_vip';
+    //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
+
+    $wpdb->update('wp_users_vip', array( 
+                                        'users_vip_estatus'=>4
+                                    ), array('id'=>$users_vip_rechazar_id)
+                );
+
+    $users_vip_style_rechazado='
+                            style="
+                                width: 100%;
+                                height: 50px;
+                                background-color: red;
+                                font-size: 20px;
+                                font-weight: bold;
+                                color: white;
+                                line-height: 42px;
+                            "';
+
+    $users_vip_style_button_del='
+                            style="
+                                width: 20px;
+                                height: 50px;
+                                background-color: white;
+                                font-size: 20px;
+                                font-weight: bold;
+                                color: red;
+                                line-height: 42px;
+                                cursor: pointer;
+                                float: left;
+                            "';
+
+    echo "\n";
+    echo ' <div class="users_vip_style_aprobado"'.$users_vip_style_rechazado.' >';
+    echo 'El registro '.$users_vip_rechazar_id.' - '.$users_vip_rechazar_nombre.' - '.$users_vip_rechazar_apellido.' se RECHAZO';
+            echo '<div '.$users_vip_style_button_del.' class="users_vip_button_del">';
+            echo 'X';
+            echo '</div>'; 
+    echo '</div>';
+    echo "\n";
+
+// End pendiente operations
+}
+?>
+
+<?php
+global $wpdb;
+//echo "the_post_g\n";
+//print_r($_POST);users_vip_recupera_contrasena_id
+
+if ($_POST['users_vip_recupera_contrasena_id']){
+//echo "\n sisi \n";
+
+    $users_vip_recupera_id       = $_POST['users_vip_recupera_contrasena_id'];
+    $users_vip_rechazar_nombre   = $_POST['users_vip_recupera_contrasena_nombre'];
+    $users_vip_rechazar_apellido = $_POST['users_vip_recupera_contrasena_apellido'];
+
+    function randomRecovery($length = 6) {
+        $str = "";
+        //$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
+        $characters = array_merge(range('a','z'), range('0','9'));
+        $max = count($characters) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $rand = mt_rand(0, $max);
+            $str .= $characters[$rand];
+        }
+        return $str;
+    }
+    $recovery = $users_vip_recupera_id.''.randomRecovery(20);
+
+    $table = 'wp_users_vip';
+    //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
+
+    $wpdb->update('wp_users_vip', array( 
+                                        'users_vip_pass_recovery'=>$recovery
+                                    ), array('id'=>$users_vip_recupera_id)
+                );
+
+
+                if($spam == '' && $users_vip_aprobar_email != '' ){
+                    $email=$users_vip_aprobar_email;
+                    $to = $email;
+
+                    $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
+
+                    $link_establece = get_permalink( $post_establece ).'?c='.$recovery;
+ 
+                    $subject = 'Recuperar Contraseña'; //El asunto del correo
+                    $message = '
+                    <html>
+                    <body>
+                    
+                    <p>
+                        Link recuperar: <a href="'.$link_establece.'">Escribir Contraseña</a>
+                    </p>
+                    
+
+                    </body>
+                    </html>
+                    ';
+                    //$message=base64_encode($message);
+                    $contenido=utf8_decode($message);
+                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+                    $mailheader .= "Reply-To: " .$email."\r\n"; 
+                    $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+
+                    $headers = "From:" . $email . "\r\n";
+                    $headers .="Reply-To: " .$email . "\r\n";
+                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $headers .= 'MIME-Version: 1.0' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+                    mail($to, $subject, $contenido, $mailheader);
+
+                }
+
+    $users_vip_style_recupera='
+                            style="
+                                width: 100%;
+                                height: 50px;
+                                background-color: #007575;
+                                font-size: 20px;
+                                font-weight: bold;
+                                color: white;
+                                line-height: 42px;
+                            "';
+
+    $users_vip_style_button_del='
+                            style="
+                                width: 20px;
+                                height: 50px;
+                                background-color: white;
+                                font-size: 20px;
+                                font-weight: bold;
+                                color: red;
+                                line-height: 42px;
+                                cursor: pointer;
+                                float: left;
+                            "';
+
+    echo "\n";
+    echo ' <div class="users_vip_style_aprobado"'.$users_vip_style_recupera.' >';
+    echo 'Se envío un email de reperación para '.$users_vip_rechazar_id.' - '.$users_vip_rechazar_nombre.' - '.$users_vip_rechazar_apellido.' con éxito.';
+            echo '<div '.$users_vip_style_button_del.' class="users_vip_button_del">';
+            echo 'X';
+            echo '</div>'; 
+    echo '</div>';
+    echo "\n";
+
+// End pendiente operations
+}
+?>
 <?php
  if ($_POST['users_vip_btn_descarga']){
 
@@ -1254,6 +1418,15 @@ $wpdb->insert('wp_users_vip', array(
         margin: 4px 2px;
         /*cursor: pointer;*/
     }
+    .estatus_rechazado{
+        background-color: red;
+        border: none;
+        color: white;
+        padding: 5px 8px;
+        text-decoration: none;
+        margin: 4px 2px;
+        /*cursor: pointer;*/
+    }
     .btn_elimina{
         background-color: #c70404;
         border: none;
@@ -1406,11 +1579,11 @@ $estatus_aprobado   = 3;
 $estatus_rechazado  = 4;
 $estatus_eliminado  = 7;
 
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado ORDER BY id DESC LIMIT  $inicio,$registros");
 
 $wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
 
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado ORDER BY id DESC LIMIT  $inicio,$registros");
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado ORDER BY id DESC LIMIT  $inicio,$registros");
 
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
@@ -1467,12 +1640,18 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
 if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="estatus_pendiente">Pendiente</span></td>';
 }
+if ($value->users_vip_estatus==$estatus_rechazado) {
+    echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="estatus_rechazado">Rechazado</span></td>';
+}
 /* END colum estatus */
 
 
 
 /* colum cambiar estatus*/
 if ($value->users_vip_estatus==$estatus_aprobado) {
+    echo  '<td class="td_center_hori_vert " colspan="2"><span class="no_disponible">No Disponible</span></td>';
+}
+if ($value->users_vip_estatus==$estatus_rechazado) {
     echo  '<td class="td_center_hori_vert " colspan="2"><span class="no_disponible">No Disponible</span></td>';
 }
 if ($value->users_vip_estatus==$estatus_registrado) {
@@ -1530,6 +1709,9 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
 if ($value->users_vip_estatus==$estatus_registrado) {
     echo  '<td class="td_center_hori_vert"><span class="no_disponible">No Disponible</span></td>';
 }
+if ($value->users_vip_estatus==$estatus_rechazado) {
+    echo  '<td class="td_center_hori_vert " ><span class="no_disponible">No Disponible</span></td>';
+}
 /* END colum recuperar contraseña */
 
 
@@ -1551,6 +1733,9 @@ echo  '<td class="td_center_hori_vert" >
     
 }
 if ($value->users_vip_estatus==$estatus_registrado) {
+    echo  '<td class="td_center_hori_vert " ><span class="no_disponible">No Disponible</span></td>';
+}
+if ($value->users_vip_estatus==$estatus_rechazado) {
     echo  '<td class="td_center_hori_vert " ><span class="no_disponible">No Disponible</span></td>';
 }
 /* end colum editar */
@@ -1629,13 +1814,17 @@ $user_vip_edit_id= !(isset($_GET['user_vip_id']))?'':''.$_GET['user_vip_id'];
 echo "\n\n";
 if ($user_vip_edit_id!='') {
 
-$wp_users_vip_edit_query = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE id=".$user_vip_edit_id);
-$users_vip_edit_id=$wp_users_vip_edit_query[0]->id;
-$users_vip_edit_name=$wp_users_vip_edit_query[0]->users_vip_nombre;
-$users_vip_edit_apellido=$wp_users_vip_edit_query[0]->users_vip_apellido;
-$users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category;
-$users_vip_edit_email=$wp_users_vip_edit_query[0]->users_vip_email;
-$users_vip_edit_pass=$wp_users_vip_edit_query[0]->users_vip_pass;
+    $wp_users_vip_edit_query = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE id=".$user_vip_edit_id);
+    $users_vip_edit_id=$wp_users_vip_edit_query[0]->id;
+    $users_vip_edit_name=$wp_users_vip_edit_query[0]->users_vip_nombre;
+    $users_vip_edit_apellido=$wp_users_vip_edit_query[0]->users_vip_apellido;
+    $users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category;
+    $users_vip_edit_rango_edad=$wp_users_vip_edit_query[0]->users_vip_rango_edad;
+    $users_vip_edit_afiliacion=$wp_users_vip_edit_query[0]->users_vip_afiliacion;
+    $users_vip_edit_email=$wp_users_vip_edit_query[0]->users_vip_email;
+    $users_vip_edit_pass=$wp_users_vip_edit_query[0]->users_vip_pass;
+    $users_vip_edit_lang=$wp_users_vip_edit_query[0]->users_vip_lang;
+
 }
 //$id = stripslashes_deep($_POST['id']); //added stripslashes_deep which removes WP escaping.
 if ($_POST) {
@@ -1644,8 +1833,20 @@ if ($_POST) {
     $users_vip_edit_name=stripslashes_deep($_POST['users-vip-nombre']);
     $users_vip_edit_apellido=stripslashes_deep($_POST['users-vip-apellido']);
     $users_vip_edit_category=stripslashes_deep($_POST['users-vip-categoria']);
+    $users_vip_edit_rango_edad=stripslashes_deep($_POST['users-vip-rango_edad']);
+    $users_vip_edit_pais=stripslashes_deep($_POST['users-vip-pais']);
+    $users_vip_edit_afiliacion=stripslashes_deep($_POST['users-vip-afiliacion']);
     $users_vip_edit_email=stripslashes_deep($_POST['users-vip-email']);
     $users_vip_edit_pass=stripslashes_deep($_POST['users-vip-pass']);
+    $users_vip_edit_lang=stripslashes_deep($_POST['users-vip-lang']);
+
+    if ($users_vip_edit_pass=='') {
+        $hash = $wp_users_vip_edit_query[0]->users_vip_pass;
+    }else{
+        $hash = wp_hash_password( $users_vip_edit_pass );
+    }
+
+    
 
 
 
@@ -1656,8 +1857,11 @@ $wpdb->update('wp_users_vip', array(
                                     'users_vip_nombre'=>$users_vip_edit_name,
                                     'users_vip_apellido'=>$users_vip_edit_apellido, 
                                     'users_vip_category'=>$users_vip_edit_category, 
+                                    'users_vip_rango_edad'=>$users_vip_edit_rango_edad, 
+                                    'users_vip_afiliacion'=>$users_vip_edit_afiliacion, 
                                     'users_vip_email'=>$users_vip_edit_email,  
-                                    'users_vip_pass'=>$users_vip_edit_pass
+                                    'users_vip_pass'=>$hash,
+                                    'users_vip_lang'=>$users_vip_edit_lang
                                 ), array('id'=>$user_vip_edit_id)
             );
 }
@@ -1723,28 +1927,87 @@ $wpdb->update('wp_users_vip', array(
             </label>
         </td>
         <td>
-            <select name="users-vip-categoria">
-                <?php
-                    $options = array( 'Collector', 
-                                      'Independet art professional', 
-                                      'Institutional art professional',
-                                      'Press', 
-                                      'Admin' );
-                    $output = '';
-                    for( $i=0; $i<count($options); $i++ ) {
-                      $output .= '<option ' 
-                                 . ( $users_vip_edit_category == $options[$i] ? 'selected="selected"' : '' ) . '>' 
-                                 . $options[$i] 
-                                 . '</option>';
-                    }
-                    echo $output;
-                ?>
-<!--               <option value="collector" selected>Collector</option>
-              <option value="Independet art professional">Independet art professional</option>
-              <option value="Institutional art professional">Institutional art professional</option>
-              <option value="Press">Press</option>
-              <option value="Admin">Admin</option> -->
-            </select>
+
+        <select name="users-vip-categoria" >
+          <?php
+
+                $wpdb_cat = array("Coleccionista","Curador","Personal de Museo o Institucional","Asesor","Galerista","Artista","Otro");
+
+                foreach ($wpdb_cat as $key_cat => $cat) {
+                    $key_cat=$key_cat+1;
+                    $selected = ($users_vip_edit_category==$key_cat)?'selected':'';
+                    echo '<option value="'.$key_cat.'"  '.$selected.'>'.__($cat).'</option>';
+                }
+
+          ?>
+        </select>
+
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 150px;">
+            <label for="users-vip-rango_edad">
+                <?php _e( 'Rango Edad: ', 'uv_users-vip-textdomain' )?>
+            </label>
+        </td>
+        <td>
+
+        <select name="users-vip-rango_edad" >
+          <?php
+                $rango_edad_args = array("18-24","25-34","35-44","45+");
+
+                foreach ($rango_edad_args as $key_edad => $edad) {
+                    //$key_cat=$key_edad+1;
+                    //$selected = ($users_vip_edit_category==$key_cat)?'selected':'';
+                    $selected = ($users_vip_edit_rango_edad==$edad)?'selected':'';
+                    echo '<option value="'.$edad.'"  '.$selected.'>'.__($edad).'</option>';
+                }
+
+          ?>
+        </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 150px;">
+            <label for="users-vip-pais">
+                <?php _e( 'Pais: ', 'uv_users-vip-textdomain' )?>
+            </label>
+        </td>
+        <td>
+
+        <select name="users-vip-pais" >
+          <?php
+
+                global $wpdb;
+                $wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
+
+                foreach ($wpdb_paises as $key_pais => $pais) {
+                    $key_pais=$key_pais+1;
+                    $selected = ($users_vip_edit_pais==$pais->id)?'selected':'';
+                    echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
+                }
+
+          ?>
+          </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 150px;">
+            <label for="users-vip-afiliacion">
+                <?php _e( 'Afiliación: ', 'uv_users-vip-textdomain' )?>
+            </label>
+        </td>
+        <td>
+            <input
+            type="text" 
+            name="users-vip-afiliacion" 
+            id="users-vip-afiliacion" 
+            placeholder="Afiliación"
+            value="<?php echo $users_vip_edit_afiliacion; ?>"  
+            />
         </td>
     </tr>
 
@@ -1767,17 +2030,34 @@ $wpdb->update('wp_users_vip', array(
 
     <tr>
         <td style="width: 150px;">
+            <label for="users-vip-lang">
+                <?php _e( 'Idioma Lang: ', 'uv_users-vip-textdomain' )?>
+            </label>
+        </td>
+        <td>
+            <input
+            type="text" 
+            name="users-vip-lang" 
+            id="users-vip-lang" 
+            placeholder="email"
+            value="<?php echo $users_vip_edit_lang; ?>"  
+            />
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width: 150px;">
             <label for="users-vip-pass">
                 <?php _e( 'Pass: ', 'uv_users-vip-textdomain' )?>
             </label>
         </td>
         <td>
             <input
-            type="text" 
+            type="password" 
             name="users-vip-pass" 
             id="users-vip-pass" 
-            placeholder="pass"
-            value="<?php echo $users_vip_edit_pass; ?>"  
+            placeholder=""
+            value="<?php //echo $users_vip_edit_pass; ?>"  
             />
         </td>
     </tr>
@@ -1787,7 +2067,7 @@ $wpdb->update('wp_users_vip', array(
            <input 
            type="button" 
            class="button_active" 
-           onclick="location.href=home_url().'/wp-admin/admin.php?page=usuarios_vip';"
+           onclick="javascript:location.href='<?php echo home_url().'/wp-admin/admin.php?page=usuarios_vip' ?>' "
            value="<?php echo 'REGRESAR'; ?>"  
            /> 
         </td>
