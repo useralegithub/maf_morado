@@ -67,6 +67,7 @@
 
 								$vip_email=$user_vip->users_vip_email;
 								$vip_nombre=$user_vip->users_vip_nombre;
+								$spam=$_POST['spam'];
 
 		                if($spam == '' && $vip_email != '' ){
 		                    $email=$vip_email;
