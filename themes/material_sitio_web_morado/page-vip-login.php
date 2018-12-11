@@ -31,57 +31,9 @@
 	include 'header.php'; 
 ?>
 
-<<<<<<< HEAD
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/rojo.css?v=<?php echo time();?>">
-<style type="text/css">
-/*	.rojo_registro_vip{
-    width: auto!important;
-    display: block;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #c01f25!important;
-    color: #fffcd7!important;
-    padding: 5px!important;
-}*/
-
-.rojo_registros_vip{
-    background-color: #c01f25!important;
-    background-color: #c01f25;
-    width: auto!important;
-    font-size: 14px;
-    font-family: 'AkkuratPro';
-    font-weight: bold;
-    padding: 0px 10px;
-    line-height: 25px;
-}
-.colum_dos_botones{
-    display: -webkit-inline-box;
-    width: calc(30% - 0px);
-    margin: 0px 20px 20px 0px;
-    vertical-align: top;
-}
-form input[type="submit"]{
-    margin-right: 10px;
-}
-.recupera_pass_vip_rojo{
-background-color: #c01f25;
-    width: auto;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #fffcd7;
-    padding: 5px;	
-}
-</style>
-<div class="wrapper vip_login page-vip-login alex">
-=======
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 
 <div class="wrapper vip_login page-vip-login wrapper_vip">
->>>>>>> 6953f28802b1f23ea534532a98b0e9f463e38240
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
