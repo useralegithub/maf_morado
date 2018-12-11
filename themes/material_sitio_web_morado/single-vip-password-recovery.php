@@ -1,6 +1,6 @@
 <?php include 'header.php';?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-password-recovery">
+<div class="wrapper single-vip-password-recovery wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>

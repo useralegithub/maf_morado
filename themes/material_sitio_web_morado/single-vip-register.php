@@ -182,7 +182,7 @@ $wpdb_vip_user=$wpdb_email[0];
 					$contenido=utf8_decode($message);
 					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
 					$mailheader .= "Reply-To: " .$email."\r\n"; 
-					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 
 					mail($to, $subject, $contenido, $mailheader);
