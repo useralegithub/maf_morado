@@ -75,7 +75,7 @@ background-color: #c01f25;
     padding: 5px;	
 }
 </style>
-<div class="wrapper vip_login page-vip-login">
+<div class="wrapper vip_login page-vip-login alex">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
