@@ -475,6 +475,7 @@ section.he_seis{
 
 .texto{
     font-size: 22px;
+    margin-bottom: 20px;
 }
 
 
@@ -1281,6 +1282,11 @@ header.act.act_a{
 .texto_img img{
     max-width: 100%;
     height: auto;
+    width: auto;
+    border: 0;
+    -webkit-tap-highlight-color: initial;
+    padding: 0;
+    display: block;
 }
 
 .btn_app{
@@ -2511,27 +2517,31 @@ section.expositores_int{}
 }
 
 .ei_parrafo{
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 .ei_parrafo h2{
-    text-decoration: underline;
-    margin: 0px 0px 20px;
-    font-size: 20px;
+    margin: 0px;
+    font-size: 18px;
+    -webkit-transform: initial;
+    transform: initial;
 }
 .ei_parrafo p{}
 .ei_columna p{
     margin-top: 0px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .ei_columna li p{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    word-break: break-all;
+    font-size: 12px;
 }
 
 .ei_artistas h3{
-    text-decoration: underline;
-    margin: 0px 0px 20px;
-    font-size: 20px;
+    margin: 0px 0px 0px;
+    font-size: 18px;
+    -webkit-transform: initial;
+    transform: initial;
 }
 .ei_artistas ul{
     margin: 0px 0px 40px;
@@ -2830,16 +2840,7 @@ top: 160px;
         position: absolute;
     }
 }}
-.rojo_registro_vip{
-    background-color: #c01f25!important;
-    background-color: #c01f25;
-    width: auto!important;
-    font-size: 14px;
-    font-family: 'AkkuratPro';
-    font-weight: bold;
-    padding: 0px 10px;
-    line-height: 25px;
-}
+
 
 .section_int.home .parrafo img{
     left: 0;
@@ -2926,11 +2927,13 @@ h1,h2,h3,h4{
 }
 
 .red_expositores{
-        display: inline-block;
-    -webkit-transform: scale(1,1.18);
-    transform: scale(1,1.18);
+    display: inline-block;
     text-transform: uppercase;
     font-weight: bold;
+    margin: 0px;
+    font-size: 13px;
+    -webkit-transform: initial;
+    transform: initial;
 }
 
 

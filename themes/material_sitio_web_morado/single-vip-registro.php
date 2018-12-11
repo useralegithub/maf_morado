@@ -1,8 +1,8 @@
 <?php include 'header.php';?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-register wrapper_vip">
+<div class="wrapper single-vip-registro wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -11,14 +11,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int ">
-				<div class="texto texto_resgistro">
-					<h2><?php echo __('[:es]Registro VIP[:en]Register VIP[:]'); ?></h2>
+			<div class="section_int contacto">
+				<div class="texto">
+					<p><?php echo __('[:es]Registro VIP[:en]Register VIP[:]'); ?></p>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int ">
+			<div class="section_int section_int_blog">
 <?php
 
 global $wpdb;
@@ -28,10 +28,6 @@ $estatus_registrado = 1;
 $estatus_aprobado   = 3;
 $estatus_rechazado  = 4;
 $estatus_eliminado  = 7;
-$page_login = get_page_by_path( 'vip-login' );
-$page_login_link = get_permalink( $page_login->ID);
-$enter_recupera_pass=get_posts(array('post_type' =>'vip' ,'name'=>'password-recovery','post_status'=>"publish" ))[0];
-$enter_recupera_pass=get_permalink($enter_recupera_pass->ID);
 
 function randomRecovery($length = 6) {
 	$str = "";
@@ -87,27 +83,19 @@ $wpdb_vip_user=$wpdb_email[0];
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_aprobado) {
 
-			$es_txt = 'No necesitas volver a registrarte '.$wpdb_vip_user->users_vip_nombre.', con tu correo: '.$wpdb_vip_user->users_vip_email.'  puedes acceder a <a href="'.$page_login_link.'">VIP</a> o recuperar tu contraseña <a href="'.$enter_recupera_pass.'">aquí</a>.';
-
-			$en_txt = 'You do not need to re-register '.$wpdb_vip_user->users_vip_nombre.' with your email: '. $wpdb_vip_user->users_vip_email.' You can access <a href="'.$page_login_link.'"> VIP </a> or retrieve your password <a href="'.$enter_recupera_pass.'"> here</a>.';
-
-			$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+			$wpdb_response = 'No necesitas volver a registrarte '.$wpdb_vip_user->users_vip_nombre.', puedes acceder a VIP en el siguiente link con tu correo: '.$wpdb_vip_user->users_vip_email.' o recuperar tu contraseña.';
 		}
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_registrado) {
-
-			$es_txt = 'Ya existe una petición con el correo '.$wpdb_vip_user->users_vip_email.' y nombre: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.'  por favor espera a que se apruebe tu petición.';
-
-			$en_txt = 'There is already a petition with the mail '.$wpdb_vip_user->users_vip_email.' and name: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.' please wait for your request to be approved.';
-
-			$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
-
+			
+		$wpdb_response = 'Ya existe una petición con el correo '.$wpdb_vip_user->users_vip_email.' y nombre: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.'  por favor espera a que se apruebe tu petición.';
 		}
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_eliminado) {
 
 				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
 				$latest_plus_one = $latest_regiter->id+1;
+				$latest_plus_one;
 
 				$recovery = $latest_plus_one.''.randomRecovery(20);
 
@@ -125,30 +113,24 @@ $wpdb_vip_user=$wpdb_email[0];
 										'users_vip_pais'     	   => $pais_residencia,
 										'users_vip_email'          => $email,
 										'users_vip_pass'     	   => $hash,
-										'users_vip_estatus'  	   => $estatus_registrado,
+										'users_vip_estatus'  	   => '1',
 										'users_vip_pass_recovery'  => $recovery,
 										'users_vip_lang'  	   	   => $lang
 										);
-			 	//print_r($register_user);
+			 	print_r($register_user);
 
-			 	$format_regiter = array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');
+			 	$format_regiter = array('%s','%s','%s','%s','%s','%s');
 
 			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
 
-				$es_txt = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';;
-
-				$en_txt = 'Thank you very much '.$nombre .' '.$apellido.' a request to access VIP has been sent.';
-
-				$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
-
+		$wpdb_response = 'Muchas *** gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';
 			 	$class_form='visibility_form';
 			 	if($spam == '' && $email != '' && filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email)){
 
 					$to = $email;
  
-					$subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); //El asunto del correo
-
-                    $es='
+					$subject = 'Solicitud Pendiente'; //El asunto del correo
+					$message = '
 					<html>
 					<body>
 					
@@ -163,30 +145,17 @@ $wpdb_vip_user=$wpdb_email[0];
 					</body>
 					</html>
 					';
-
-                    $en='
-					<html>
-					<body>
-					
-					<p>Thanks for registering. As soon as your VIP status has been approved, we will notify you by email. Please add vip@material-fair.com as a contact to make sure you receive our communication.
-					</p>
-
-					<p>
-					Your VIP card will be available to pick up at the VIP Desk, located in the Frontón México lobby. The card will grant you and a guest access to Material Art Fair for the VIP Preview on Thursday, February 7 from 12 pm to 3 pm and during all hours to the public. It will also grant you access to VIP Program activities, although some may require additional RSVPs to guarantee admission.
-					</p>
-
-					</body>
-					</html>
-					';
-
 					//$message=base64_encode($message);
-		            $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
 					$contenido=utf8_decode($message);
 					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
 					$mailheader .= "Reply-To: " .$email."\r\n"; 
-					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
-					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
+					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 
+					$headers = "From:" . $email . "\r\n";
+					$headers .="Reply-To: " .$email . "\r\n";
+					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$headers .= 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 					mail($to, $subject, $contenido, $mailheader);
 
 			 	}//close if for send email
@@ -194,7 +163,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_rechazado) {
 			
-			$wpdb_response = __('[:es]Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.[:en]Your account has been rejected, please contact the administrators to have more information.[:]');
+			$wpdb_response = 'Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.';
 		}
 
 	}else{
@@ -230,7 +199,7 @@ $wpdb_vip_user=$wpdb_email[0];
 										'users_vip_pais'     	   => $pais_residencia,
 										'users_vip_email'          => $email,
 										'users_vip_pass'     	   => $hash,
-										'users_vip_estatus'  	   => $estatus_registrado,
+										'users_vip_estatus'  	   => '1',
 										'users_vip_pass_recovery'  => $recovery,
 										'users_vip_lang'  	   	   => $lang
 										);
@@ -243,11 +212,11 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$class_form='visibility_form';
 			 	if($spam == '' && $email != ''&& filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email) ){
 
+					$from = $email;
 					$to = $email;
  
-					$subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); //El asunto del correo
-
-                    $es='
+					$subject = 'Solicitud Pendiente'; //El asunto del correo
+					$message = '
 					<html>
 					<body>
 					
@@ -262,30 +231,17 @@ $wpdb_vip_user=$wpdb_email[0];
 					</body>
 					</html>
 					';
-
-                    $en='
-					<html>
-					<body>
-					
-					<p>Thanks for registering. As soon as your VIP status has been approved, we will notify you by email. Please add vip@material-fair.com as a contact to make sure you receive our communication.
-					</p>
-
-					<p>
-					Your VIP card will be available to pick up at the VIP Desk, located in the Frontón México lobby. The card will grant you and a guest access to Material Art Fair for the VIP Preview on Thursday, February 7 from 12 pm to 3 pm and during all hours to the public. It will also grant you access to VIP Program activities, although some may require additional RSVPs to guarantee admission.
-					</p>
-
-					</body>
-					</html>
-					';
-
 					//$message=base64_encode($message);
-		            $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
 					$contenido=utf8_decode($message);
 					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
 					$mailheader .= "Reply-To: " .$email."\r\n"; 
-					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
-					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
+					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 
+					$headers = "From:" . $email . "\r\n";
+					$headers .="Reply-To: " .$email . "\r\n";
+					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$headers .= 'MIME-Version: 1.0' . "\r\n";
+					$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 					mail($to, $subject, $contenido, $mailheader);
 
 			 	}//close if for send email
@@ -304,7 +260,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				<div class="formularios">
 
-				<p class="mensaje_error_vip">
+				<p>
 					<?php echo $wpdb_response; ?>
 				</p>
 
@@ -432,6 +388,7 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
+
 							<div class="selector">
 								<select name="pais_residencia" >
 								  <?php
@@ -469,43 +426,41 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
-							<div class="selector">
-								<select name="rango_edad" >
-								<?php
-									$rango_edad_args = array("18-24","25-34","35-44","45+");
 
-									foreach ($rango_edad_args as $key_edad => $edad) {
-										//$selected = ($pais_residencia==$pais->id)?'selected':'';
-										$selected = ($rango_edad==$edad)?'selected':'';
-										echo '<option value="'.$edad.'" '.$selected.'>'.$edad.'</option>';
-										//print_r($edad);
-									}
-								?>
-									  
-									 
-								</select>
-							</div>
+							<select name="rango_edad" >
+							<?php
+								$rango_edad_args = array("18-24","25-34","35-44","45+");
+
+								foreach ($rango_edad_args as $key_edad => $edad) {
+									//$selected = ($pais_residencia==$pais->id)?'selected':'';
+									$selected = ($rango_edad==$edad)?'selected':'';
+									echo '<option value="'.$edad.'" '.$selected.'>'.$edad.'</option>';
+									//print_r($edad);
+								}
+							?>
+								  
+								 
+							</select>
 						</div>
 
 						<div class="colum_dos">
 							<label>
 									<?php echo __('[:es]Perfil[:en]Profile[:]'); ?>
 							</label>
-							<div class="selector">
-								<select name="categoria" >
-								  <?php
 
-										global $wpdb;
-										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+							<select name="categoria" >
+							  <?php
 
-										foreach ($wpdb_cat as $key_cat => $cat) {
-											$selected = ($categoria==$cat->id)?'selected':'';
-											echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
-										}
+									global $wpdb;
+									$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
 
-								  ?>
-								</select>
-							</div>
+									foreach ($wpdb_cat as $key_cat => $cat) {
+										$selected = ($categoria==$cat->id)?'selected':'';
+										echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
+									}
+
+							  ?>
+							</select>
 						</div>
 
 						
@@ -545,7 +500,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 
 
-
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 
 <?php include 'footer.php';?>
 

@@ -31,6 +31,7 @@
 	include 'header.php'; 
 ?>
 
+<<<<<<< HEAD
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/rojo.css?v=<?php echo time();?>">
 <style type="text/css">
 /*	.rojo_registro_vip{
@@ -76,6 +77,11 @@ background-color: #c01f25;
 }
 </style>
 <div class="wrapper vip_login page-vip-login alex">
+=======
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+
+<div class="wrapper vip_login page-vip-login wrapper_vip">
+>>>>>>> 6953f28802b1f23ea534532a98b0e9f463e38240
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -84,8 +90,7 @@ background-color: #c01f25;
 			</ul>
 		</div>
 		<section>
-			<div class="image img_08" data-stellar-ratio="-0.8"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/03.png"></div>
-		<div class="image img_09" data-stellar-ratio="-0.9"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/04.png"></div>
+		
 
 			<div class="section_int">
 				
@@ -103,7 +108,7 @@ background-color: #c01f25;
 				
 			</div>
 
-			<div class="section_int section_int_blog">
+			<div class="section_int ">
 				<div class="formularios">
 
 					<span><?php echo $wrong_acces; ?></span>
