@@ -1,6 +1,6 @@
 <?php include 'header.php';?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-establece-contrasena wrapper_vip">
+<div class="wrapper single-vip-establece-contrasena">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -67,6 +67,7 @@
 
 								$vip_email=$user_vip->users_vip_email;
 								$vip_nombre=$user_vip->users_vip_nombre;
+								$spam=$_POST['spam'];
 
 		                if($spam == '' && $vip_email != '' ){
 		                    $email=$vip_email;
@@ -101,8 +102,6 @@
 		                    mail($to, $subject, $contenido, $mailheader);
 
 		                } //close key sen email
-
-
 
 						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							
@@ -228,7 +227,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
 <?php include 'footer.php';?>
 
 </div>

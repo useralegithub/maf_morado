@@ -17,7 +17,14 @@
     color:#e6d2f9;
 }
 
+span.campo_vacio{
+	color:red;
+	background-color: transparent;
+}
 
+.campo_vacio{
+	background-color:red;
+}
 .visibility_form{
 	visibility: hidden;
 }

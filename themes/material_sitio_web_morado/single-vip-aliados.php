@@ -21,23 +21,54 @@
 			<nav>
 			<?php
 
+				$bienvenido=get_posts(array('post_type' =>'vip' ,'name'=>'bienvenido','post_status'=>"publish" ))[0];
+				$bienvenido_link=get_permalink($bienvenido->ID);
+
+				$programa=get_posts(array('post_type' =>'vip' ,'name'=>'programa','post_status'=>"publish" ))[0];
+				$programa_link=get_permalink($programa->ID);
+
+				$aliados=get_posts(array('post_type' =>'vip' ,'name'=>'viaje-y-alojamiento','post_status'=>"publish" ))[0];
+				$aliados_link=get_permalink($aliados->ID);
+
 				$aliados=get_posts(array('post_type' =>'vip' ,'name'=>'aliados','post_status'=>"publish" ))[0];
 				$aliados_link=get_permalink($aliados->ID);
 
+				$recomendaciones=get_posts(array('post_type' =>'vip' ,'name'=>'recomendaciones','post_status'=>"publish" ))[0];
+				$recomendaciones_link=get_permalink($recomendaciones->ID);
+
 			?>
-				<a href="?p=bienvenido_vip" class="mv_boton ">Bienvenido</a>
-				<a href="?p=programa_vip" class="mv_boton">Programa VIP 2018</a>
-				<a href="?p=hoteles_vip" class="mv_boton">Viaje y Alojamiento</a>
-				<a href="?p=recomendaciones_vip" class="mv_boton">Recomendaciones</a>
-				<a href="<?php echo $aliados_link; ?>" class="mv_boton mv_active">Aliados VIP</a>
+				<a href="<?php echo $bienvenido_link; ?>" class="mv_boton ">
+					<?php echo __('[:es]Bienvenido[:en]Welcome[:]'); ?>
+				</a>
+				
+				<a href="<?php echo $programa_link; ?>" class="mv_boton">
+					<?php echo __('[:es]Programa VIP 2018[:en]VIP Program 2018[:]'); ?>
+				</a>
+
+				<a href="<?php echo $aliados_link; ?>" class="mv_boton ">
+					<?php echo __('[:es]Viaje y Alojamiento[:en]Aliances[:]'); ?>
+					
+				</a>
+
+				<a href="<?php echo $recomendaciones_link; ?>" class="mv_boton ">
+					<?php echo __('[:es]Recomendaciones[:en]Recommendations[:]'); ?>
+				</a>
+
+				<a href="<?php echo $aliados_link; ?>" class="mv_boton mv_active">
+					<?php echo __('[:es]Aliados[:en]Aliances[:]'); ?>
+				</a>
+
 			</nav>
 		</div>
+
+
 
 
 		<section>
 			<div class="section_int">
 			<?php
-			 $term_aliados_vip = get_term_by( 'slug','aliados-vip','vip_programs');
+
+			$term_aliados_vip = get_term_by( 'slug','aliados-vip','vip_programs');
 
 			$posts_aliados_args=array(
 				'post_type' 	=>'vip',
@@ -85,7 +116,6 @@
 							<?php echo apply_filters('the_content', $aliados->post_content); ?>
 						</div>
 					</div>
-					</div>
 					<div class="clear"></div>
 				</div>
 
@@ -93,7 +123,6 @@
 
 			</div>
 		</section>
-
 
 
 

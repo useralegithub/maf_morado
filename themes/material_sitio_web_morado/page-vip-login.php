@@ -31,9 +31,51 @@
 	include 'header.php'; 
 ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/rojo.css?v=<?php echo time();?>">
+<style type="text/css">
+/*	.rojo_registro_vip{
+    width: auto!important;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #c01f25!important;
+    color: #fffcd7!important;
+    padding: 5px!important;
+}*/
 
-<div class="wrapper vip_login page-vip-login wrapper_vip">
+.rojo_registros_vip{
+    background-color: #c01f25!important;
+    background-color: #c01f25;
+    width: auto!important;
+    font-size: 14px;
+    font-family: 'AkkuratPro';
+    font-weight: bold;
+    padding: 0px 10px;
+    line-height: 25px;
+}
+.colum_dos_botones{
+    display: -webkit-inline-box;
+    width: calc(30% - 0px);
+    margin: 0px 20px 20px 0px;
+    vertical-align: top;
+}
+form input[type="submit"]{
+    margin-right: 10px;
+}
+.recupera_pass_vip_rojo{
+background-color: #c01f25;
+    width: auto;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fffcd7;
+    padding: 5px;	
+}
+</style>
+<div class="wrapper vip_login page-vip-login">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -42,7 +84,8 @@
 			</ul>
 		</div>
 		<section>
-		
+			<div class="image img_08" data-stellar-ratio="-0.8"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/03.png"></div>
+		<div class="image img_09" data-stellar-ratio="-0.9"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/04.png"></div>
 
 			<div class="section_int">
 				
@@ -60,7 +103,7 @@
 				
 			</div>
 
-			<div class="section_int ">
+			<div class="section_int section_int_blog">
 				<div class="formularios">
 
 					<span><?php echo $wrong_acces; ?></span>

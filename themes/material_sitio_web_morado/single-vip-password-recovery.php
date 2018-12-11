@@ -1,7 +1,6 @@
 <?php include 'header.php';?>
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-password-recovery wrapper_vip">
+<div class="wrapper single-vip-password-recovery">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -10,14 +9,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int ">
-				<div class="texto texto_resgistro">
-					<h2><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></h2>
+			<div class="section_int contacto">
+				<div class="texto">
+					<p><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></p>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int ">
+			<div class="section_int section_int_blog">
 
 				<div class="formularios">
 
@@ -171,7 +170,7 @@
 
 
 
-
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
 <?php include 'footer.php';?>
 
 </div>

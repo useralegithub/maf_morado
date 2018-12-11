@@ -555,10 +555,7 @@ margin: 13px 10px 0px 0px;
 		border-bottom: 6px solid #e5d2f9;
 		border-image: none;
 	}
-	.columna_cuatro:last-child{
-		border-image: initial;
-		border: 1px solid #000;
-	}
+
 }
 
 @media screen and (max-width: 760px){

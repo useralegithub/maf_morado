@@ -1,8 +1,6 @@
 <?php include 'header.php';?>
-
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-register wrapper_vip">
+<div class="wrapper single-vip-register">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -11,14 +9,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int ">
-				<div class="texto texto_resgistro">
-					<h2><?php echo __('[:es]Registro VIP[:en]Register VIP[:]'); ?></h2>
+			<div class="section_int contacto">
+				<div class="texto">
+					<p><?php echo __('[:es]Registro VIP[:en]Register VIP[:]'); ?></p>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int ">
+			<div class="section_int section_int_blog">
 <?php
 
 global $wpdb;
@@ -304,7 +302,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				<div class="formularios">
 
-				<p class="mensaje_error_vip">
+				<p>
 					<?php echo $wpdb_response; ?>
 				</p>
 
@@ -432,21 +430,20 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
-							<div class="selector">
-								<select name="pais_residencia" >
-								  <?php
 
-										global $wpdb;
-										$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
+							<select name="pais_residencia" >
+							  <?php
 
-										foreach ($wpdb_paises as $key_pais => $pais) {
-											$selected = ($pais_residencia==$pais->id)?'selected':'';
-											echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
-										}
+									global $wpdb;
+									$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
 
-								  ?>
-								</select>
-							</div>
+									foreach ($wpdb_paises as $key_pais => $pais) {
+										$selected = ($pais_residencia==$pais->id)?'selected':'';
+										echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
+									}
+
+							  ?>
+							</select>
 
 						</div>
 
@@ -469,43 +466,41 @@ $wpdb_vip_user=$wpdb_email[0];
 								
 								?>
 							</label>
-							<div class="selector">
-								<select name="rango_edad" >
-								<?php
-									$rango_edad_args = array("18-24","25-34","35-44","45+");
 
-									foreach ($rango_edad_args as $key_edad => $edad) {
-										//$selected = ($pais_residencia==$pais->id)?'selected':'';
-										$selected = ($rango_edad==$edad)?'selected':'';
-										echo '<option value="'.$edad.'" '.$selected.'>'.$edad.'</option>';
-										//print_r($edad);
-									}
-								?>
-									  
-									 
-								</select>
-							</div>
+							<select name="rango_edad" >
+							<?php
+								$rango_edad_args = array("18-24","25-34","35-44","45+");
+
+								foreach ($rango_edad_args as $key_edad => $edad) {
+									//$selected = ($pais_residencia==$pais->id)?'selected':'';
+									$selected = ($rango_edad==$edad)?'selected':'';
+									echo '<option value="'.$edad.'" '.$selected.'>'.$edad.'</option>';
+									//print_r($edad);
+								}
+							?>
+								  
+								 
+							</select>
 						</div>
 
 						<div class="colum_dos">
 							<label>
 									<?php echo __('[:es]Perfil[:en]Profile[:]'); ?>
 							</label>
-							<div class="selector">
-								<select name="categoria" >
-								  <?php
 
-										global $wpdb;
-										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+							<select name="categoria" >
+							  <?php
 
-										foreach ($wpdb_cat as $key_cat => $cat) {
-											$selected = ($categoria==$cat->id)?'selected':'';
-											echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
-										}
+									global $wpdb;
+									$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
 
-								  ?>
-								</select>
-							</div>
+									foreach ($wpdb_cat as $key_cat => $cat) {
+										$selected = ($categoria==$cat->id)?'selected':'';
+										echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
+									}
+
+							  ?>
+							</select>
 						</div>
 
 						
@@ -546,7 +541,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 
 
-
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
 <?php include 'footer.php';?>
 
 </div>
