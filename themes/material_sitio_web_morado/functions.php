@@ -147,8 +147,8 @@ $ctp_vip_program_labels = array(
         'label'               => __( 'Vip Program', 'text_domain' ),
         'description'         => __( 'Post Type Vip Program', 'text_domain' ),
         'labels'              => $ctp_vip_program_labels,
-        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields','page-attributes'),
-        'hierarchical'        => true,
+        'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields', ),
+        'hierarchical'        => false,
         'public'              => true,
         'show_ui'             => true,
         'show_in_menu'        => true,
@@ -616,14 +616,10 @@ function wpmt_metas_prensa() {
 function wpmt_metas_expositores() {
     add_meta_box( 'wpmt_meta_expositores', __( 'Información adicional', 'wpmt-textdomain' ), 'wpmt_function_expositores', 'expositor' );
 }
-function wpmt_metas_vip_museos_genero_zona() {
-    add_meta_box( 'wpmt_meta_expositores_genero_zona', __( 'Genero y Zona', 'wpmt-textdomain' ), 'wpmt_function_vip_museos_genero_zona', 'vip' );
-}
 add_action( 'add_meta_boxes', 'wpmt_metas_programa' );
 add_action( 'add_meta_boxes', 'wpmt_metas_programa_add_calendario' );
 add_action( 'add_meta_boxes', 'wpmt_metas_prensa' );
 add_action( 'add_meta_boxes', 'wpmt_metas_expositores' );
-add_action( 'add_meta_boxes', 'wpmt_metas_vip_museos_genero_zona' );
 function wpmt_function( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
     $wpmt_get_post_meta = get_post_meta( $post->ID );
@@ -724,26 +720,6 @@ function wpmt_function_expositores( $post ) {
  </table>
     <?php
 }
-
-function wpmt_function_vip_museos_genero_zona( $post ) {
-    wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
-    $wpmt_get_post_meta = get_post_meta( $post->ID );
-    ?>
- <table style="width:100%">
-
-    <tr>
-        <td style="width: 150px;"><label for="vip-museos-genero" class="wpmt-row-title"><?php _e( 'Genero: ', 'wpmt-textdomain' )?></label></td>
-        <td ><input type="text" style="width: 250px;" name="vip-museos-genero" id="vip-museos-genero" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-genero'] ) ) echo $wpmt_get_post_meta['vip-museos-genero'][0]; ?>" placeholder="" /></td>
-    </tr>
-
-    <tr>
-        <td style="width: 150px;"><label for="vip-museos-zona" class="wpmt-row-title"><?php _e( 'Zona: ', 'wpmt-textdomain' )?></label></td>
-        <td ><input type="text" style="width: 250px;" name="vip-museos-zona" id="vip-museos-zona" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-zona'] ) ) echo $wpmt_get_post_meta['vip-museos-zona'][0]; ?>" placeholder="" /></td>
-    </tr>
-    
- </table>
-    <?php
-}
 function wpmt_function_programa_add_calendario( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
     $wpmt_get_post_meta = get_post_meta( $post->ID );?>
@@ -828,12 +804,6 @@ function wpmt_deed( $post_id ) {
     }
     if( isset( $_POST[ 'programa-meridianos' ] ) ) {
         update_post_meta( $post_id, 'programa-meridianos', sanitize_text_field( $_POST[ 'programa-meridianos' ] ) );
-    }
-    if( isset( $_POST[ 'vip-museos-genero' ] ) ) {
-        update_post_meta( $post_id, 'vip-museos-genero', sanitize_text_field( $_POST[ 'vip-museos-genero' ] ) );
-    }
-    if( isset( $_POST[ 'vip-museos-zona' ] ) ) {
-        update_post_meta( $post_id, 'vip-museos-zona', sanitize_text_field( $_POST[ 'vip-museos-zona' ] ) );
     }
 }
 add_action( 'save_post', 'wpmt_deed' );

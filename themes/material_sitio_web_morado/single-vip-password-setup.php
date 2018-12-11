@@ -14,7 +14,8 @@
 	include 'header.php';
 ?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-password-setup">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<div class="wrapper single-vip-password-setup wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -23,14 +24,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int contacto">
-				<div class="texto">
-					<p><?php echo __('[:es]Establece la contraseña[:en]Set the password[:]'); ?></p>
+			<div class="section_int ">
+				<div class="texto texto_resgistro">
+					<h2><?php echo __('[:es]Establece la contraseña[:en]Set the password[:]'); ?></h2>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int section_int_blog">
+			<div class="section_int ">
 
 				<div class="formularios">
 
@@ -240,7 +241,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
+
 <?php include 'footer.php';?>
 
 </div>
