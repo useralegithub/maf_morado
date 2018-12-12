@@ -24,11 +24,26 @@
 				<!-- <img src="img/logo_dos.png"> -->
 				<div class="redes">
 
+				<?php
+				if ( get_post_type() === 'vip' ||get_queried_object()->post_name=='vip-login') { ?>
+						
+					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
+						<div class="red ">
+							<img src="<?php echo get_template_directory_uri(); ?>/img/big-red_verde.png">
+						</div>
+					</a>
+					    
+				<? }else{ ?>
+						
 					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
 						<div class="red ">
 							<img src="<?php echo get_template_directory_uri(); ?>/img/red_a.png">
 						</div>
 					</a>
+					    
+				<?php } ?>
+
+			 	
 
 					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_0']; ?>" target="_blank">
 						<div class="red ">FB</div>

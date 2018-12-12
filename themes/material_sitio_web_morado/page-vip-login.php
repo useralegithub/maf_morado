@@ -31,61 +31,18 @@
 	include 'header.php'; 
 ?>
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/rojo.css?v=<?php echo time();?>">
-<style type="text/css">
-/*	.rojo_registro_vip{
-    width: auto!important;
-    display: block;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #c01f25!important;
-    color: #fffcd7!important;
-    padding: 5px!important;
-}*/
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 
-.rojo_registros_vip{
-    background-color: #c01f25!important;
-    background-color: #c01f25;
-    width: auto!important;
-    font-size: 14px;
-    font-family: 'AkkuratPro';
-    font-weight: bold;
-    padding: 0px 10px;
-    line-height: 25px;
-}
-.colum_dos_botones{
-    display: -webkit-inline-box;
-    width: calc(30% - 0px);
-    margin: 0px 20px 20px 0px;
-    vertical-align: top;
-}
-form input[type="submit"]{
-    margin-right: 10px;
-}
-.recupera_pass_vip_rojo{
-background-color: #c01f25;
-    width: auto;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #fffcd7;
-    padding: 5px;	
-}
-</style>
-<div class="wrapper vip_login page-vip-login">
+<div class="wrapper vip_login page-vip-login wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
-				<li><a href="<?php echo home_url(); ?>"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/logo_barra.png"></a></li>
+				<li><a href="<?php echo home_url(); ?>"><img src="<?php echo get_template_directory_uri(); ?>/img/logo_barra.png"></a></li>
 				<li><?php echo __('[:es]VIP[:en]VIP[:]'); ?></li>
 			</ul>
 		</div>
 		<section>
-			<div class="image img_08" data-stellar-ratio="-0.8"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/03.png"></div>
-		<div class="image img_09" data-stellar-ratio="-0.9"><img src="<?php echo get_template_directory_uri(); ?>/rojoimg/fondo/04.png"></div>
+		
 
 			<div class="section_int">
 				
@@ -103,7 +60,7 @@ background-color: #c01f25;
 				
 			</div>
 
-			<div class="section_int section_int_blog">
+			<div class="section_int ">
 				<div class="formularios">
 
 					<span><?php echo $wrong_acces; ?></span>
@@ -183,11 +140,30 @@ background-color: #c01f25;
 				<!-- <img src="img/logo_dos.png"> -->
 				<div class="redes">
 
-					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
+					<!-- <a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
 						<div class="red ">
 							<img src="<?php echo get_template_directory_uri(); ?>/rojoimg/copy_of_artsy_square_widget_logo_rojo_vip.png">
 						</div>
+					</a> -->
+
+				<?php
+				if ( get_post_type() === 'vip' ||get_queried_object()->post_name=='vip-login') { ?>
+						
+					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
+						<div class="red ">
+							<img src="<?php echo get_template_directory_uri(); ?>/img/big-red_verde.png">
+						</div>
 					</a>
+					    
+				<? }else{ ?>
+						
+					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
+						<div class="red ">
+							<img src="<?php echo get_template_directory_uri(); ?>/img/red_a.png">
+						</div>
+					</a>
+					    
+				<?php } ?>
 
 					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_0']; ?>" target="_blank">
 						<div class="red ">FB</div>

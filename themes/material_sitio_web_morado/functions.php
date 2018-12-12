@@ -541,6 +541,17 @@ function get_custom_post_type_template($single_template) {
      if ( $post->post_type == ( 'vip_program' )) {
           $single_template = dirname( __FILE__ ) . '/single-vip-program-login.php';
      }
+
+    /*if ($post->post_type == 'vip') {
+      $terms = get_the_terms($post->ID, 'vip_programs');
+      if (empty($terms)) {}else{
+  
+        if($terms[0]->slug=='vip-program') {                     
+          $single_template = dirname( __FILE__ ) . '/single-vip-programa-dias.php'; 
+        }
+  
+      } 
+    }*/
    
      return $single_template;
 }
@@ -662,8 +673,8 @@ jQuery(document).ready(function($){quicktags({id:'programa-link',buttons:"link"}
 </script>
 <style type="text/css">.quicktags-toolbar{background-color: #fff!important;}.imagen_red_social{ display: inline-block; height: 32px; vertical-align: bottom;}input.titulo1{display: inline-block;margin-bottom: 10px;width: 96%;margin: 8px;width: calc(100% - 80px);margin: 0px 0px 0px 10px;}fieldset.form_fechas { width: auto; padding: 0 5px; margin: 0 auto; border: 1px solid #088; padding-bottom: 23px; margin-bottom: 30px;}fieldset.form_fechas{ width: 550px; padding: 0 5px; margin: 0 auto; border: 1px solid #000; padding-bottom: 23px; position: relative; margin-bottom: 20px;}
 </style>
-                <td style="width: 150px;"><label for="meta-link" class="wpmt-row-title"><?php _e( 'Link: ', 'wpmt-textdomain' )?></label></td>
-                <td ><input style="width: 100%;" name="programa-link" id="programa-link" value='<?php if ( isset ( $wpmt_get_post_meta['programa-link'] ) ) echo $wpmt_get_post_meta['programa-link'][0]; ?>' placeholder="http://link.com/artfair" /></td>
+                <!-- <td style="width: 150px;"><label for="meta-link" class="wpmt-row-title"><?php _e( 'Link: ', 'wpmt-textdomain' )?></label></td>
+                <td ><input style="width: 100%;" name="programa-link" id="programa-link" value='<?php if ( isset ( $wpmt_get_post_meta['programa-link'] ) ) echo $wpmt_get_post_meta['programa-link'][0]; ?>' placeholder="http://link.com/artfair" /></td> -->
         
     </tr>
  </table>
@@ -854,8 +865,8 @@ add_menu_page(  'Usuarios VIP',
 
 add_submenu_page(
                 'usuarios_vip', 
-                'Editar', 
-                'Editar', 
+                '', 
+                '',
                 'manage_options', 
                 'usuarios_vip_editar',
                 'usuarios_vip_editar_function' );
@@ -871,6 +882,8 @@ function register_options_page(  ) {
 
 <script type="text/javascript">
 jQuery(document).ready(function($){
+
+$( this ).find( "li a" ).eq( 2 ).text().replace( "foo", "bar" );
 
     $('.users_vip_button_del').click(function() {
       $(".users_vip_style_del,.users_vip_style_aprobado").hide( "1000" );
@@ -1583,7 +1596,7 @@ $wpdb->insert('wp_users_vip', array(
             <td class="td_center_hori_vert" >Nombre</td>
             <td class="td_center_hori_vert" >Apellido</td>
             <td class="td_center_hori_vert" >email</td>
-            <td class="td_center_hori_vert" >Categoría</td>
+            <td class="td_center_hori_vert" >Perfil</td>
             <td class="td_center_hori_vert" >Estatus</td>
             <td class="td_center_hori_vert" colspan="2">Cambiar Estatus</td>
             <td class="td_center_hori_vert" >Contraseña</td>
@@ -1875,17 +1888,16 @@ if ($_POST) {
     $users_vip_edit_pais=stripslashes_deep($_POST['users-vip-pais']);
     $users_vip_edit_afiliacion=stripslashes_deep($_POST['users-vip-afiliacion']);
     $users_vip_edit_email=stripslashes_deep($_POST['users-vip-email']);
-    $users_vip_edit_pass=stripslashes_deep($_POST['users-vip-pass']);
+    $users_vip_edit_pass=$_POST['users-vip-pass'];
     $users_vip_edit_lang=stripslashes_deep($_POST['users-vip-lang']);
 
     if ($users_vip_edit_pass=='') {
         $hash = $wp_users_vip_edit_query[0]->users_vip_pass;
     }else{
-
-        if ($users_vip_edit_pass >= 8
-                            && preg_match('/[a-z]/', $users_vip_edit_pass)
-                            && preg_match('/[A-Z]/', $users_vip_edit_pass)
-                            && preg_match('/[0-9]/',$users_vip_edit_pass)
+        if (strlen($users_vip_edit_pass) > 7 && preg_match('#^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#', $users_vip_edit_pass)
+                            //&& preg_match('/[a-z]/', $users_vip_edit_pass)
+                            //&& preg_match('/[A-Z]/', $users_vip_edit_pass)
+                            //&& preg_match('/[0-9]/',$users_vip_edit_pass)
             ){
 
             $hash = wp_hash_password( $users_vip_edit_pass );
@@ -1910,7 +1922,7 @@ function is_valid_email($str)
   return $result;
 }
 
-    if ($users_vip_edit_email!=''&&filter_var($users_vip_edit_email, FILTER_VALIDATE_EMAIL)&&is_valid_email($users_vip_edit_email)){
+    if ($users_vip_edit_email!=''&&filter_var($users_vip_edit_email, FILTER_VALIDATE_EMAIL)){
 
         $email=$users_vip_edit_email;
 
@@ -1999,7 +2011,7 @@ $wpdb->update('wp_users_vip', array(
     <tr>
         <td style="width: 150px;">
             <label for="users-vip-categoria">
-                <?php _e( 'Categoría: ', 'uv_users-vip-textdomain' )?>
+                <?php _e( 'Perfil: ', 'uv_users-vip-textdomain' )?>
             </label>
         </td>
         <td>
@@ -2008,7 +2020,7 @@ $wpdb->update('wp_users_vip', array(
           <?php
 
                 $wpdb_cat = array("Coleccionista","Curador","Personal de Museo o Institucional","Asesor","Galerista","Artista","Otro");
-
+                echo '<option disabled selected>'.__('Selecciona Perfil').'</option>';
                 foreach ($wpdb_cat as $key_cat => $cat) {
                     $key_cat=$key_cat+1;
                     $selected = ($users_vip_edit_category==$key_cat)?'selected':'';
@@ -2032,12 +2044,12 @@ $wpdb->update('wp_users_vip', array(
         <select name="users-vip-rango_edad" >
           <?php
                 $rango_edad_args = array("18-24","25-34","35-44","45+");
-
+                echo '<option disabled selected>'.__('Selecciona Edad').'</option>';
                 foreach ($rango_edad_args as $key_edad => $edad) {
-                    //$key_cat=$key_edad+1;
+                    $key_edad=$key_edad+1;
                     //$selected = ($users_vip_edit_category==$key_cat)?'selected':'';
-                    $selected = ($users_vip_edit_rango_edad==$edad)?'selected':'';
-                    echo '<option value="'.$edad.'"  '.$selected.'>'.__($edad).'</option>';
+                    $selected = ($users_vip_edit_rango_edad==$key_edad)?'selected':'';
+                    echo '<option value="'.$key_edad.'"  '.$selected.'>'.__($edad).'</option>';
                 }
 
           ?>
@@ -2057,7 +2069,7 @@ $wpdb->update('wp_users_vip', array(
 
                 global $wpdb;
                 $wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
-
+                echo '<option disabled selected>'.__('Selecciona un País').'</option>';
                 foreach ($wpdb_paises as $key_pais => $pais) {
                     //$key_pais=$key_pais+1;
                     $selected = ($users_vip_edit_pais==$pais->id)?'selected':'';
@@ -2432,17 +2444,17 @@ global $wpdb;
   $epDB = new wpdb('db214684_dupla', '#Dupla2017art-fair#', 'db214684_exhibitor_portal', 'internal-db.s214684.gridserver.com');
 
   foreach($results as $index => $result){
-  	$epRow = $epDB->get_results('SELECT language_id FROM users WHERE email = "' . $result['users_vip_email'] . '"', ARRAY_A);
+    $epRow = $epDB->get_results('SELECT language_id FROM users WHERE email = "' . $result['users_vip_email'] . '"', ARRAY_A);
 
-  	if(is_array($epRow) && count($epRow) > 0){
-  		$results[$index]['language'] = $epRow[0]['language_id'] == 1 ? 'English' : 'Español';
-  	}else{
-  		$results[$index]['language'] = 'English';
-  	}
+    if(is_array($epRow) && count($epRow) > 0){
+        $results[$index]['language'] = $epRow[0]['language_id'] == 1 ? 'English' : 'Español';
+    }else{
+        $results[$index]['language'] = 'English';
+    }
   }
 
   //$csv_output = '"'.implode('","',array_keys($results[0])).'",'."\n";
-  $csv_output=utf8_decode(' #, id,"Nombre","Apellido","Categoría","E-mail","Pass", "Idioma"'."\n");
+  $csv_output=utf8_decode(' #, id,"Nombre","Apellido","Perfil","E-mail","Pass", "Idioma"'."\n");
 
   foreach ($results as $row) {
     $k=$users_vip_count-$i++;
@@ -2712,4 +2724,53 @@ add_action('save_post', function($postId){
     update_post_meta($postId, '_ep_images', $images);
 });
 
-add_filter('xmlrpc_enabled', '__return_false');
+add_filter('xmlrpc_enabled', '__return_false');?>
+<?php
+/*start custom field term*/
+function vip_programs_taxonomy_custom_fields($tag) {  
+   // Check for existing taxonomy meta for the term you're editing  
+    $t_id = $tag->term_id; // Get the ID of the term you're editing  
+    $term_meta = get_option( "taxonomy_term_$t_id" ); // Do the check  
+?>  
+  
+<tr class="form-field">  
+    <th scope="row" valign="top">  
+        <label for="description_day_es"><?php _e('Descripción Fecha (ES) '); ?></label>
+    </th>  
+    <td>  
+        <input type="text" class="hook_qtranslatex" name="term_meta[description_day_es]" id="term_meta[description_day_es]" size="25" style="width:60%;" value="<?php echo $term_meta['description_day_es'] ? $term_meta['description_day_es'] : ''; ?>"><br />  
+        <span class="description"><?php _e('Descripción Fecha (ES)'); ?></span>  
+    </td>  
+</tr>  
+  
+<tr class="form-field">  
+    <th scope="row" valign="top">  
+        <label for="description_day_en"><?php _e('Descripción Fecha (EN) '); ?></label>
+    </th>  
+    <td>  
+        <input type="text" class="hook_qtranslatex" name="term_meta[description_day_en]" id="term_meta[description_day_en]" size="25" style="width:60%;" value="<?php echo $term_meta['description_day_en'] ? $term_meta['description_day_en'] : ''; ?>"><br />  
+        <span class="description"><?php _e('Descripción Fecha (EN)'); ?></span>  
+    </td>  
+</tr>
+  
+<?php } ?>
+<?php
+function save_taxonomy_custom_fields( $term_id ) {  
+    if ( isset( $_POST['term_meta'] ) ) {  
+        $t_id = $term_id;  
+        $term_meta = get_option( "taxonomy_term_$t_id" );  
+        $cat_keys = array_keys( $_POST['term_meta'] );  
+            foreach ( $cat_keys as $key ){  
+            if ( isset( $_POST['term_meta'][$key] ) ){  
+                $term_meta[$key] = $_POST['term_meta'][$key];  
+            }  
+        }  
+        update_option( "taxonomy_term_$t_id", $term_meta );  
+    }  
+}
+add_action( 'vip_programs_edit_form_fields', 'vip_programs_taxonomy_custom_fields', 10, 2 );  
+  
+add_action( 'edited_vip_programs', 'save_taxonomy_custom_fields', 10, 2 );
+/*end custom field term*/
+flush_rewrite_rules();
+?>

@@ -1,4 +1,4 @@
-<?php //header("Location: ".home_url( )); ?>
+<?php header("Location: ".home_url( )); ?>
 <?php include 'header.php';?>
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/rojo.css?v=<?php echo time();?>">
 <style type="text/css">

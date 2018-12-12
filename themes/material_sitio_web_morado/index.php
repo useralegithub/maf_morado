@@ -1,7 +1,7 @@
 <?php include 'header.php';?>
 
 
-<div class="wrapper">
+<div class="wrapper index">
 
 <div class="content ">
 	<section class=" homeH he_uno" data-stellar-background-ratio="3">

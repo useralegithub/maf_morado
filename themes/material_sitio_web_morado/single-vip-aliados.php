@@ -27,8 +27,8 @@
 				$programa=get_posts(array('post_type' =>'vip' ,'name'=>'programa','post_status'=>"publish" ))[0];
 				$programa_link=get_permalink($programa->ID);
 
-				$aliados=get_posts(array('post_type' =>'vip' ,'name'=>'viaje-y-alojamiento','post_status'=>"publish" ))[0];
-				$aliados_link=get_permalink($aliados->ID);
+				$hotel_oficial=get_posts(array('post_type' =>'vip' ,'name'=>'viaje-y-alojamiento','post_status'=>"publish" ))[0];
+				$hotel_oficial_link=get_permalink($hotel_oficial->ID);
 
 				$aliados=get_posts(array('post_type' =>'vip' ,'name'=>'aliados','post_status'=>"publish" ))[0];
 				$aliados_link=get_permalink($aliados->ID);
@@ -45,8 +45,8 @@
 					<?php echo __('[:es]Programa VIP 2018[:en]VIP Program 2018[:]'); ?>
 				</a>
 
-				<a href="<?php echo $aliados_link; ?>" class="mv_boton ">
-					<?php echo __('[:es]Viaje y Alojamiento[:en]Aliances[:]'); ?>
+				<a href="<?php echo $hotel_oficial_link; ?>" class="mv_boton ">
+					<?php echo __('[:es]Viaje y Alojamiento[:en]Travel and Hotels[:]'); ?>
 					
 				</a>
 
@@ -54,11 +54,12 @@
 					<?php echo __('[:es]Recomendaciones[:en]Recommendations[:]'); ?>
 				</a>
 
-				<a href="<?php echo $aliados_link; ?>" class="mv_boton mv_active">
+				<a href="<?php echo $aliados_link; ?>" class="mv_boton mv_active ">
 					<?php echo __('[:es]Aliados[:en]Aliances[:]'); ?>
 				</a>
 
 			</nav>
+		
 		</div>
 
 

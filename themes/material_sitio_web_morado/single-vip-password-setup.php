@@ -14,7 +14,8 @@
 	include 'header.php';
 ?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-password-setup">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<div class="wrapper single-vip-password-setup wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
@@ -23,14 +24,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int contacto">
-				<div class="texto">
-					<p><?php echo __('[:es]Establece la contraseña[:en]Set the password[:]'); ?></p>
+			<div class="section_int ">
+				<div class="texto texto_resgistro">
+					<h2><?php echo __('[:es]Establece la contraseña[:en]Set the password[:]'); ?></h2>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int section_int_blog">
+			<div class="section_int ">
 
 				<div class="formularios">
 
@@ -56,6 +57,7 @@
 							&& preg_match('/[a-z]/', $_POST['password_one'])
 							&& preg_match('/[A-Z]/', $_POST['password_one'])
 							&& preg_match('/[0-9]/',$_POST['password_one'])
+							&& preg_match('/[^\da-zA-Z]/',$_POST['password_one'])
 						){
 
 								$hash = wp_hash_password( $_POST['password_one'] );
@@ -107,7 +109,8 @@
 		                    ';
 		                    //$message=base64_encode($message);
 		                    $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
-		                    $contenido=utf8_decode($message);
+		                    //$contenido=utf8_decode($message);
+		                    $contenido=$message;
 		                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
 		                    $mailheader .= "Reply-To: " .$email."\r\n"; 
 		                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
@@ -118,12 +121,12 @@
 
 						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							
-							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres e incluir minúsculas y mayúsculas.[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres tener almenos una minúsculas una mayúsculas y un caracter especial como ! _ / &[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
 						}
 
 					}else{//close key if spam=0 and same password
 							
-							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be the same in both fields.[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be greater than 8 characters have at least one lowercase one uppercase and one special character like! _ / &[:]');
 
 					}
 
@@ -240,7 +243,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
+
 <?php include 'footer.php';?>
 
 </div>

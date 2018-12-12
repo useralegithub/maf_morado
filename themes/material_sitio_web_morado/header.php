@@ -204,8 +204,22 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 	<div class="menu_int">
 				<div class="titulo_logo">
 					<a href="<?php echo home_url(); ?>">
-						<?php echo strip_tags(apply_filters('the_content', get_post(220)->post_content),'<img>');?>
 						<?php //include 'pages/svg/logo.php'; ?>
+						<?php
+							if ( get_post_type() === 'vip' || get_queried_object()->post_name=='vip-login') {
+						?>
+
+						<a href="<?php echo home_url(); ?>">
+						<img  src="<?php echo get_template_directory_uri(); ?>/img/big-logo_vip.png" ></a>
+							    
+						<?php }else{
+								
+								echo strip_tags(apply_filters('the_content', get_post(220)->post_content),'<img>');
+							    
+							}
+
+					 	?>
+
 					</a>
 				</div>
 				<ul>

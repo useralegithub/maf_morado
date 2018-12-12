@@ -1,4 +1,5 @@
 <?php include 'header.php';?>
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
 <!-- page_acreditacion_prensa -->
 <div class="wrapper single-vip-password-recovery wrapper_vip">
 	<div class="content content_int">
@@ -9,14 +10,14 @@
 			</ul>
 		</div>
 		<section>
-			<div class="section_int contacto">
-				<div class="texto">
-					<p><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></p>
+			<div class="section_int ">
+				<div class="texto texto_resgistro">
+					<h2><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></h2>
 				</div>
 				<div class="clear"></div>
 			</div>
 
-			<div class="section_int section_int_blog">
+			<div class="section_int ">
 
 				<div class="formularios">
 
@@ -105,7 +106,8 @@
 		                    $subject = __('[:es]Recupera Contraseña[:en]Recovery Password[:]'); //El asunto del correo
 		                    $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
 		                    //$message=base64_encode($message);
-		                    $contenido=utf8_decode($message);
+		                    //$contenido=utf8_decode($message);
+		                    $contenido=$message;
 		                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
 		                    $mailheader .= "Reply-To: " .$email."\r\n"; 
 		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
@@ -118,7 +120,7 @@
 
 
 
-					$mensaje_response=__('[:es]Gracias hemos enviado un correo a '.$recover_email.' para establecer tu contraseña. code='.$code.'[:en]Thank you we have sent an email to '.$recover_email.' to set your password.[:]');
+					$mensaje_response=__('[:es]Gracias hemos enviado un correo a '.$recover_email.' para establecer tu contraseña.[:en]Thank you we have sent an email to '.$recover_email.' to set your password.[:]');
 						
 					}else{
 
@@ -170,7 +172,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/custom_style.css?v=<?php echo time();?>">
+
 <?php include 'footer.php';?>
 
 </div>
