@@ -1002,7 +1002,6 @@ if ($_POST['users_vip_aprobar_id']) {
     $users_vip_aprobar_apellido = $_POST['users_vip_aprobar_apellido'];
     $users_vip_aprobar_email    = $_POST['users_vip_aprobar_email'];
     $code                       = $_POST['users_vip_aprobar_code'];
-    $lang                       = $_POST['users_vip_aprobar_lang'];
     $spam    = $_POST['spam'];
 
     $table = 'wp_users_vip';
@@ -1049,94 +1048,45 @@ $wpdb->update('wp_users_vip', array(
                 if($spam == '' && $users_vip_aprobar_email != '' ){
                     $email=$users_vip_aprobar_email;
                     $to = $email;
- 
-                    $subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); 
-                    $atibuto_img =__('[:es]Material Art Fair Vol. VI[:en]Material Art Fair Vol. VI[:]');
-                    $attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
-                    $attr_twitter=__('[:es]Material at Twitter[:en]Material at Twitter[:]');
-                    $attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
 
                     $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
 
                     $link_establece = get_permalink( $post_establece ).'?c='.$code;
  
-                    $subject = ($lang=='es')?'Solicitud Aprobada':'Approved Request'; //El asunto del correo
-                    if ($lang=='es') {
-
-                    $es='
+                    $subject = 'Solicitud Aprobada'; //El asunto del correo
+                    $message = '
+                    <html>
+                    <body>
                     
-                    <p>Saludos '.$nombre.',</p>
-                    <p>Bienvenido al Programa VIP 2019 de la Feria de Arte Material, que se llevará a cabo del 7 al 10 de febrero del 2019 en el Frontón México de CDMX.</p>
+                    <p>
+                        Felcidades tu cuenta ha sido aprobada.
+                    </p>
+
+                    <p>
+                        Por favor escribe una contraseña para acceder a VIP.
+                    </p>
+                    <p>
+                        Tu contraseña debe tener almenos ocho caracteres e incluir letras mayúsculas, minúsculas y números.
+                    </p>
+
+                    <p>Ahora que sabes esto por favor da clic en el siguiente enlace "<a href="'.$link_establece.'">Escribir Contraseña</a> para establecer tú contraseña" </p>
+
                     
-                    <p>En el Portal VIP encontrarás ofertas especiales de nuestros socios patrocinadores y todas las actividades que estamos preparando para la edición de 2019, así como también una lista de recomendaciones en la Ciudad de México para enriquecer tu experiencia alrededor de la feria. Te sugerimos revisar el sitio regularmente antes de que la feria empiece, ya que lo estaremos actualizando frecuentemente.</p>
 
-                    <p>Para ver nuestro Programa VIP y solicitar reservación para los eventos que te interesen, te pedimos amablemente que confirmes tu asistencia a la feria y actives tu cuenta del Portal utilizando el siguiente vínculo:</p>
-                    
-                    <p><a href="'.$link_establece.'">ASISTIRÉ A LA FERIA DE ARTE MATERIAL VOL.6</a></p>
-
-                    <p>Te recordamos que esta invitación es de uso personal, no es transferible y la puedes usar para asistir con un acompañante. Cuando llegues a la feria podrás recoger tu acceso en la recepción VIP ubicada en el lobby del Frontón México.</p>
-
-                    <p>Muchas gracias y te esperamos en el Preview de la feria el jueves 7 de febrero entre las 12 y 3 pm.</p>
-
-                    <p style="margin-top: 30px;">Saludos,</p>
-                    <p style="text-align: right;"><b>Isa Castilla</b><b>Isa Castilla</b>.</p>
-                    <p style="text-align: right;"><b>Equipo de Relaciones VIP</b>.</p>
-
+                    </body>
+                    </html>
                     ';
-
-                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #e5d2f9; width: 800px;">';
-                    $table_mensaje .='<tbody>';
-
-                    $table_mensaje .='<tr>';
-                    $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='</tr>';
-
-                    $table_mensaje .='<tr>';
-                    $table_mensaje .='<td colspan="3" style="padding: 10px;">';
-                    $table_mensaje .=__('[:es]'.$es.'[:en]'.$en.'[:]');
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='</tr>';
-
-                    $table_mensaje .='<tr>';
-                    $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='</tr>';
-
-                    $table_mensaje .='<tr>';
-                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
-                    $table_mensaje .='<p style="text-align: left">Melchor Ocampo 154-A<br>Col. San Rafael, Del. Cuauhtémoc<br></br>CDMX, 06470</p>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
-                    $table_mensaje .='<p style="text-align: center">+52 55 5256-5533<br><a href="mailto:info@material-fair.com">info@material-fair.com</a></p>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
-                    $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
-                    $table_mensaje .='</ul>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='</tr>';
-                    $table_mensaje .='<tr>';
-                    $table_mensaje .='<td colspan="3" style="text-align: center; font-size: 85%;">';
-                    $table_mensaje .='<p>&copy; '.date('Y').' Feria de Arte Material México S.A. de C.V.</p>';
-                    $table_mensaje .='</td>';
-                    $table_mensaje .='</tr>';
-        
-                    $table_mensaje .='</tbody>';
-                    $table_mensaje .='</table>';
-                        
-                    }else{}
-
-                    //$contenido=$table_mensaje;
-                    $contenido='';
+                    //$message=base64_encode($message);
+                    $contenido=utf8_decode($message);
                     $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
+                    $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
+
+                    $headers = "From:" . $email . "\r\n";
+                    $headers .="Reply-To: " .$email . "\r\n";
                     $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    $headers .= 'MIME-Version: 1.0' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
                     mail($to, $subject, $contenido, $mailheader);
 
                 }
@@ -1763,7 +1713,6 @@ if ($value->users_vip_estatus==$estatus_registrado) {
                     <input type="hidden" name="users_vip_aprobar_apellido" value="'.$value->users_vip_apellido.'">
                     <input type="hidden" name="users_vip_aprobar_email" value="'.$value->users_vip_email.'">
                     <input type="hidden" name="users_vip_aprobar_code" value="'.$value->users_vip_pass_recovery.'">
-                    <input type="hidden" name="users_vip_aprobar_lang" value="'.$value->users_vip_lang.'">
 
                     <input type="hidden" name="spam" value="">
                     <input type="submit"  value="¿Aprobar?" class="btn_confirma_aprobar submit_aprobar">
