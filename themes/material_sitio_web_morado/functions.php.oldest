@@ -940,18 +940,18 @@ echo "\n";
 global $wpdb;
 $users_vip_nombre=$_POST['users-vip-nombre'];
 $users_vip_apellido=$_POST['users-vip-apellido'];
-$users_vip_category=$_POST['users-vip-categoria'];
+$users_vip_category_id=$_POST['users-vip-categoria'];
 $users_vip_email=$_POST['users-vip-email'];
 $users_vip_pass=$_POST['users-vip-pass'];
 
-//$wpdb->query('INSERT INTO wp_users_vip("users_vip_nombre","users_vip_apellido","users_vip_category","users_vip_email","users_vip_pass")VALUES($users_vip_nombre,$users_vip_apellido,$users_vip_category,$users_vip_email,$users_vip_pass)');
+//$wpdb->query('INSERT INTO wp_users_vip("users_vip_nombre","users_vip_apellido","users_vip_category_id","users_vip_email","users_vip_pass")VALUES($users_vip_nombre,$users_vip_apellido,$users_vip_category_id,$users_vip_email,$users_vip_pass)');
 //require_once('../../../wp-config.php');
 
 //print_r($wpdb);
 $wpdb->insert('wp_users_vip', array(
 'users_vip_nombre' => $users_vip_nombre,
 'users_vip_apellido' => $users_vip_apellido,
-'users_vip_category' => $users_vip_category, 
+'users_vip_category_id' => $users_vip_category_id, 
 'users_vip_email' => $users_vip_email, 
 'users_vip_pass' => $users_vip_pass
 ));
@@ -1129,7 +1129,7 @@ echo '<td style="text-align: center;" >'.$k.'</td>
       <td style="text-align: center;" >'.$value->users_vip_nombre.'</td>
       <td style="text-align: center;" >'.$value->users_vip_apellido.'</td>
       <td style="text-align: center;" >'.$value->users_vip_email.'</td>
-      <td style="text-align: center;" >'.$value->users_vip_category.'</td>
+      <td style="text-align: center;" >'.$value->users_vip_category_id.'</td>
       <td style="text-align: center;" >'.$value->id.'</td>
       <td style="text-align: center;" >
 
@@ -1221,7 +1221,7 @@ $wp_users_vip_edit_query = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE 
 $users_vip_edit_id=$wp_users_vip_edit_query[0]->id;
 $users_vip_edit_name=$wp_users_vip_edit_query[0]->users_vip_nombre;
 $users_vip_edit_apellido=$wp_users_vip_edit_query[0]->users_vip_apellido;
-$users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category;
+$users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category_id;
 $users_vip_edit_email=$wp_users_vip_edit_query[0]->users_vip_email;
 $users_vip_edit_pass=$wp_users_vip_edit_query[0]->users_vip_pass;
 }
@@ -1243,7 +1243,7 @@ $wpdb->update('wp_users_vip', array(
                                     
                                     'users_vip_nombre'=>$users_vip_edit_name,
                                     'users_vip_apellido'=>$users_vip_edit_apellido, 
-                                    'users_vip_category'=>$users_vip_edit_category, 
+                                    'users_vip_category_id'=>$users_vip_edit_category, 
                                     'users_vip_email'=>$users_vip_edit_email,  
                                     'users_vip_pass'=>$users_vip_edit_pass
                                 ), array('id'=>$user_vip_edit_id)
@@ -1402,7 +1402,7 @@ global $wpdb;
         id INT(9) NOT NULL AUTO_INCREMENT,
         users_vip_nombre VARCHAR(80) NOT NULL,
         users_vip_apellido VARCHAR(20) NOT NULL,
-        users_vip_category VARCHAR(80) NOT NULL,
+        users_vip_category_id VARCHAR(80) NOT NULL,
         users_vip_email VARCHAR(80) NOT NULL,
         users_vip_pass VARCHAR(80) NOT NULL,
         
@@ -1412,11 +1412,11 @@ global $wpdb;
 
     // $myCustomer = $wpdb->get_row("SELECT * FROM wp_users_vip");
     // //Add column if not present.
-    // if(!isset($myCustomer->users_vip_category)){
-    //     $wpdb->query("ALTER TABLE wp_users_vip ADD users_vip_category VARCHAR(80) NOT NULL");
+    // if(!isset($myCustomer->users_vip_category_id)){
+    //     $wpdb->query("ALTER TABLE wp_users_vip ADD users_vip_category_id VARCHAR(80) NOT NULL");
     // }
-    // ALTER TABLE wp_users_vip ADD users_vip_category VARCHAR(80) NULL AFTER users_vip_apellido;
-    // ALTER TABLE `wp_users_vip` CHANGE `users_vip_category` `users_vip_category` VARCHAR(80) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+    // ALTER TABLE wp_users_vip ADD users_vip_category_id VARCHAR(80) NULL AFTER users_vip_apellido;
+    // ALTER TABLE `wp_users_vip` CHANGE `users_vip_category_id` `users_vip_category_id` VARCHAR(80) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
     //$wpdb->query("INSERT INTO $table(bot_name, bot_mark)
     //    VALUES('Google Bot', 'googlebot')");

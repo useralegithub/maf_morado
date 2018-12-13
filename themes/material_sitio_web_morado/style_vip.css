@@ -709,6 +709,7 @@ header.act_over{
 .colum_dos.campo_vacio .selector{
     border-color: red;
     color: red;
+    background-image: url(img/flecha_pb_vip_a.png);
 }
 .colum_dos.campo_vacio .selector select{
     color: red;

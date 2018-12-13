@@ -1,0 +1,78 @@
+Hola los arhivos que subi a material en dev son los siguientes:
+
+1) carpeta: folder_custom_wp
+2) archivo: page-vip-login.php
+3) archivo: single-vip-aliados.php
+4) archivo: single-vip-password-recovery.php
+5) archivo: single-vip-password-setup.php
+6) archivo: single-vip-y-alojamiento.php
+7) archivo: single-vip-bienvenido.php
+
+10) archivo: single-register.php
+
+
+Archivos modificados ...
+
+1) archivo: single-vip-y-alojamiento.php ***Empatado
+2) archivo: single-vip-programa.php ***Empatado
+3) archivo: single-vip-aliados.php ***Empatado
+4) archivo: single-vip-bienvenido.php ***Empatado
+5) archivo: single-vip-recomendaciones.php ***Empatado
+6) archivo: functions.php ***Empatado
+7) archivo: code.js ***Empatado
+
+
+Elba modifico
+
+chicos ya termine modifique estos archivos
+single-vip-password-recovery.php
+single-vip-password-setup.php
+single-vip-register.php
+page-vip-login.php
+style_vip.css
+style.css
+custom_style.css
+
+Emails
+http://192.168.1.76/material_morado/wp/en/vip/password-setup/?c=1285zneyg4x2gddi4iauiitx
+Registro hecho
+
+10:12 a. m. 12/12/2018
+
+--------------------------
+1) archivo: single-vip-register.php *** subido
+2) archivo: functions.php *** subido
+3) archivo: header.php *** subido
+4) archivo: single-vip-password-recovery.php *** subido
+5) archivo: single-vip-password-setup.php *** subido
+6)
+-----------------------------
+Bajar
+Hola hicos subí una imagen a la carpeta img > flecha_pb_vip_a.png *** Empatado
+modifique
+style.css *** Empatado
+responsive.css *** Empatado
+style_vip.css *** Empatado
+
+funcionts.php 
+single-expositor.php *** Empatado
+taxonomy-expostores.php *** Empatado
+
+01:01 p. m. 12/12/2018
+
+1) archivo: functions.php
+2) archivo: single-vip-register.php 
+3) archivo: single-vip-password-recovery.php 
+
+-------
+single-vip-password-recovery.php
+functions
+
+
+NEW db 
+funciotns 
+db
+
+subir todo el tema pues e cambio una columan de la db 
+
+

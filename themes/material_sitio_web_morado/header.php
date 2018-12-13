@@ -211,7 +211,7 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 						<a href="<?php echo home_url(); ?>">
 						<img  src="<?php echo get_template_directory_uri() ?>/img/big-logo_vip.png" ></a>
 							    
-						<? }else{
+						<?php }else{
 								
 								echo strip_tags(apply_filters('the_content', get_post(220)->post_content),'<img>');
 							    

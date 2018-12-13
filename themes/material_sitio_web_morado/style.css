@@ -2586,7 +2586,7 @@ section.expositores_int{}
     left: 0;
     z-index: 5;
     text-align: center;
-    background-color: #fffcd8;
+    background-color: #e5d2f9;
     display: none;
 }
 .cerrar_gi{
@@ -2599,6 +2599,8 @@ section.expositores_int{}
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
 }
 .over_imagen_int{
     width: 100%;

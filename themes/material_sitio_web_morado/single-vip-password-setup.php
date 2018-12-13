@@ -53,12 +53,9 @@
 
 					if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
 
-						if (strlen($_POST['password_one']) >= 8
-							&& preg_match('/[a-z]/', $_POST['password_one'])
-							&& preg_match('/[A-Z]/', $_POST['password_one'])
-							&& preg_match('/[0-9]/',$_POST['password_one'])
-							&& preg_match('/[^\da-zA-Z]/',$_POST['password_one'])
-						){
+
+
+						if (strlen($_POST['password_one']) > 7&&preg_match('#^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#',$_POST['password_one'])){
 
 								$hash = wp_hash_password( $_POST['password_one'] );
 
@@ -115,18 +112,18 @@
 		                    $mailheader .= "Reply-To: " .$email."\r\n"; 
 		                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
 		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
-		                    mail($to, $subject, $contenido, $mailheader);
+		                    //mail($to, $subject, $contenido, $mailheader);
 
 		                } //close key sen email
 
 						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							
-							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres tener almenos una minúsculas una mayúsculas y un caracter especial como ! _ / &[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres e incluir minúsculas y mayúsculas.[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
 						}
 
 					}else{//close key if spam=0 and same password
 							
-							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be greater than 8 characters have at least one lowercase one uppercase and one special character like! _ / &[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be the same in both fields.[:]');
 
 					}
 
@@ -200,7 +197,7 @@
 							<span id='message'></span>
 						</div>
 
-						<label id="ver_password"><?php echo __('[:es]ver contraseña[:en]show password[:]'); ?></label>
+						<!-- <label id="ver_password"><?php echo __('[:es]ver contraseña[:en]show password[:]'); ?></label> -->
 						
 						
 						<input type="hidden" name="spam">

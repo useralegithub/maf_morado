@@ -1004,6 +1004,7 @@ if ($_POST['users_vip_aprobar_id']) {
     $code                       = $_POST['users_vip_aprobar_code'];
     $lang                       = $_POST['users_vip_aprobar_lang'];
     $spam    = $_POST['spam'];
+    $nombre=$users_vip_aprobar_nombre;
 
     $table = 'wp_users_vip';
     //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
@@ -1050,17 +1051,14 @@ $wpdb->update('wp_users_vip', array(
                     $email=$users_vip_aprobar_email;
                     $to = $email;
  
-                    $subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); 
-                    $atibuto_img =__('[:es]Material Art Fair Vol. VI[:en]Material Art Fair Vol. VI[:]');
-                    $attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
-                    $attr_twitter=__('[:es]Material at Twitter[:en]Material at Twitter[:]');
-                    $attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
+                    $them_url=get_template_directory_uri();
+                    $home_url=home_url();
 
-                    $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
+                    $link_recover_es=$home_url.'/es/vip/password-setup/?c='.$code;
+                    $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
 
-                    $link_establece = get_permalink( $post_establece ).'?c='.$code;
  
-                    $subject = ($lang=='es')?'Solicitud Aprobada':'Approved Request'; //El asunto del correo
+                    $subject = ($lang=='es')?'Solicitud Aprobada':'Approved Request';
                     if ($lang=='es') {
 
                     $es='
@@ -1072,36 +1070,36 @@ $wpdb->update('wp_users_vip', array(
 
                     <p>Para ver nuestro Programa VIP y solicitar reservación para los eventos que te interesen, te pedimos amablemente que confirmes tu asistencia a la feria y actives tu cuenta del Portal utilizando el siguiente vínculo:</p>
                     
-                    <p><a href="'.$link_establece.'">ASISTIRÉ A LA FERIA DE ARTE MATERIAL VOL.6</a></p>
+                    <p><a href="'.$link_recover_es.'">ASISTIRÉ A LA FERIA DE ARTE MATERIAL VOL.6</a></p>
 
                     <p>Te recordamos que esta invitación es de uso personal, no es transferible y la puedes usar para asistir con un acompañante. Cuando llegues a la feria podrás recoger tu acceso en la recepción VIP ubicada en el lobby del Frontón México.</p>
 
                     <p>Muchas gracias y te esperamos en el Preview de la feria el jueves 7 de febrero entre las 12 y 3 pm.</p>
 
                     <p style="margin-top: 30px;">Saludos,</p>
-                    <p style="text-align: right;"><b>Isa Castilla</b><b>Isa Castilla</b>.</p>
-                    <p style="text-align: right;"><b>Equipo de Relaciones VIP</b>.</p>
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
 
                     ';
 
-                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #e5d2f9; width: 800px;">';
+                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
                     $table_mensaje .='<tbody>';
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3" style="padding: 10px;">';
-                    $table_mensaje .=__('[:es]'.$es.'[:en]'.$en.'[:]');
+                    $table_mensaje .=apply_filters( 'the_content', $es );
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1114,9 +1112,9 @@ $wpdb->update('wp_users_vip', array(
                     $table_mensaje .='</td>';
                     $table_mensaje .='<td style="width: 33%; padding: 10px;">';
                     $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
                     $table_mensaje .='</ul>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
@@ -1129,10 +1127,77 @@ $wpdb->update('wp_users_vip', array(
                     $table_mensaje .='</tbody>';
                     $table_mensaje .='</table>';
                         
-                    }else{}
+                    }else{
 
-                    //$contenido=$table_mensaje;
-                    $contenido='';
+                    $en='
+                    
+                    <p>Dear '.$nombre.',</p>
+                    <p>Welcome to Material’s 2019 VIP Program. The fair will take place from February 7th through 10th, 2019, at the Frontón México in Mexico City.</p>
+                    
+                    <p>In the VIP Portal, you’ll find special offers from our partners and all the activities we’re preparing for this year’s edition, as well as our list of recommendations in Mexico City to enrich your experience around the fair. We suggest you check it regularly before the fair starts, since we will be making frequent updates.</p>
+
+                    <p>To see our VIP Program and RSVP to the events that interest you, we kindly ask you to confirm your assistance to the fair and activate your account using the following link:</p>
+                    
+                    <p><a href="'.$link_recover_en.'">ATTENDING MATERIAL ART FAIR VOL.6</a></p>
+
+                    <p>Please remember that your invitation is for personal use only and grants you access with one guest. Your VIP card will be available for you to pick up at the VIP desk at the fair entrance.</p>
+
+                    <p>We are looking forward to seeing you at the fair’s VIP Preview on Thursday, February 7 th , between 12 and 3 pm.</p>
+
+                    <p style="margin-top: 30px;">Kind regards,</p>
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
+
+                    ';
+
+                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
+                    $table_mensaje .='<tbody>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="padding: 10px;">';
+                    $table_mensaje .=apply_filters( 'the_content', $en );
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: left">Melchor Ocampo 154-A<br>Col. San Rafael, Del. Cuauhtémoc<br></br>CDMX, 06470</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: center">+52 55 5256-5533<br><a href="mailto:info@material-fair.com">info@material-fair.com</a></p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material at Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material at Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='</ul>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="text-align: center; font-size: 85%;">';
+                    $table_mensaje .='<p>&copy; '.date('Y').' Feria de Arte Material México S.A. de C.V.</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+        
+                    $table_mensaje .='</tbody>';
+                    $table_mensaje .='</table>';
+
+                    }
+
+                    $contenido=$table_mensaje;
                     $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
                     $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
@@ -1216,7 +1281,10 @@ if ($_POST['users_vip_recupera_contrasena_id']){
     $users_vip_recupera_nombre   = $_POST['users_vip_recupera_contrasena_nombre'];
     $users_vip_recupera_apellido = $_POST['users_vip_recupera_contrasena_apellido'];
     $users_vip_recupera_email    = $_POST['users_vip_recupera_contrasena_email'];
+    $code    = $_POST['users_vip_recupera_contrasena_code'];
+    $lang                        = $_POST['users_vip_recupera_contrasena_lang'];
     $spam = $_POST['users_vip_recupera_contrasena_spam'];
+    $nombre=$users_vip_recupera_nombre;
 
     function randomRecovery($length = 6) {
         $str = "";
@@ -1229,50 +1297,169 @@ if ($_POST['users_vip_recupera_contrasena_id']){
         }
         return $str;
     }
-    $recovery = $users_vip_recupera_id.''.randomRecovery(20);
+    
 
-    $table = 'wp_users_vip';
+    //$table = 'wp_users_vip';
     //$wpdb->delete($table, array( 'id' => $users_vip_delete_id) );
 
-    $wpdb->update('wp_users_vip', array( 
-                                        'users_vip_pass_recovery'=>$recovery
-                                    ), array('id'=>$users_vip_recupera_id)
-                );
+        
+    if ($code==''||$code=='NULL') {
 
+        $recovery = $users_vip_recupera_id.''.randomRecovery(20);
+
+        $wpdb->update('wp_users_vip', array('users_vip_pass_recovery' => $recovery ), array('id'=>$users_vip_recupera_id) );
+        $code = $wpdb->get_results("SELECT 'users_vip_pass_recovery' FROM wp_users_vip WHERE users_vip_email = '$users_vip_recupera_email' AND users_vip_estatus = '3' ORDER BY id DESC ")[0];
+
+    }
 
                 if($spam == '' && $users_vip_recupera_email != '' ){
+
                     $email=$users_vip_recupera_email;
                     $to = $email;
+                     
+                    $them_url=get_template_directory_uri();
+                    $home_url=home_url();
 
-                    $post_establece = get_posts( array('post_type'=> 'vip','name'=>'establece-contrasena','post_status' => 'publish','posts_per_page'=>1) )[0];
+                    $link_recover_es=$home_url.'/es/vip/password-setup/?c='.$code;
+                    $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
+                    $subject = ($lang=='es')?'Recupera Contraseña':'Recovery Password';
 
-                    $link_establece = get_permalink( $post_establece ).'?c='.$recovery;
  
-                    $subject = 'Recuperar Contraseña'; //El asunto del correo
-                    $message = '
-                    <html>
-                    <body>
+                    if ($lang=='es') {
+
+                    $es='
+
+                    <p>Saludos '.$nombre.',</p>
                     
                     <p>
-                        Link recuperar: <a href="'.$link_establece.'">Escribir Contraseña</a>
+                    Gracias por tu interés en el Programa VIP 2019 de la Feria de Arte Material. Para recuperar tu acceso al Portal VIP, te pedimos por favor que utilices el siguiente vínculo:
                     </p>
-                    
 
-                    </body>
-                    </html>
+                    <p><a href="'.$link_recover_es.'">RECUPERAR CONTRASEÑA</a></p>
+
+                    <p style="margin-top: 30px;">Saludos cordiales,</p>
+                    
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
+
                     ';
-                    //$message=base64_encode($message);
-                    $contenido=utf8_decode($message);
-                    $subject=utf8_decode($subject);
+
+                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
+                    $table_mensaje .='<tbody>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="padding: 10px;">';
+                    $table_mensaje .=apply_filters( 'the_content', $es );
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: left">Melchor Ocampo 154-A<br>Col. San Rafael, Del. Cuauhtémoc<br></br>CDMX, 06470</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: center">+52 55 5256-5533<br><a href="mailto:info@material-fair.com">info@material-fair.com</a></p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='</ul>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="text-align: center; font-size: 85%;">';
+                    $table_mensaje .='<p>&copy; '.date('Y').' Feria de Arte Material México S.A. de C.V.</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+        
+                    $table_mensaje .='</tbody>';
+                    $table_mensaje .='</table>';
+                        
+                    }else{
+
+                    $es='
+
+                    <p>Dear '.$nombre.',</p>
+                    
+                    <p>
+                    Thanks for your interest in Material Art Fair’s 2019 VIP Program. To recover your access to the VIP portal, we kindly ask you to use the following link:
+                    </p>
+
+                    <p><a href="'.$link_recover_en.'">RECOVER MY PASSWORD</a></p>
+
+                    <p style="margin-top: 30px;">Kind regards,</p>
+                    
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
+
+                    ';
+
+                    $table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
+                    $table_mensaje .='<tbody>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="padding: 10px;">';
+                    $table_mensaje .=apply_filters( 'the_content', $es );
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3">';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: left">Melchor Ocampo 154-A<br>Col. San Rafael, Del. Cuauhtémoc<br></br>CDMX, 06470</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<p style="text-align: center">+52 55 5256-5533<br><a href="mailto:info@material-fair.com">info@material-fair.com</a></p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='<td style="width: 33%; padding: 10px;">';
+                    $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='</ul>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+                    $table_mensaje .='<tr>';
+                    $table_mensaje .='<td colspan="3" style="text-align: center; font-size: 85%;">';
+                    $table_mensaje .='<p>&copy; '.date('Y').' Feria de Arte Material México S.A. de C.V.</p>';
+                    $table_mensaje .='</td>';
+                    $table_mensaje .='</tr>';
+        
+                    $table_mensaje .='</tbody>';
+                    $table_mensaje .='</table>';
+
+                    }
+
+                    $contenido=$table_mensaje;
                     $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
-                    $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
-
-                    $headers = "From:" . $email . "\r\n";
-                    $headers .="Reply-To: " .$email . "\r\n";
                     $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $headers .= 'MIME-Version: 1.0' . "\r\n";
-                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
                     mail($to, $subject, $contenido, $mailheader);
 
                 }
@@ -1353,18 +1540,18 @@ echo "\n";
 global $wpdb;
 $users_vip_nombre=$_POST['users-vip-nombre'];
 $users_vip_apellido=$_POST['users-vip-apellido'];
-$users_vip_category=$_POST['users-vip-categoria'];
+$users_vip_category_id=$_POST['users-vip-categoria'];
 $users_vip_email=$_POST['users-vip-email'];
 $users_vip_pass=$_POST['users-vip-pass'];
 
-//$wpdb->query('INSERT INTO wp_users_vip("users_vip_nombre","users_vip_apellido","users_vip_category","users_vip_email","users_vip_pass")VALUES($users_vip_nombre,$users_vip_apellido,$users_vip_category,$users_vip_email,$users_vip_pass)');
+//$wpdb->query('INSERT INTO wp_users_vip("users_vip_nombre","users_vip_apellido","users_vip_category_id","users_vip_email","users_vip_pass")VALUES($users_vip_nombre,$users_vip_apellido,$users_vip_category_id,$users_vip_email,$users_vip_pass)');
 //require_once('../../../wp-config.php');
 
 //print_r($wpdb);
 $wpdb->insert('wp_users_vip', array(
 'users_vip_nombre' => $users_vip_nombre,
 'users_vip_apellido' => $users_vip_apellido,
-'users_vip_category' => $users_vip_category, 
+'users_vip_category_id' => $users_vip_category_id, 
 'users_vip_email' => $users_vip_email, 
 'users_vip_pass' => $users_vip_pass
 ));
@@ -1700,13 +1887,19 @@ foreach ($wp_users_vip as $key => $value) {$i++;
 
 $k=($wp_users_vip_count_row+1-(($pagina-1)*$registros))-$i;
 
-if ($value->users_vip_category=='') {
+/*if ($value->users_vip_category_id=='') {
     $wpdb->update('wp_users_vip', array( 
-                                        'users_vip_category'=>1
+                                        'users_vip_category_id'=>1
+                                    ), array('id'=>$value->id)
+                );}
+*/
+/*if ($value->users_vip_category=='NULL') {
+    $wpdb->update('wp_users_vip', array( 
+                                        'users_vip_category'=>''
                                     ), array('id'=>$value->id)
                 );
 
-}
+}*/
 
 
 echo '<tr>';
@@ -1718,13 +1911,13 @@ echo '
 /* colum categoría*/
 
 
- ($value->users_vip_category==1)?$categoria ='Coleccionista':'';
- ($value->users_vip_category==2)?$categoria ='Curador':'';
- ($value->users_vip_category==3)?$categoria ='Personal de Museo o Institucional':'';
- ($value->users_vip_category==4)?$categoria ='Asesor':'';
- ($value->users_vip_category==5)?$categoria ='Galerista':'';
- ($value->users_vip_category==6)?$categoria ='Artista':'';
- ($value->users_vip_category==7)?$categoria ='Otro':'';
+ ($value->users_vip_category_id==1)?$categoria ='Coleccionista':'';
+ ($value->users_vip_category_id==2)?$categoria ='Curador':'';
+ ($value->users_vip_category_id==3)?$categoria ='Personal de Museo o Institucional':'';
+ ($value->users_vip_category_id==4)?$categoria ='Asesor':'';
+ ($value->users_vip_category_id==5)?$categoria ='Galerista':'';
+ ($value->users_vip_category_id==6)?$categoria ='Artista':'';
+ ($value->users_vip_category_id==7)?$categoria ='Otro':'';
 
 echo '<td class="td_center_hori_vert" >'.$categoria.'</td>';
 /*end colum categoría*/
@@ -1799,6 +1992,8 @@ if ($value->users_vip_estatus==$estatus_aprobado) {
                     <input type="hidden" name="users_vip_recupera_contrasena_nombre" value="'.$value->users_vip_nombre.'">
                     <input type="hidden" name="users_vip_recupera_contrasena_apellido" value="'.$value->users_vip_apellido.'">
                     <input type="hidden" name="users_vip_recupera_contrasena_email" value="'.$value->users_vip_email.'">
+                    <input type="hidden" name="users_vip_recupera_contrasena_lang" value="'.$value->users_vip_lang.'">
+                    <input type="hidden" name="users_vip_recupera_contrasena_code" value="'.$value->users_vip_pass_recovery.'">
                     <input type="hidden" name="users_vip_recupera_contrasena_spam" value="">
                     <input type="submit"  value="Recuperar" class="btn_recupera_contrasena">
                 </form>';
@@ -1917,7 +2112,7 @@ if ($user_vip_edit_id!='') {
     $users_vip_edit_id=$wp_users_vip_edit_query[0]->id;
     $users_vip_edit_name=$wp_users_vip_edit_query[0]->users_vip_nombre;
     $users_vip_edit_apellido=$wp_users_vip_edit_query[0]->users_vip_apellido;
-    $users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category;
+    $users_vip_edit_category=$wp_users_vip_edit_query[0]->users_vip_category_id;
     $users_vip_edit_pais=$wp_users_vip_edit_query[0]->users_vip_pais;
     $users_vip_edit_rango_edad=$wp_users_vip_edit_query[0]->users_vip_rango_edad;
     $users_vip_edit_afiliacion=$wp_users_vip_edit_query[0]->users_vip_afiliacion;
@@ -1940,7 +2135,7 @@ if ($_POST) {
     $users_vip_edit_afiliacion=stripslashes_deep($_POST['users-vip-afiliacion']);
     $users_vip_edit_email=stripslashes_deep($_POST['users-vip-email']);
     $users_vip_edit_pass=$_POST['users-vip-pass'];
-    $users_vip_edit_lang=stripslashes_deep($_POST['users-vip-lang']);
+    //$users_vip_edit_lang=stripslashes_deep($_POST['users-vip-lang']);
 
     if ($users_vip_edit_pass=='') {
         $hash = $wp_users_vip_edit_query[0]->users_vip_pass;
@@ -1993,13 +2188,13 @@ $wpdb->update('wp_users_vip', array(
                                     
                                     'users_vip_nombre'=>$users_vip_edit_name,
                                     'users_vip_apellido'=>$users_vip_edit_apellido, 
-                                    'users_vip_category'=>$users_vip_edit_category,
+                                    'users_vip_category_id'=>$users_vip_edit_category,
                                     'users_vip_pais'    =>$users_vip_edit_pais,
                                     'users_vip_rango_edad'=>$users_vip_edit_rango_edad, 
                                     'users_vip_afiliacion'=>$users_vip_edit_afiliacion,
                                     'users_vip_email'=>$email,  
                                     'users_vip_pass'=>$hash,
-                                    'users_vip_lang'=>$users_vip_edit_lang
+                                    //'users_vip_lang'=>$users_vip_edit_lang
                                 ), array('id'=>$user_vip_edit_id)
             );
 }
@@ -2246,7 +2441,7 @@ $wpdb->update('wp_users_vip', array(
         id INT(9) NOT NULL AUTO_INCREMENT,
         users_vip_nombre VARCHAR(80) NOT NULL,
         users_vip_apellido VARCHAR(20) NOT NULL,
-        users_vip_category VARCHAR(80) NOT NULL,
+        users_vip_category_id VARCHAR(80) NOT NULL,
         users_vip_email VARCHAR(80) NOT NULL,
         users_vip_pass VARCHAR(80) NOT NULL,
         
@@ -2256,11 +2451,11 @@ $wpdb->update('wp_users_vip', array(
 
     // $myCustomer = $wpdb->get_row("SELECT * FROM wp_users_vip");
     // //Add column if not present.
-    // if(!isset($myCustomer->users_vip_category)){
-    //     $wpdb->query("ALTER TABLE wp_users_vip ADD users_vip_category VARCHAR(80) NOT NULL");
+    // if(!isset($myCustomer->users_vip_category_id)){
+    //     $wpdb->query("ALTER TABLE wp_users_vip ADD users_vip_category_id VARCHAR(80) NOT NULL");
     // }
-    // ALTER TABLE wp_users_vip ADD users_vip_category VARCHAR(80) NULL AFTER users_vip_apellido;
-    // ALTER TABLE `wp_users_vip` CHANGE `users_vip_category` `users_vip_category` VARCHAR(80) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+    // ALTER TABLE wp_users_vip ADD users_vip_category_id VARCHAR(80) NULL AFTER users_vip_apellido;
+    // ALTER TABLE `wp_users_vip` CHANGE `users_vip_category_id` `users_vip_category_id` VARCHAR(80) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
 
     //$wpdb->query("INSERT INTO $table(bot_name, bot_mark)
     //    VALUES('Google Bot', 'googlebot')");
@@ -2489,7 +2684,10 @@ class CSVExport {
     $csv_output = '';
 global $wpdb;
  
-    $results = $wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC",ARRAY_A);
+  //$results = $wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC",ARRAY_A);
+
+ $results = $wpdb->get_results("SELECT wp_uv.users_vip_nombre AS nombre,wp_uv.users_vip_apellido AS apellido,wp_uv.users_vip_email AS email,mcc.name AS pais,wp_uv.users_vip_rango_edad AS rango_edad,wp_uv.users_vip_category_id AS perfil,wp_uv.users_vip_category AS perfil_antiguo ,wp_uv.users_vip_afiliacion AS afiliacion, uve.nombre_estatus AS estatus,wp_uv.users_vip_lang AS lang FROM wp_users_vip AS wp_uv LEFT JOIN users_vip_category AS uvc ON wp_uv.users_vip_category_id=uvc.id LEFT JOIN maf_cat_countries AS mcc ON wp_uv.users_vip_pais=mcc.id LEFT JOIN users_vip_estatus AS uve ON wp_uv.users_vip_estatus=uve.id WHERE wp_uv.users_vip_estatus='3' OR wp_uv.users_vip_estatus='1' OR wp_uv.users_vip_estatus='4' ",ARRAY_A);
+
   $users_vip_count=count($results);
 
   $epDB = new wpdb('db214684_dupla', '#Dupla2017art-fair#', 'db214684_exhibitor_portal', 'internal-db.s214684.gridserver.com');
@@ -2498,26 +2696,41 @@ global $wpdb;
     $epRow = $epDB->get_results('SELECT language_id FROM users WHERE email = "' . $result['users_vip_email'] . '"', ARRAY_A);
 
     if(is_array($epRow) && count($epRow) > 0){
-        $results[$index]['language'] = $epRow[0]['language_id'] == 1 ? 'English' : 'Español';
+        $results[$index]['language'] = $epRow[0]['language_id'] == 1 ? '' : '';
     }else{
-        $results[$index]['language'] = 'English';
+        $results[$index]['language'] = '';
     }
   }
 
   //$csv_output = '"'.implode('","',array_keys($results[0])).'",'."\n";
-  $csv_output=utf8_decode(' #, id,"Nombre","Apellido","Perfil","E-mail","Pass", "Idioma"'."\n");
+  $csv_format=utf8_decode('"Nombre","Apellido","Email","País","Rango Edad","Perfil","Perfil Anterior","Afiliación","Estatus","Lenguaje"'."\n");
+  $edad_set   = array('1' =>'18-24' , '2' =>'25-34' ,'3' =>'35-44' ,'4' =>'45+' );
+  $perfil_set = array('1' =>'Coleccionista' , '2' =>'Curador' ,'3' =>'Personal de Museo o Institucional' ,'4' =>'Asesor','5' =>'Galerista','6' =>'Artista','7' =>'Otro' );
 
-  foreach ($results as $row) {
-    $k=$users_vip_count-$i++;
-    $csv_output.='"'.$k.'",';
-    $csv_output .= utf8_decode('"'.implode('","',$row).'",'."\n");
+  foreach ($results as $key => $row) {
+    
+    $nombre          = $row['nombre'];
+    $apellido        = $row['apellido'];
+    $email           = $row['email'];
+    $pais            = $row['pais'];
+    $edad            = $row['rango_edad'];
+    $perfil          = $row['perfil'];
+    $perfil_antiguo  = $row['perfil_antiguo'];
+    $afiliacion      = $row['afiliacion'];
+    $estatus         = $row['estatus'];
+    $lenguaje        = $row['lang'];
+
+    $csv_format .='"'.$nombre.'",'.'"'.$apellido.'",'.'"'.$email.'",'.'"'.$pais.'",'.'"'.$edad_set[$edad].'",'.'"'.$perfil_set[$perfil].'",'.'"'.$perfil_antiguo.'",'.'"'.$afiliacion.'",'.'"'.$estatus.'",'.'"'.$lenguaje.'",';
+    $csv_format.="\n";
+
+
   }
 
-   $csv_output .= "\n";
+   //$csv_output .= "\n";
 
 
 
-    return $csv_output;
+    return $csv_format;
   }
 
 }
@@ -2528,132 +2741,257 @@ $csvExport = new CSVExport();
 /***Información obtenida desde el portal de expositores (Agregado por Levi)***/
 add_action('admin_enqueue_scripts', function(){
     wp_enqueue_style('admin', get_template_directory_uri() . '/css/admin.css');
+    wp_enqueue_script('fastselect', get_template_directory_uri() . '/fastselect/fastselect.standalone.js');
+    wp_enqueue_style('fastselect', get_template_directory_uri() . '/fastselect/fastselect.css');
 });
+
+function getEPDB(){
+    return new wpdb('root', '', 'maf2019', 'localhost');
+    //return new wpdb('db214684', '3xA!XxFV!nuR', 'db214684_maf2019', 'internal-db.s214684.gridserver.com');
+}
+
+function getEPBaseURL(){
+    return 'http://localhost/maf2019/';
+    //return 'https://material-fair.com/2019/';
+}
+
+function formatURL($url){
+    $parsedURL = parse_url($url);
+    $urlScheme = ! empty($parsedURL['scheme']) ? $parsedURL['scheme'] : 'http';
+    $urlHost = ! empty($parsedURL['host']) ? $parsedURL['host'] : '';
+    $urlPath = ! empty($parsedURL['path']) ? $parsedURL['path'] : '';
+    $urlQuery = ! empty($parsedURL['query']) ? $parsedURL['query'] : '';
+    $urlFragment = ! empty($parsedURL['fragment']) ? $parsedURL['fragment'] : '';
+
+    if(! empty($urlHost) || ! empty($urlPath)){
+        $url = $urlScheme . '://' . $urlHost . $urlPath . (! empty($urlQuery) ? '?' . $urlQuery : '') . (! empty($urlFragment) ? '#' . $urlFragment : '');
+    }
+
+    return $url;
+}
 
 add_action('add_meta_boxes', function(){
     add_meta_box( 'epInfo', 'Información del portal de expositores', function($post){
         $postId = $post->ID;
-        $published = get_post_meta($postId, '_ep_published', TRUE);
 
-        if(! empty($published)){
-            ?>
-                <table id="epInfoTable">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Texto en inglés</th>
-                            <th>Texto en español</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Listo para publicar</td>
-                            <td colspan="2">
-                                <input style="width: auto;" name="_ep_translated" type="checkbox" value="true"<?= empty(get_post_meta($postId, '_ep_translated', TRUE)) ? '' : ' checked'; ?>>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Imágenes</td>
-                            <td>
-                                <?php
-                                $images = get_post_meta($post->ID, '_ep_images', TRUE);
+        $epDB = getEPDB();
+        $epGalleryId = get_post_meta($postId, '_ep_gallery_id', TRUE);
+        $epGallery = $epDB->get_results('SELECT * FROM maf_galleries WHERE id = ' . $epGalleryId);
+        $epAllGalleriesRequest = json_decode(file_get_contents(getEPBaseURL() . 'wp-content/themes/maf2019/api.php?model=Gallery&method=getNames&params[]=' . urlencode('WHERE edition_id = 1 AND gallery_status_id = 5')));
+        $epAllGalleries = $epAllGalleriesRequest->payload;
 
-                                if(count($images) > 0){ ?>
-                                    <ul>
-                                        <?php foreach($images as $image){ ?>
-                                            <li style="display: inline-block; text-align: center;">
-                                                <img style="width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
-                                                <textarea style="width: 200px;" name="_ep_images_captions_en[]"><?= $image['caption_en']; ?></textarea>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                <?php }else{ ?>
-                                    <p>No hay imágenes cargadas.</p>
-                                <?php } ?>
-                            </td>
-                            <td>
-                                <?php
-                                $images = get_post_meta($post->ID, '_ep_images', TRUE);
+        $translated = get_post_meta($postId, '_ep_translated', TRUE);
+        $images = get_post_meta($post->ID, '_ep_images', TRUE);
 
-                                if(count($images) > 0){ ?>
-                                    <ul>
-                                        <?php foreach($images as $image){ ?>
-                                            <li style="display: inline-block; text-align: center;">
-                                                <img style="width: 200px; max-height: 200px;" src="<?= $image['url']; ?>">
-                                                <textarea style="width: 200px;" name="_ep_images_captions_es[]"><?= $image['caption_es']; ?></textarea>
-                                            </li>
-                                        <?php } ?>
-                                    </ul>
-                                <?php }else{ ?>
-                                    <p>No hay imágenes cargadas.</p>
-                                <?php } ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ubicación</td>
-                            <td>
-                                <textarea name="_ep_location_es"><?= get_post_meta($postId, '_ep_location_es', TRUE); ?></textarea>
-                            </td>
-                            <td>
-                                <textarea name="_ep_location_en"><?= get_post_meta($postId, '_ep_location_en', TRUE); ?></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Teléfono</td>
-                            <td colspan="2">
-                                <input name="_ep_telephone" type="text" value="<?= get_post_meta($postId, '_ep_telephone', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Email</td>
-                            <td colspan="2">
-                                <input name="_ep_email" type="text" value="<?= get_post_meta($postId, '_ep_email', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Website</td>
-                            <td colspan="2">
-                                <input name="_ep_website" type="text" value="<?= get_post_meta($postId, '_ep_website', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Facebook</td>
-                            <td colspan="2">
-                                <input name="_ep_facebook" type="text" value="<?= get_post_meta($postId, '_ep_facebook', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Twitter</td>
-                            <td colspan="2">
-                                <input name="_ep_twitter" type="text" value="<?= get_post_meta($postId, '_ep_twitter', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Instagram</td>
-                            <td colspan="2">
-                                <input name="_ep_instagram" type="text" value="<?= get_post_meta($postId, '_ep_instagram', TRUE); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Statement de la galería</td>
-                            <td>
-                                <textarea name="_ep_statement_maf_en"><?= get_post_meta($postId, '_ep_statement_maf_en', TRUE); ?></textarea>
-                            </td>
-                            <td>
-                                <textarea name="_ep_statement_maf_es"><?= get_post_meta($postId, '_ep_statement_maf_es', TRUE); ?></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Statement del stand</td>
-                            <td>
-                                <textarea name="_ep_statement_stand_en"><?= get_post_meta($postId, '_ep_statement_stand_en', TRUE); ?></textarea>
-                            </td>
-                            <td>
-                                <textarea name="_ep_statement_stand_es"><?= get_post_meta($postId, '_ep_statement_stand_es', TRUE); ?></textarea>
-                            </td>
-                        </tr>
-                        <!--<tr>
-                            <td>Biografías de los artistas</td>
+        //$published = get_post_meta($postId, '_ep_published', TRUE);
+
+        //if(! empty($published)){
+        ?>
+        <script>
+            $(document).ready(function(){
+                $('#epInfoPublish').on('click', function(){
+                    if(confirm('¿Deseas publicar la información en el sitio público?')){
+                        var form = $(this).closest('form');
+
+                        form
+                            .find('[name="_ep_translated"]')
+                            .val(1)
+                            .end()
+                            .submit();
+                    }
+                });
+
+                $('#epInfoUnPublish').on('click', function(){
+                    if(confirm('¿Deseas retirar la información del sitio público?')){
+                        var form = $(this).closest('form');
+
+                        form
+                            .find('[name="_ep_translated"]')
+                            .val(0)
+                            .end()
+                            .submit();
+                    }
+                });
+
+                $('#epInfoGetImages').on('click', function(){
+                    if(confirm('Se establecerán aquí las imágenes web provenientes del portal de expositores, con lo cual sus respectivas leyendas serán reemplazadas por aquellas proporcionadas por el aplicante. Esta acción es irreversible. ¿Deseas continuar?')){
+                        var form = $(this).closest('form');
+
+                        form
+                            .find('[name="getImages"]')
+                            .val(1)
+                            .end()
+                            .submit();
+                    }
+                });
+
+                $('#epInfoGetinfo').on('click', function(){
+                    if(confirm('Los valores correspondientes a la información del portal de expositores serán reemplazadas por aquellos proporcionadas por el aplicante. Esta acción es irreversible. ¿Deseas continuar?')){
+                        var form = $(this).closest('form');
+
+                        form
+                            .find('[name="getInfo"]')
+                            .val(1)
+                            .end()
+                            .submit();
+                    }
+                });
+
+                $('#_ep_gallery_id').fastselect({
+                    'placeholder': 'Selecciona una galería del portal de expositores'
+                });
+            });
+        </script>
+        <table class="epInfoTable">
+            <tbody>
+            <tr>
+                <th>Entrada relacionada a la galería</th>
+                <td colspan="2">
+                    <select id="_ep_gallery_id" name="_ep_gallery_id">
+                        <?php foreach($epAllGalleries as $epAllGallery){
+                            $selected = $epGalleryId == $epAllGallery->id ? ' selected' : '';
+                            ?>
+                            <option value="<?= $epAllGallery->id; ?>"<?=$selected?>><?= $epAllGallery->name; ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td colspan="2">
+                    <?php if(empty($translated)) { ?>
+                        <button id="epInfoPublish" class="button button_secondary" type="button">Publicar</button>
+                    <?php }else{ ?>
+                        <button id="epInfoUnPublish" class="button button_secondary" type="button">Retirar del sitio público</button>
+                    <?php } ?>
+                    <button id="epInfoGetImages" class="button button_secondary" type="button">Obtener las imágenes y sus leyendas originales</button>
+                    <button id="epInfoGetinfo" class="button button_secondary" type="button">Obtener la información original</button>
+                    <input type="hidden" name="_ep_translated" value="<?= empty($translated) ? 0 : 1; ?>">
+                    <input type="hidden" name="getImages" value="0">
+                    <input type="hidden" name="getInfo" value="0">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="epInfoTable">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Texto en inglés</th>
+                <th>Texto en español</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if(count($images) > 0){
+                $index = 0;
+
+                foreach($images as $image){
+                    ?>
+                    <tr>
+                        <?php if($index == 0){ ?>
+                            <th rowspan="<?= count($images) * 2; ?>">Imágenes</th>
+                        <?php } ?>
+                        <td class="epInfoTableImageCell" colspan="2">
+                            <a href="<?= $image['url']; ?>" target="_blank">
+                                <img src="<?= $image['url']; ?>">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <textarea name="_ep_images_captions_en[]"><?= $image['caption_en']; ?></textarea>
+                        </td>
+                        <td>
+                            <textarea name="_ep_images_captions_es[]"><?= $image['caption_es']; ?></textarea>
+                        </td>
+                    </tr>
+                    <?php
+                    $index ++;
+                }
+            }else{ ?>
+                <tr>
+                    <th>Imágenes</th>
+                    <td colspan="2">
+                        <p><i>No hay imágenes cargadas.</i></p>
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+        <table class="epInfoTable">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Texto en inglés</th>
+                <th>Texto en español</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>Ubicación</th>
+                <td>
+                    <textarea name="_ep_location_es"><?= get_post_meta($postId, '_ep_location_es', TRUE); ?></textarea>
+                </td>
+                <td>
+                    <textarea name="_ep_location_en"><?= get_post_meta($postId, '_ep_location_en', TRUE); ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>Teléfono</th>
+                <td colspan="2">
+                    <input name="_ep_telephone" type="text" value="<?= get_post_meta($postId, '_ep_telephone', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td colspan="2">
+                    <input name="_ep_email" type="text" value="<?= get_post_meta($postId, '_ep_email', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Website</th>
+                <td colspan="2">
+                    <input name="_ep_website" type="text" value="<?= get_post_meta($postId, '_ep_website', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Facebook</th>
+                <td colspan="2">
+                    <input name="_ep_facebook" type="text" value="<?= get_post_meta($postId, '_ep_facebook', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Twitter</th>
+                <td colspan="2">
+                    <input name="_ep_twitter" type="text" value="<?= get_post_meta($postId, '_ep_twitter', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Instagram</th>
+                <td colspan="2">
+                    <input name="_ep_instagram" type="text" value="<?= get_post_meta($postId, '_ep_instagram', TRUE); ?>">
+                </td>
+            </tr>
+            <tr>
+                <th>Statement de la galería</th>
+                <td>
+                    <textarea name="_ep_statement_maf_en"><?= get_post_meta($postId, '_ep_statement_maf_en', TRUE); ?></textarea>
+                </td>
+                <td>
+                    <textarea name="_ep_statement_maf_es"><?= get_post_meta($postId, '_ep_statement_maf_es', TRUE); ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>Statement del stand</th>
+                <td>
+                    <textarea name="_ep_statement_stand_en"><?= get_post_meta($postId, '_ep_statement_stand_en', TRUE); ?></textarea>
+                </td>
+                <td>
+                    <textarea name="_ep_statement_stand_es"><?= get_post_meta($postId, '_ep_statement_stand_es', TRUE); ?></textarea>
+                </td>
+            </tr>
+            <!--<tr>
+                            <th>Biografías de los artistas</th>
                             <td>
                                 <textarea name="_ep_artists_bios_en"><?= get_post_meta($postId, '_ep_artists_bios_en', TRUE); ?></textarea>
                             </td>
@@ -2661,20 +2999,20 @@ add_action('add_meta_boxes', function(){
                                 <textarea name="_ep_artists_bios_es"><?= get_post_meta($postId, '_ep_artists_bios_es', TRUE); ?></textarea>
                             </td>
                         </tr>-->
-                        <tr>
-                            <td>Artistas en MAF 2018</td>
-                            <td colspan="2">
-                                <textarea name="_ep_artists"><?= get_post_meta($postId, '_ep_artists', TRUE); ?></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Artistas representados</td>
-                            <td colspan="2">
-                                <textarea name="_ep_represented_artists"><?= get_post_meta($postId, '_ep_represented_artists', TRUE); ?></textarea>
-                            </td>
-                        </tr>
-                        <!--<tr>
-                            <td>Offsite nombre</td>
+            <tr>
+                <th>Artistas en MAF 2018</th>
+                <td colspan="2">
+                    <textarea name="_ep_artists"><?= get_post_meta($postId, '_ep_artists', TRUE); ?></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>Artistas representados</th>
+                <td colspan="2">
+                    <textarea name="_ep_represented_artists"><?= get_post_meta($postId, '_ep_represented_artists', TRUE); ?></textarea>
+                </td>
+            </tr>
+            <!--<tr>
+                            <th>Offsite nombre</th>
                             <td>
                                 <input name="_ep_off_site_name_en" type="text" value="<?= get_post_meta($postId, '_ep_off_site_name_en', TRUE); ?>">
                             </td>
@@ -2683,7 +3021,7 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Offsite descripción</td>
+                            <th>Offsite descripción</th>
                             <td>
                                 <textarea name="_ep_off_site_description_en"><?= get_post_meta($postId, '_ep_off_site_description_en', TRUE); ?></textarea>
                             </td>
@@ -2692,12 +3030,12 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Offsite imagen</td>
+                            <th>Offsite imagen</th>
                             <td colspan="2">
                                 <?php
-                                $image = get_post_meta($post->ID, '_ep_off_site_image', TRUE);
+            $image = get_post_meta($post->ID, '_ep_off_site_image', TRUE);
 
-                                if(! empty($image) > 0){ ?>
+            if(! empty($image) > 0){ ?>
                                     <img style="max-width: 200px; max-height: 200px;" src="<?= $image; ?>">
                                 <?php }else{ ?>
                                     <p>No hay imagen cargada.</p>
@@ -2705,7 +3043,7 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Off site dirección</td>
+                            <th>Off site dirección</th>
                             <td>
                                 <textarea name="_ep_off_site_address_en"><?= get_post_meta($postId, '_ep_off_site_address_en', TRUE); ?></textarea>
                             </td>
@@ -2714,7 +3052,7 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Off site horario</td>
+                            <th>Off site horario</th>
                             <td>
                                 <input name="_ep_off_site_hours_en" type="text" value="<?= get_post_meta($postId, '_ep_off_site_hours_en', TRUE); ?>">
                             </td>
@@ -2723,7 +3061,7 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Off site fechas</td>
+                            <th>Off site fechas</th>
                             <td>
                                 <input name="_ep_off_site_dates_en" type="text" value="<?= get_post_meta($postId, '_ep_off_site_dates_en', TRUE); ?>">
                             </td>
@@ -2732,7 +3070,7 @@ add_action('add_meta_boxes', function(){
                             </td>
                         </tr>
                         <tr>
-                            <td>Off site información adicional</td>
+                            <th>Off site información adicional</th>
                             <td>
                                 <textarea name="_ep_off_site_additional_info_en"><?= get_post_meta($postId, '_ep_off_site_additional_info_en', TRUE); ?></textarea>
                             </td>
@@ -2740,14 +3078,14 @@ add_action('add_meta_boxes', function(){
                                 <textarea name="_ep_off_site_additional_info_en"><?= get_post_meta($postId, '_ep_off_site_additional_info_en', TRUE); ?></textarea>
                             </td>
                         </tr>-->
-                    </tbody>
-                </table>
-            <?php
-        }else{
+            </tbody>
+        </table>
+        <?php
+        /*}else{
             ?>
                 <p>La información del portal de expositores para esta galería no ha sido publicada aún.</p>
             <?php
-        }
+        }*/
     }, NULL, 'advanced', 'high');
 });
 
@@ -2756,6 +3094,7 @@ add_action('save_post', function($postId){
         delete_post_meta($postId, '_ep_translated');
     }
 
+    $formerGalleryId = get_post_meta($postId, '_ep_gallery_id', TRUE);
     $images = get_post_meta($postId, '_ep_images', TRUE);
 
     foreach($_POST as $key => $value){
@@ -2773,10 +3112,66 @@ add_action('save_post', function($postId){
     }
 
     update_post_meta($postId, '_ep_images', $images);
+
+    $epGalleryId = get_post_meta($postId, '_ep_gallery_id', TRUE);
+    $epDB = getEPDB();
+
+    if(isset($_POST['getImages']) && $_POST['getImages'] == 1){
+        $artworks = $epDB->get_results('SELECT * FROM maf_artworks WHERE gallery_id = ' . $epGalleryId . ' AND item_status_id = 1 AND is_for_press = 0');
+        $images = [];
+
+        foreach($artworks as $artwork){
+            array_push($images, [
+                'url' => getEPBaseURL() . 'wp-content/themes/maf2019/image.php?type=artwork&id=' . $artwork->id,
+                'caption_en' => $artwork->caption,
+                'caption_es' => $artwork->caption
+            ]);
+        }
+
+        update_post_meta($postId, '_ep_images', $images);
+    }else if(isset($_POST['getInfo']) && $_POST['getInfo'] == 1){
+        $gallery = $epDB->get_row('SELECT * FROM maf_galleries WHERE id = ' . $epGalleryId);
+
+        if(! empty($gallery)){
+            update_post_meta($postId, '_ep_published', TRUE);
+
+            $gallery->country = $epDB->get_row('SELECT * FROM maf_cat_countries WHERE id = ' . $gallery->country_id);
+
+            $location = (! empty($gallery->country) ? $gallery->country->name : '') . (! empty($gallery->city) ? ' - ' . $gallery->city : '');
+            $locationAddress = $location . chr(13) . chr(10) . $gallery->address . chr(13) . chr(10) . $gallery->zip_code;
+
+            update_post_meta($postId, '_ep_location_en', $locationAddress);
+            update_post_meta($postId, '_ep_location_es', $locationAddress);
+            update_post_meta($postId, '_ep_telephone', $gallery->telephone_code . ' ' . $gallery->telephone);
+            update_post_meta($postId, '_ep_email', $gallery->email);
+            update_post_meta($postId, '_ep_website', formatURL($gallery->website));
+            update_post_meta($postId, '_ep_facebook', formatURL($gallery->facebook));
+            update_post_meta($postId, '_ep_twitter', formatURL($gallery->twitter));
+            update_post_meta($postId, '_ep_instagram', formatURL($gallery->instagram));
+
+            $statement = $gallery->statement;
+
+            update_post_meta($postId, '_ep_statement_maf_en', $statement);
+            update_post_meta($postId, '_ep_statement_maf_es', $statement);
+
+            $statementStand = $gallery->statement_stand;
+
+            update_post_meta($postId, '_ep_statement_statement_en', $statementStand);
+            update_post_meta($postId, '_ep_statement_statement_es', $statementStand);
+
+            $artistsMAF = $epDB->get_results('SELECT * FROM maf_artists_maf WHERE gallery_id = ' . $epGalleryId . ' AND item_status_id = 1');
+
+            update_post_meta($postId, '_ep_artists', implode(chr(13) . chr(10), wp_list_pluck($artistsMAF, 'name')));
+
+            $artistsRepresented = $epDB->get_results('SELECT * FROM maf_artists_represented WHERE gallery_id = ' . $epGalleryId . ' AND item_status_id = 1');
+
+            update_post_meta($postId, '_ep_represented_artists', implode(chr(13) . chr(10), wp_list_pluck($artistsRepresented, 'name')));
+        }
+    }
 });
 
-add_filter('xmlrpc_enabled', '__return_false');?>
-<?php
+add_filter('xmlrpc_enabled', '__return_false');
+
 /*start custom field term*/
 function vip_programs_taxonomy_custom_fields($tag) {  
    // Check for existing taxonomy meta for the term you're editing  

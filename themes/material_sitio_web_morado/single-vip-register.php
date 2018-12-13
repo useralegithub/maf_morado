@@ -23,6 +23,7 @@
 
 global $wpdb;
 $wpdb_response='';
+$wpdb_response_succes='';
 $class_form   ='';
 $estatus_registrado = 1;
 $estatus_aprobado   = 3;
@@ -121,7 +122,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category'       => $categoria,
+										'users_vip_category_id'       => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -141,7 +142,8 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				$en_txt = 'Thank you very much '.$nombre .' '.$apellido.' a request to access VIP has been sent.';
 
-				$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+				//$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+				$wpdb_response_succes = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 
 			 	$class_form='visibility_form';
 			 	if($spam == '' && $email != '' && filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email)){
@@ -162,23 +164,23 @@ $wpdb_vip_user=$wpdb_email[0];
 					</p>
 
 					<p style="margin-top: 30px;">Saludos cordiales,</p>
-					<p style="text-align: right;"><b>Equipo de Relaciones VIP</b>.</p>
+					<p style="text-align: left;"><b>Equipo de Relaciones VIP</b>.</p>
 
 					';
 
                     $en='
-                    <p style="margin-bottom: 30px;">'.$nombre.'</p>
+                    <p style="margin-bottom: 30px;">Dear '.$nombre.',</p>
 					
 					<p>
 					Thanks for your interest in Material Art Fair’s 2019 VIP Program. We received your request for VIP status and we will answer as soon as possible. In the meantime, you can find more information about our 2019 exhibitors on our website at material-fair.com.
 					</p>
 
 					<p style="margin-top: 30px;">Kind regards,</p>
-					<p style="text-align: right;"><b>VIP Relations Team</b>.</p>
+					<p style="text-align: left;"><b>VIP Relations Team</b>.</p>
 
 					';
 
-					$table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #e5d2f9; width: 800px;">';
+					$table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
 					$table_mensaje .='<tbody>';
 
 					$table_mensaje .='<tr>';
@@ -195,7 +197,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$table_mensaje .='<tr>';
 					$table_mensaje .='<td colspan="3">';
-					$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
+					$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
 					$table_mensaje .='</td>';
 					$table_mensaje .='</tr>';
 
@@ -266,7 +268,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category'       => $categoria,
+										'users_vip_category_id'       => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -285,7 +287,10 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				$en_txt = 'Thank you very much '.$nombre .' '.$apellido.' a request to access VIP has been sent.';
 
-				$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+				//$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+
+				$wpdb_response_succes = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
+				
 			 	$class_form='visibility_form';
 			 	if($spam == '' && $email != ''&& filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email) ){
 			 		date_default_timezone_set('America/Mexico_City');
@@ -305,23 +310,23 @@ $wpdb_vip_user=$wpdb_email[0];
 					</p>
 
 					<p style="margin-top: 30px;">Saludos cordiales,</p>
-					<p style="text-align: right;"><b>Equipo de Relaciones VIP</b>.</p>
+					<p style="text-align: left;"><b>Equipo de Relaciones VIP</b>.</p>
 
 					';
 
                     $en='
-                    <p style="margin-bottom: 30px;">'.$nombre.'</p>
+                    <p style="margin-bottom: 30px;">Dear '.$nombre.',</p>
 					
 					<p>
 					Thanks for your interest in Material Art Fair’s 2019 VIP Program. We received your request for VIP status and we will answer as soon as possible. In the meantime, you can find more information about our 2019 exhibitors on our website at material-fair.com.
 					</p>
 
 					<p style="margin-top: 30px;">Kind regards,</p>
-					<p style="text-align: right;"><b>VIP Relations Team</b>.</p>
+					<p style="text-align: left;"><b>VIP Relations Team</b>.</p>
 
 					';
 
-					$table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #e5d2f9; width: 800px;">';
+					$table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
 					$table_mensaje .='<tbody>';
 
 					$table_mensaje .='<tr>';
@@ -338,7 +343,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$table_mensaje .='<tr>';
 					$table_mensaje .='<td colspan="3">';
-					$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
+					$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
 					$table_mensaje .='</td>';
 					$table_mensaje .='</tr>';
 
@@ -391,8 +396,12 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				<div class="formularios">
 
-				<p class="mensaje_error_vip">
+				<p class="mensaje_error_vip mesaje_estatus">
 					<?php echo $wpdb_response; ?>
+				</p>
+
+				<p class="mensaje_succes mesaje_estatus">
+					<?php echo $wpdb_response_succes; ?>
 				</p>
 
 				<p>
@@ -793,7 +802,7 @@ $wpdb_vip_user=$wpdb_email[0];
 								  <?php
 
 										global $wpdb;
-										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category_id ORDER BY id ASC ");
                 						echo '<option disabled selected>'.__('[:es]Selecciona un Perfil[:en]Select a profile[:]').'</option>';
 
 										foreach ($wpdb_cat as $key_cat => $cat) {

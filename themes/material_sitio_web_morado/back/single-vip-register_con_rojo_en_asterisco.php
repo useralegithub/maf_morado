@@ -119,7 +119,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category'       => $categoria,
+										'users_vip_category_id'       => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -224,7 +224,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category'       => $categoria,
+										'users_vip_category_id'       => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -520,7 +520,7 @@ $wpdb_vip_user=$wpdb_email[0];
 								  <?php
 
 										global $wpdb;
-										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category_id ORDER BY id ASC ");
                 						echo '<option disabled selected>'.__('Selecciona un Perfil').'</option>';
 
 										foreach ($wpdb_cat as $key_cat => $cat) {
