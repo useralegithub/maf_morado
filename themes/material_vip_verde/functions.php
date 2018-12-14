@@ -744,12 +744,12 @@ function wpmt_function_vip_museos_genero_zona( $post ) {
 
     <tr>
         <td style="width: 150px;"><label for="vip-museos-genero" class="wpmt-row-title"><?php _e( 'Genero: ', 'wpmt-textdomain' )?></label></td>
-        <td ><input type="text" style="width: 250px;" name="vip-museos-genero" id="vip-museos-genero" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-genero'] ) ) echo $wpmt_get_post_meta['vip-museos-genero'][0]; ?>" placeholder="" /></td>
+        <td ><input type="text" style="width: 250px;" class="hook_qtranslatex" name="vip-museos-genero" id="vip-museos-genero" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-genero'] ) ) echo $wpmt_get_post_meta['vip-museos-genero'][0]; ?>" placeholder="" /></td>
     </tr>
 
     <tr>
         <td style="width: 150px;"><label for="vip-museos-zona" class="wpmt-row-title"><?php _e( 'Zona: ', 'wpmt-textdomain' )?></label></td>
-        <td ><input type="text" style="width: 250px;" name="vip-museos-zona" id="vip-museos-zona" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-zona'] ) ) echo $wpmt_get_post_meta['vip-museos-zona'][0]; ?>" placeholder="" /></td>
+        <td ><input type="text" style="width: 250px;" class="hook_qtranslatex" name="vip-museos-zona" id="vip-museos-zona" value="<?php if ( isset ( $wpmt_get_post_meta['vip-museos-zona'] ) ) echo $wpmt_get_post_meta['vip-museos-zona'][0]; ?>" placeholder="" /></td>
     </tr>
     
  </table>
@@ -1210,10 +1210,10 @@ $wpdb->update('wp_users_vip', array(
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from; 
-                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
-                    mail($to, $subject, $contenido, $mailheader);
+                    //$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    wp_mail($to,$subject, $contenido, $mailheader);
 
                 }
 
@@ -1479,10 +1479,10 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from;
-                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
-                    mail($to, $subject, $contenido, $mailheader);
+                    //$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    wp_mail($to,$subject, $contenido, $mailheader);
 
                 }
 
@@ -2818,13 +2818,13 @@ add_action('admin_enqueue_scripts', function(){
 });
 
 function getEPDB(){
-    return new wpdb('root', '', 'maf2019', 'localhost');
-    //return new wpdb('db214684', '3xA!XxFV!nuR', 'db214684_maf2019', 'internal-db.s214684.gridserver.com');
+    //return new wpdb('root', '', 'maf2019', 'localhost');
+    return new wpdb('db214684', '3xA!XxFV!nuR', 'db214684_maf2019', 'internal-db.s214684.gridserver.com');
 }
 
 function getEPBaseURL(){
-    return 'http://localhost/maf2019/';
-    //return 'https://material-fair.com/2019/';
+    //return 'http://localhost/maf2019/';
+    return 'https://material-fair.com/2019/';
 }
 
 function formatURL($url){
@@ -2847,10 +2847,10 @@ add_action('add_meta_boxes', function(){
         $postId = $post->ID;
 
         $epDB = getEPDB();
+
         $epGalleryId = get_post_meta($postId, '_ep_gallery_id', TRUE);
         $epGallery = $epDB->get_results('SELECT * FROM maf_galleries WHERE id = ' . $epGalleryId);
-        $epAllGalleriesRequest = json_decode(file_get_contents(getEPBaseURL() . 'wp-content/themes/maf2019/api.php?model=Gallery&method=getNames&params[]=' . urlencode('WHERE edition_id = 1 AND gallery_status_id = 5')));
-        $epAllGalleries = $epAllGalleriesRequest->payload;
+        $epAllGalleries = $epDB->get_results('SELECT * FROM maf_galleries WHERE edition_id = 1 AND gallery_status_id = 5');
 
         $translated = get_post_meta($postId, '_ep_translated', TRUE);
         $images = get_post_meta($post->ID, '_ep_images', TRUE);
@@ -2920,6 +2920,12 @@ add_action('add_meta_boxes', function(){
                 <th>Entrada relacionada a la galería</th>
                 <td colspan="2">
                     <select id="_ep_gallery_id" name="_ep_gallery_id">
+                        <?php if(empty($epGalleryId)){
+                            $selectedPlaceholder = ' selected';
+                        }else{
+                            $selectedPlaceholder = '';
+                        } ?>
+                        <option value=""<?= $selectedPlaceholder; ?>>Selecciona una galería del portal de expositores</option>
                         <?php foreach($epAllGalleries as $epAllGallery){
                             $selected = $epGalleryId == $epAllGallery->id ? ' selected' : '';
                             ?>
@@ -2954,7 +2960,7 @@ add_action('add_meta_boxes', function(){
             </tr>
             </thead>
             <tbody>
-            <?php if(count($images) > 0){
+            <?php if(! empty($images)){
                 $index = 0;
 
                 foreach($images as $image){
@@ -3188,6 +3194,14 @@ add_action('save_post', function($postId){
     $epGalleryId = get_post_meta($postId, '_ep_gallery_id', TRUE);
     $epDB = getEPDB();
 
+    if($formerGalleryId != $epGalleryId){
+        $epDB->update('maf_galleries', [
+            'wp_post_id' => $postId
+        ], [
+            'id' => $epGalleryId
+        ]);
+    }
+
     if(isset($_POST['getImages']) && $_POST['getImages'] == 1){
         $artworks = $epDB->get_results('SELECT * FROM maf_artworks WHERE gallery_id = ' . $epGalleryId . ' AND item_status_id = 1 AND is_for_press = 0');
         $images = [];
@@ -3290,7 +3304,8 @@ add_action( 'vip_programs_edit_form_fields', 'vip_programs_taxonomy_custom_field
   
 add_action( 'edited_vip_programs', 'save_taxonomy_custom_fields', 10, 2 );
 /*end custom field term*/
-flush_rewrite_rules();
+//flush_rewrite_rules();
+
                                 
     add_filter('wp_mail_from', function(){
         return 'vip@material-fair.com';

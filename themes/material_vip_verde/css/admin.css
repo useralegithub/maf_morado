@@ -1,0 +1,50 @@
+.epInfoTable{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.epInfoTable:not(:first-of-type){
+    margin-top: 25px;
+}
+
+.epInfoTable tr > th:first-child{
+    vertical-align: top;
+    text-align: right;
+    width: 200px;
+}
+
+.epInfoTable tr > td:nth-child(2){
+    /*width: 40%;*/
+}
+
+.epInfoTable tr > td:nth-child(3){
+    /*width: 40%;*/
+}
+
+.epInfoTable > tbody > tr:nth-child(odd){
+    background-color: #EFEFEF;
+}
+.epInfoTable th,
+.epInfoTable td{
+    padding: 5px;
+}
+
+.epInfoTable td > input,
+.epInfoTable td > select,
+.epInfoTable td > textarea{
+    width: 100%;
+}
+
+.epInfoTable td > textarea{
+    height: 100px;
+}
+
+.epInfoTableImageCell{
+    text-align: center;
+}
+
+.epInfoTableImageCell img{
+    width: 200px;
+    max-height: 200px;
+}

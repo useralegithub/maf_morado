@@ -1,0 +1,35 @@
+usar wpmail
+quitar los headeres solo dejar from
+usar los filtros
+
+
+------------------------------------
+email:
+password recovery
+login
+
+filtrado
+por estatus
+
+---------------
+
+poner single para todos los días
+
+revisar el slider de las entradas de los dias para que funcione bien
+
+ocultar calendario y rsvp de produccion esta tarea es prioridad
+
+check en las entradas para que estas solo twengan rcvo
+
+------------------------------------------------------------------------------
+
+no poner la palabra ubicacion location, solo la palabra de campo
+
+elimanar campo de subtitulo
+
+pasar los titulos de los sumenus aa local
+
+------------------------------------------------------------------------------
+poner active resaltado
+
+

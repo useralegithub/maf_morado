@@ -1210,10 +1210,10 @@ $wpdb->update('wp_users_vip', array(
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from; 
-                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
-                    mail($to, $subject, $contenido, $mailheader);
+                    //$mailheader .= "Reply-To: " .$email."\r\n"; 
+                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    wp_mail($to, $subject, $contenido, $mailheader);
 
                 }
 
@@ -1479,10 +1479,10 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from;
-                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
-                    mail($to, $subject, $contenido, $mailheader);
+                    //$mailheader .= "Reply-To: " .$email."\r\n"; 
+                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    wp_mail($to, $subject, $contenido, $mailheader);
 
                 }
 
@@ -3291,14 +3291,4 @@ add_action( 'vip_programs_edit_form_fields', 'vip_programs_taxonomy_custom_field
 add_action( 'edited_vip_programs', 'save_taxonomy_custom_fields', 10, 2 );
 /*end custom field term*/
 flush_rewrite_rules();
-                                
-    add_filter('wp_mail_from', function(){
-        return 'vip@material-fair.com';
-    });
-    add_filter('wp_mail_content_type', function(){
-        return 'text/html';
-    });
-    add_filter('wp_mail_from_name', function(){
-        return 'Material Art Fair';
-    });
 ?>
