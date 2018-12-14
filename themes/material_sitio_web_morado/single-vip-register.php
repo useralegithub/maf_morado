@@ -307,7 +307,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$to = $email;
  
-					$subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); 
+					$subject = __('[:es]Feria de Arte Material Vol. VI | Gracias por registrarte en VIP[:en]Material Art Fair Vol. VI | Thanks for registering in VIP[:]'); 
 					$atibuto_img =__('[:es]Feria de Arte Material Vol. VI[:en]Material Art Fair Vol. VI[:]');
 					$attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
 					$attr_twitter=__('[:es]Material en Twitter[:en]Material at Twitter[:]');
@@ -417,12 +417,13 @@ $wpdb_vip_user=$wpdb_email[0];
 							<?php echo $wpdb_response_succes; ?>
 						</p>
 					<?php }
+					
 
-					if ( empty($nombre) || empty($apellido) || empty($email)|| $email=='' || filter_var($email, FILTER_VALIDATE_EMAIL)||is_valid_email($email) ) { ?>
-						<p><?= __('[:es]Campos indicados con "*" son obligatorios[:en]Fields marked with "*" are required[:]'); ?></p>
-					<?php }
+					if(! $success){
+						if ( empty($nombre) || empty($apellido) || empty($email)|| $email=='' || filter_var($email, FILTER_VALIDATE_EMAIL)||is_valid_email($email) ) { ?>
+							<p><?= __('[:es]Campos indicados con "*" son obligatorios[:en]Fields marked with "*" are required[:]'); ?></p>
+						<?php } ?>
 
-					if(! $success){ ?>
 						<form action="" method="post" name="form_registro" class="<?php echo $class_form; ?>" >
 						<?php
 
