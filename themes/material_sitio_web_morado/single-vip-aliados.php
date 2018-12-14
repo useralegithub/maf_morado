@@ -1,3 +1,4 @@
+<?php include 'folder_custom_wp/session.php'; ?>
 <?php include 'header.php'; ?>
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri() ?>/style_vip.css">
 <!-- page_acreditacion_prensa -->
@@ -8,6 +9,7 @@
 				<li><a href="<?php echo home_url('/') ?>"><img src="<?php echo get_template_directory_uri(); ?>/img/logo_barra.png"></a></li>
 				<li><?php echo __('[:es]Aliados VIP[:en]VIP Aliances[:]'); ?></li>
 			</ul>
+			<?php include 'folder_custom_wp/logout.php'; ?>
 		</div>
 
 		<!-- boton -->

@@ -221,9 +221,9 @@ body.act .submenu_vip{
     text-transform: uppercase;
     font-size: 14px;
     font-weight: bold;
-    margin-top: -40px;
+    margin-top: 10px;
     display: block;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 .boton_volver::before{
     content: '< ';
@@ -286,6 +286,8 @@ body.act .submenu_vip{
     transform-origin: 0px 0px;
     margin-bottom: 24px;
     font-size: 18px;
+    -webkit-transform:initial;
+    transform: initial;
 }
 .wrapper.wrapper_vip .hora p{
     margin: 5px 0px 0px;
@@ -321,6 +323,9 @@ body.act .submenu_vip{
     transform-origin: 0px 0px;
     margin-bottom: 24px;
     font-size: 18px;
+    -webkit-transform:initial;
+
+    transform:initial;
 }
 .wrapper.wrapper_vip .recomendacion p{
     margin: 5px 0px 0px;
@@ -512,6 +517,8 @@ body.act .submenu_vip{
 }
 .wrapper.wrapper_vip .titulo_fila h2{
     margin: 0px 0px 20px;
+    -webkit-transform:initial;
+    transform:initial;
 }
 .wrapper.wrapper_vip .columna_imagen{
     width: -o-calc(50% - 20px);
@@ -717,7 +724,38 @@ header.act_over{
 .wrapper.wrapper_vip .formularios form .colum_dos.campo_vacio input{
     border-color: red;
 }
+
+.user_logout{
+        display: block;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 0px;
+    right: calc(50% - 525px);
+    border-right: 6px solid #000;
+    padding: 0px 10px;
+    height: 40px;
+    line-height: 40px;
+    border-left: 6px solid #000;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.user_logout a{
+
+}
+
+
+
+
 /*responsive vip*/
+@media screen and (max-width: 1200px){
+    .user_logout{
+        right: 70px;
+    }
+    
+}
+
 @media screen and (min-width: 1040px){
     .wrapper.wrapper_vip .formularios form input[type="submit"]:hover{
         background-color: #000;
@@ -750,6 +788,22 @@ header.act_over{
         width: -moz-calc(100%/3 - 40px);
         width: -webkit-calc(100%/3 - 40px);
         width: calc(100%/3 - 40px);
+    }
+}
+
+@media screen and (max-width: 700px){
+    .user_logout{
+        right: initial;
+    left: 56px;
+    top: 41px;
+    border-bottom: 6px solid #000;
+    line-height: 43px;
+    height: 43px;
+    }
+    .user_logout.act{
+        top: 3px;
+        position: fixed;
+        background-color: #d8ffb9;
     }
 }
 

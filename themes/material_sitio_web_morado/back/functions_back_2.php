@@ -1035,7 +1035,7 @@ $wpdb->update('wp_users_vip', array(
                     ';
                     //$message=base64_encode($message);
                     $contenido=utf8_decode($message);
-                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+                    $mailheader .= __('[:es]Feria de Arte Material VIP <vip@material-fair.com>\r\n[:en]From: Material Art Fair VIP <vip@material-fair.com>\r\n[:]');
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
                     $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 
@@ -1171,7 +1171,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     //$message=base64_encode($message);
                     $contenido=utf8_decode($message);
                     $subject=utf8_decode($subject);
-                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
+                    $mailheader .= __('[:es]Feria de Arte Material VIP <vip@material-fair.com>\r\n[:en]From: Material Art Fair VIP <vip@material-fair.com>\r\n[:]');
                     $mailheader .= "Reply-To: " .$email."\r\n"; 
                     $mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 

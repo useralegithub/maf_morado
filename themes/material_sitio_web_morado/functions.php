@@ -1058,8 +1058,13 @@ $wpdb->update('wp_users_vip', array(
                     $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
 
  
-                    $subject = ($lang=='es')?'Solicitud Aprobada':'Approved Request';
+                    $subject = ($lang=='es')?'Material Art Fair Vol. VI | Your VIP account has been approved':'Feria de Arte Material Vol. VI | Tu cuenta VIP ha sido aprobada';
                     if ($lang=='es') {
+
+                    $attr_img_es='Feria de Arte Material Vol. VI';
+                    $attr_facebook_es='Material en Facebook';
+                    $attr_twitter_es='Material en Twitter';
+                    $attr_instagram_es='Material en Instagram';
 
                     $es='
                     
@@ -1087,7 +1092,7 @@ $wpdb->update('wp_users_vip', array(
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_es.'" title="'.$attr_img_es.'" src="'.$them_url.'/img/email_header.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1099,7 +1104,7 @@ $wpdb->update('wp_users_vip', array(
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_es.'" title="'.$attr_img_es.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1112,9 +1117,9 @@ $wpdb->update('wp_users_vip', array(
                     $table_mensaje .='</td>';
                     $table_mensaje .='<td style="width: 33%; padding: 10px;">';
                     $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook_es.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter_es.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram_es.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
                     $table_mensaje .='</ul>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
@@ -1128,6 +1133,11 @@ $wpdb->update('wp_users_vip', array(
                     $table_mensaje .='</table>';
                         
                     }else{
+
+                    $attr_img_en='Material Art Fair Vol. VI';
+                    $attr_facebook_en='Material at Facebook';
+                    $attr_twitter_en='Material at Twitter';
+                    $attr_instagram_en='Material at Instagram';
 
                     $en='
                     
@@ -1145,8 +1155,8 @@ $wpdb->update('wp_users_vip', array(
                     <p>We are looking forward to seeing you at the fair’s VIP Preview on Thursday, February 7 th , between 12 and 3 pm.</p>
 
                     <p style="margin-top: 30px;">Kind regards,</p>
-                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
-                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>VIP Relations Director</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>VIP Program Coordinator</b></p>
 
                     ';
 
@@ -1155,7 +1165,7 @@ $wpdb->update('wp_users_vip', array(
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_en.'" title="'.$attr_img_en.'" src="'.$them_url.'/img/email_header.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1167,7 +1177,7 @@ $wpdb->update('wp_users_vip', array(
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_en.'" title="'.$attr_img_en.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1180,9 +1190,9 @@ $wpdb->update('wp_users_vip', array(
                     $table_mensaje .='</td>';
                     $table_mensaje .='<td style="width: 33%; padding: 10px;">';
                     $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material at Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material at Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook_en.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter_en.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram_en.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
                     $table_mensaje .='</ul>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
@@ -1198,9 +1208,10 @@ $wpdb->update('wp_users_vip', array(
                     }
 
                     $contenido=$table_mensaje;
-                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-                    $mailheader .= "Reply-To: " .$email."\r\n"; 
-                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
+                    $mailheader .=$from; 
+                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
                     $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
                     mail($to, $subject, $contenido, $mailheader);
 
@@ -1308,7 +1319,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
         $recovery = $users_vip_recupera_id.''.randomRecovery(20);
 
         $wpdb->update('wp_users_vip', array('users_vip_pass_recovery' => $recovery ), array('id'=>$users_vip_recupera_id) );
-        $code = $wpdb->get_results("SELECT 'users_vip_pass_recovery' FROM wp_users_vip WHERE users_vip_email = '$users_vip_recupera_email' AND users_vip_estatus = '3' ORDER BY id DESC ")[0];
+        $code = $recovery;
 
     }
 
@@ -1320,12 +1331,17 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $them_url=get_template_directory_uri();
                     $home_url=home_url();
 
-                    $link_recover_es=$home_url.'/es/vip/password-setup/?c='.$code;
-                    $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
+                    $link_recover_es=$home_url.'/es/vip/password-recovery/?c='.$code;
+                    $link_recover_en=$home_url.'/en/vip/password-recovery/?c='.$code;
                     $subject = ($lang=='es')?'Recupera Contraseña':'Recovery Password';
 
  
                     if ($lang=='es') {
+
+                    $attr_img_es='Feria de Arte Material Vol. VI';
+                    $attr_facebook_es='Material en Facebook';
+                    $attr_twitter_es='Material en Twitter';
+                    $attr_instagram_es='Material en Instagram';
 
                     $es='
 
@@ -1349,7 +1365,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_es.'" title="'.$attr_img_es.'" src="'.$them_url.'/img/email_header.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1361,7 +1377,7 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_es.'" title="'.$attr_img_es.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1374,9 +1390,9 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $table_mensaje .='</td>';
                     $table_mensaje .='<td style="width: 33%; padding: 10px;">';
                     $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook_es.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter_es.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram_es.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
                     $table_mensaje .='</ul>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
@@ -1391,7 +1407,12 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                         
                     }else{
 
-                    $es='
+                    $attr_img_en='Material Art Fair Vol. VI';
+                    $attr_facebook_en='Material at Facebook';
+                    $attr_twitter_en='Material at Twitter';
+                    $attr_instagram_en='Material at Instagram';
+
+                    $en='
 
                     <p>Dear '.$nombre.',</p>
                     
@@ -1403,8 +1424,8 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 
                     <p style="margin-top: 30px;">Kind regards,</p>
                     
-                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
-                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
+                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>VIP Relations Director</b></p>
+                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>VIP Program Coordinator</b></p>
 
                     ';
 
@@ -1413,19 +1434,19 @@ if ($_POST['users_vip_recupera_contrasena_id']){
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="Material Art Fair Vol. VI" title="Material Art Fair Vol. VI" src="'.$them_url.'/img/email_header.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_en.'" title="'.$attr_img_en.'" src="'.$them_url.'/img/email_header.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3" style="padding: 10px;">';
-                    $table_mensaje .=apply_filters( 'the_content', $es );
+                    $table_mensaje .=apply_filters( 'the_content', $en );
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
                     $table_mensaje .='<tr>';
                     $table_mensaje .='<td colspan="3">';
-                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
+                    $table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$attr_img_en.'" title="'.$attr_img_en.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
 
@@ -1438,9 +1459,9 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $table_mensaje .='</td>';
                     $table_mensaje .='<td style="width: 33%; padding: 10px;">';
                     $table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="Material en Facebook" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="Material at Twitter" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="Material en Instagram" src="'.$them_url.'/img/instagram-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook_en.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter_en.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
+                    $table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram_en.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
                     $table_mensaje .='</ul>';
                     $table_mensaje .='</td>';
                     $table_mensaje .='</tr>';
@@ -1456,9 +1477,10 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     }
 
                     $contenido=$table_mensaje;
-                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-                    $mailheader .= "Reply-To: " .$email."\r\n"; 
-                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
+                    $mailheader .=$from;
+                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
                     $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
                     mail($to, $subject, $contenido, $mailheader);
 
@@ -1830,6 +1852,19 @@ $wpdb->insert('wp_users_vip', array(
 
     <table class="wp-list-table widefat fixed striped users">
         <tr>
+            <?php
+                    
+                $buscar=$_GET['s'];
+
+            ?>
+            <td colspan="10"style="text-align: right;">
+                <form action="admin.php?page=usuarios_vip" method="get">
+                <input type="hidden" name="page" value="usuarios_vip" />
+                Buscar: <input type="text" name="s" value="<?php echo $buscar; ?>" />
+                </form>
+            </td>
+        </tr>
+        <tr>
             <td class="td_center_hori_vert" >Nombre</td>
             <td class="td_center_hori_vert" >Apellido</td>
             <td class="td_center_hori_vert" >email</td>
@@ -1862,15 +1897,32 @@ $estatus_aprobado   = 3;
 $estatus_rechazado  = 4;
 $estatus_eliminado  = 7;
 
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado ORDER BY id DESC LIMIT  $inicio,$registros");
+if ($buscar==''||empty($buscar)){
+
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)  ORDER BY id DESC LIMIT  $inicio,$registros");
 
 $wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
 
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado ORDER BY id DESC LIMIT  $inicio,$registros");
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHER(E users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)   ORDER BY id DESC LIMIT  $inicio,$registros");
+
+    
+}else{
+
+$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%') ORDER BY id DESC LIMIT  $inicio,$registros");
+
+//$wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
+$wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%') ORDER BY id DESC " );
+
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHER(E users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+    
+
+}
+
 
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
 $paginas=ceil($wp_users_vip_count_row/$registros);
+
 
 echo "\n <!-- \n";
 echo "\n here:__";
@@ -1933,8 +1985,6 @@ if ($value->users_vip_estatus==$estatus_rechazado) {
     echo  '<td class="td_center_hori_vert vip_usuario_aprobado"><span class="estatus_rechazado">Rechazado</span></td>';
 }
 /* END colum estatus */
-
-
 
 /* colum cambiar estatus*/
 if ($value->users_vip_estatus==$estatus_aprobado) {
@@ -2080,18 +2130,39 @@ echo '</tr>'.PHP_EOL;
                 <!-- <?php //echo admin_url('admin-ajax.php?action=csv_pull', 'https'); ?> -->
                 
             </td>
-        </tr>     
+        </tr> 
+            
     </table>
 <?php
-echo ($pagina>1)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina-1).'">Anterior</a>':'';
-
-for ($cont=1; $cont <=$paginas; $cont++) { 
 
 
-    echo ($cont==$pagina)?''.$cont:'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.$cont.'">'.$cont.'</a>';
-    echo " ";
+
+if ($buscar==''||empty($buscar)){
+
+    echo ($pagina>1)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina-1).'">Anterior</a>':'';
+
+    for ($cont=1; $cont <=$paginas; $cont++) { 
+
+
+        echo ($cont==$pagina)?''.$cont:'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.$cont.'">'.$cont.'</a>';
+        echo " ";
+    }
+    echo ($pagina<$paginas)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina+1).'">Siguiente</a>':'';
+    
+}else{
+
+
+    echo ($pagina>1)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina-1).'&s='.$buscar.'">Anterior</a>':'';
+
+    for ($cont=1; $cont <=$paginas; $cont++) { 
+
+
+        echo ($cont==$pagina)?''.$cont:'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.$cont.'&s='.$buscar.'">'.$cont.'</a>';
+        echo " ";
+    }
+    echo ($pagina<$paginas)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina+1).'&s='.$buscar.'">Siguiente</a>':'';
+
 }
-echo ($pagina<$paginas)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina+1).'">Siguiente</a>':'';
 ?>
 <!--     <div class="atras">Atras</div>
     <div class="siguiente">Siguiente</div> -->
@@ -2703,7 +2774,8 @@ global $wpdb;
   }
 
   //$csv_output = '"'.implode('","',array_keys($results[0])).'",'."\n";
-  $csv_format=utf8_decode('"Nombre","Apellido","Email","País","Rango Edad","Perfil","Perfil Anterior","Afiliación","Estatus","Lenguaje"'."\n");
+  //$csv_format=utf8_encode ('"Nombre","Apellido","Email","País","Rango Edad","Perfil","Perfil Anterior","Afiliación","Estatus","Lenguaje"'."\n");
+  $csv_format='"Nombre","Apellido","Email","País","Rango Edad","Perfil","Perfil Anterior","Afiliación","Estatus","Lenguaje"'."\n";
   $edad_set   = array('1' =>'18-24' , '2' =>'25-34' ,'3' =>'35-44' ,'4' =>'45+' );
   $perfil_set = array('1' =>'Coleccionista' , '2' =>'Curador' ,'3' =>'Personal de Museo o Institucional' ,'4' =>'Asesor','5' =>'Galerista','6' =>'Artista','7' =>'Otro' );
 

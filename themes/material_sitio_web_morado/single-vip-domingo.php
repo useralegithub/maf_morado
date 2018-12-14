@@ -1,3 +1,4 @@
+<?php include 'folder_custom_wp/session.php'; ?>
 <?php include 'header.php';  ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri() ?>/style_vip.css">
@@ -10,6 +11,7 @@
 				<li><a href="<?php echo home_url('/') ?>"><img src="<?php echo get_template_directory_uri(); ?>/img/logo_barra.png"></a></li>
 				<li><?php echo __('[:es]Programa VIP 2018[:en]VIP Program 2018[:]'); ?></li>
 			</ul>
+			<?php include 'folder_custom_wp/logout.php'; ?>
 		</div>
 
 		<!-- boton -->
@@ -42,19 +44,6 @@
 		foreach ($terms_dias as $key => $value) {
 			//echo "v: ".$value->name;
 		}
-
-
-		function normaliza ($cadena){
-			    $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
-			ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-			    $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
-			bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-			    $cadena = utf8_decode($cadena);
-			    $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
-			    $cadena = strtolower($cadena);
-			    return utf8_encode($cadena);
-			}
-
 		?>
 			<nav>
 			<?php foreach ($terms_dias as $key => $dia) { ?>

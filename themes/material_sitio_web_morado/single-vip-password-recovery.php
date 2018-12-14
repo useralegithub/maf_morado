@@ -1,18 +1,32 @@
-<?php include 'header.php';?>
-<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<?php
+	//condition for $code
+	$code=$_GET[c];
+	$user_vip=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code' ORDER BY id DESC ")[0];
+	$user_id=$user_vip->id;
+	//echo "code: ".$code."\n";
+	//echo "user_id: ".$user_id."\n";
+				
+
+	if ($code==''&&$user_id==''||$user_id==''||$code=='') {
+		header('Location: '.home_url( '/'));
+	}
+
+	include 'header.php';
+?>
 <!-- page_acreditacion_prensa -->
-<div class="wrapper single-vip-password-recovery wrapper_vip">
+<link rel="stylesheet" type="text/css" href="<?php echo get_template_directory_uri(); ?>/style_vip.css?v=<?php echo time();?>">
+<div class="wrapper single-vip-password-setup wrapper_vip">
 	<div class="content content_int">
 		<div class="menu_navegacion">
 			<ul>
 				<li><a href="<?php echo home_url(); ?>"><img src="<?php echo get_template_directory_uri(); ?>/img/logo_barra.png"></a></li>
-				<li><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></li>
+				<li><?php echo __('[:es]Recupera la contraseña[:en]Recover password[:]'); ?></li>
 			</ul>
 		</div>
 		<section>
 			<div class="section_int ">
 				<div class="texto texto_resgistro">
-					<h2><?php echo __('[:es]Recuperar contraseña[:en]Recover password[:]'); ?></h2>
+					<h2><?php echo __('[:es]Recupera la contraseña[:en]Recover password[:]'); ?></h2>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -23,189 +37,144 @@
 
 			<?php
 
-				global $wpdb;
-				$mensaje_response=__('[:es]Escribe tu electrónico.[:en]Enter your email.[:]');
-				include 'folder_custom_wp/user_estatus.php';
+				$mensaje_info=__('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]');
+				$mensaje_invalido='';
 
-				function randomRecovery($length = 6) {
-					$str = "";
-					//$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
-					$characters = array_merge(range('a','z'), range('0','9'));
-					$max = count($characters) - 1;
-					for ($i = 0; $i < $length; $i++) {
-						$rand = mt_rand(0, $max);
-						$str .= $characters[$rand];
-					}
-					return $str;
-				}
+				//$page_login = get_page_by_path( 'vip-login' );
 
-				function is_valid_email($str){
-				  $result = (false !== filter_var($str, FILTER_VALIDATE_EMAIL));
-					  if ($result){
-					    list($user, $domain) = split('@', $str);
-					    $result = checkdnsrr($domain, 'MX');
-					  }
-					  return $result;
-				}
+				//$page_login_link = get_permalink( $page_login->ID);
+
+				$page_login=get_posts(array('post_type' =>'vip' ,'name'=>'login','post_status'=>"publish" ))[0];
+				$page_login_link=get_permalink($page_login->ID);
+
+				$establece_true = __('[:es]Bien hecho has establecido tu contraseña. Puedes acceder desde aquí <a href="'.$page_login_link.'">VIP</a>[:en]Well done you have established your password. You can access from here <a href="'.$page_login_link.'">VIP</a>');
+				$spam=$_POST['spam'];
+
 
 
 				if (!empty($_POST)){
 
-					$recover_email=$_POST['recover_email'];
-					$user_vip=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_email = '$recover_email' ORDER BY id DESC ")[0];
-					$user_id=$user_vip->id;
-					$user_estatus=$user_vip->users_vip_estatus;
-					$user_email=$user_vip->users_vip_email;
-					$nombre=$user_vip->users_vip_nombre;
-					$code=$user_vip->users_vip_pass_recovery;
-					$spam=$_POST['spam'];
 
-					if (!empty($user_vip)&&$user_estatus==$estatus_aprobado) {
-						
-					if ($code==''||$code=='NULL') {
+					if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
 
-						$recovery = $user_id.''.randomRecovery(20);
 
-		    			$wpdb->update('wp_users_vip', array('users_vip_pass_recovery' => $recovery ), array('id'=>$user_id) );
-						$code = $wpdb->get_results("SELECT 'users_vip_pass_recovery' FROM wp_users_vip WHERE users_vip_email = '$recover_email' ORDER BY id DESC ")[0];
 
-					}
+						if (strlen($_POST['password_one']) > 7&&preg_match('#^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#',$_POST['password_one'])){
 
-		                if($spam == '' && $user_email != '' ){
-			 				date_default_timezone_set('America/Mexico_City');
-		                    $email=$user_email;
+								$hash = wp_hash_password( $_POST['password_one'] );
+
+								global $wpdb;
+
+							    $wpdb->update('wp_users_vip', array(
+							                                        'users_vip_pass'=>$hash,
+							                                        'users_vip_pass_recovery'=>'NULL'
+
+							                                    ), array('id'=>$user_vip->id)
+											                );
+								//$wp_users_vip_email = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
+
+								$vip_email=$user_vip->users_vip_email;
+								$vip_nombre=$user_vip->users_vip_nombre;
+
+		                if($spam == '' && $vip_email != '' ){
+		                    $email=$vip_email;
 		                    $to = $email;
-							$link=get_posts(array('post_type' =>'vip' ,'name'=>'password-setup','post_status'=>"publish" ))[0];
-							//$link=get_permalink($link->ID).'?'.$code;
-							$link_recover=get_permalink($link->ID).'?c='.$code;
-		                    $them_url=get_template_directory_uri();
-		                    $home_url=home_url();
-							//
- 
-							$subject = __('[:es]Recupera Contraseña[:en]Recovery Password[:]');
-							$atibuto_img =__('[:es]Material Art Fair Vol. VI[:en]Feria de Arte Material Vol. VI[:]');
-							$attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
-							$attr_twitter=__('[:es]Material at Twitter[:en]Material at Twitter[:]');
-							$attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
 
+
+		 
+		                    $subject = __('[:es]Bienvenido a VIP[:en]Welcome to VIP[:]'); //El asunto del correo
 		                    $es='
+		                    <html>
+		                    <body>
+		                    
+		                    <p>
+		                        Hola '.$vip_nombre.' ahora puedes acceder a la sección <a href="'.$page_login_link.'">VIP</a>
+		                    </p>
+		                    
 
-		                    <p>Saludos '.$nombre.',</p>
-							
-							<p>
-							Gracias por tu interés en el Programa VIP 2019 de la Feria de Arte Material. Para recuperar tu acceso al Portal VIP, te pedimos por favor que utilices el siguiente vínculo:
-							</p>
-
-							<p><a href="'.$link_recover.'">RECUPERAR CONTRASEÑA</a></p>
-
-							<p style="margin-top: 30px;">Saludos cordiales,</p>
-							
-		                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
-		                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
-
-							';
+		                    </body>
+		                    </html>
+		                    ';
 
 		                    $en='
+		                    <html>
+		                    <body>
+		                    
+		                    <p>
+		                        Hi '.$vip_nombre.', you can now access <a href="'.$page_login_link.'">VIP</a>
+		                    </p>
+		                    
 
-		                    <p>Dear '.$nombre.',</p>
+		                    </body>
+		                    </html>
+		                    ';
+		                    //$message=base64_encode($message);
+		                    $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
+		                    //$contenido=utf8_decode($message);
+		                    $contenido=$message;
+		                    
+		                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+		                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
+		                    //mail($to, $subject, $contenido, $mailheader);
+
+		                } //close key sen email
+
+						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							
-							<p>
-							Thanks for your interest in Material Art Fair’s 2019 VIP Program. To recover your access to the VIP portal, we kindly ask you to use the following link:
-							</p>
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres, al menos un número, una letra mayúscula y una letra minúscula.[:en]Your password must be greater than 8 characters, at least one number, one uppercase letter and one lower case letter.[:]');
+						}
 
-							<p><a href="'.$link_recover.'">RECOVER MY PASSWORD</a></p>
-
-							<p style="margin-top: 30px;">Kind regards,</p>
+					}else{//close key if spam=0 and same password
 							
-		                    <p style="text-align: left;"><b>Isa Castilla</b><br><b>Directora de Relaciones VIP</b></p>
-		                    <p style="text-align: left;"><b>Alejandro Trigos</b><br><b>Coordinador del Programa VIP</b></p>
-
-							';
-
-							$table_mensaje = '<table style="font-family: Arial, Helvetica, sans-serif; font-size: 125%; background-color: #D9FFBD; width: 800px;">';
-							$table_mensaje .='<tbody>';
-
-							$table_mensaje .='<tr>';
-							$table_mensaje .='<td colspan="3">';
-							$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_header.jpg"></a>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='</tr>';
-
-							$table_mensaje .='<tr>';
-							$table_mensaje .='<td colspan="3" style="padding: 10px;">';
-							$table_mensaje .=__('[:es]'.$es.'[:en]'.$en.'[:]');
-							$table_mensaje .='</td>';
-							$table_mensaje .='</tr>';
-
-							$table_mensaje .='<tr>';
-							$table_mensaje .='<td colspan="3">';
-							$table_mensaje .='<a href="'.$home_url.'"><img style="max-width: 100%" alt="'.$atibuto_img.'" title="'.$atibuto_img.'" src="'.$them_url.'/img/email_footer.jpg"></a>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='</tr>';
-
-							$table_mensaje .='<tr>';
-							$table_mensaje .='<td style="width: 33%; padding: 10px;">';
-							$table_mensaje .='<p style="text-align: left">Melchor Ocampo 154-A<br>Col. San Rafael, Del. Cuauhtémoc<br></br>CDMX, 06470</p>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='<td style="width: 33%; padding: 10px;">';
-							$table_mensaje .='<p style="text-align: center">+52 55 5256-5533<br><a href="mailto:info@material-fair.com">info@material-fair.com</a></p>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='<td style="width: 33%; padding: 10px;">';
-							$table_mensaje .='<ul style="list-style: none; margin: 0; padding: 0; text-align: right">';
-							$table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://www.facebook.com/materialfair"><img style="max-width: 40px" alt="Facebook"  title="'.$attr_facebook.'" src="'.$them_url.'/img/facebook-64.png"></a></li>';
-							$table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://twitter.com/materialfair"><img style="max-width: 40px" alt="Twitter" title="'.$attr_twitter.'" src="'.$them_url.'/img/twitter-64.png"></a></li>';
-							$table_mensaje .='<li style="display: inline; width: 100%;"><a href="https://instagram.com/materialfair"><img style="max-width: 40px" alt="Instagram" title="'.$attr_instagram.'" src="'.$them_url.'/img/instagram-64.png"></a></li>';
-							$table_mensaje .='</ul>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='</tr>';
-							$table_mensaje .='<tr>';
-							$table_mensaje .='<td colspan="3" style="text-align: center; font-size: 85%;">';
-							$table_mensaje .='<p>&copy; '.date('Y').' Feria de Arte Material México S.A. de C.V.</p>';
-							$table_mensaje .='</td>';
-							$table_mensaje .='</tr>';
-		        
-							$table_mensaje .='</tbody>';
-							$table_mensaje .='</table>';
-
-							$contenido=$table_mensaje;
-							$mailheader .= "From: Material<noreply@material-fair.com>\r\n";
-							$mailheader .= 'MIME-Version: 1.0' . "\r\n";
-							$mailheader .= "Reply-To: " .$email."\r\n"; 
-							$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-							$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";  
-
-		                    mail($to, $subject, $contenido, $mailheader);
-
-		                }
-
-
-
-
-
-					$mensaje_response=__('[:es]Gracias hemos enviado un correo a '.$recover_email.' para establecer tu contraseña.[:en]Thank you we have sent an email to '.$recover_email.' to set your password.[:]');
-						
-					}else{
-
-						$mensaje_response=__('[:es]No hemos encontrado tu correo.[:en]Not foun your email[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser igual en los dos campos.[:en]Your password must be the same in both fields.[:]');
 
 					}
 
+				}else{} //close key if empty
 
-
-					
-
-				}else{ //close key if empty
-						
-						//$mensaje_response=__('[:es]No hemos encontrado tu correo.[:en]Not foun your email[:]');
-
-				}
-					
 			?>
 
+				<p>
+
+					<?php
+							//if (empty($nombre) || empty($apellido) || empty($email) ) {
+								//echo __('[:es]Campos indicados con "*" son obligatorios[:en]Fields indicated with "*" are required[:]');
+							//}
+							
+
+					?>
+
+
+					
+				</p>
+
+				<?php
+				//global $wpdb;
+				$users_vip_recovery = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_pass_recovery = '$code'");
+
+				//$pass_user=$user_vip->users_vip_pass;
+				//echo "string string";
+				//print_r($pass_user);
+
+				?>
+				<?php
+
+					//if ($pass_user=='') {
+					if (!empty($users_vip_recovery)) {
+
+				?>
 
 				<p>
-					<?php echo $mensaje_response; ?>
+					<?php //echo __('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]'); ?>
+
 				</p>
+
+				
+					<?php echo ($mensaje_invalido=='')?'<p>'.$mensaje_info.'</p>':'<p class="mensaje_error_vip">'.$mensaje_invalido.'</p>'; ?>
+				
+
+				
 
 					<form action="" method="post" name="form_establece_password" >
 
@@ -213,24 +182,67 @@
 							<label>
 								<?php
 
-								//echo __('[:es]Contraseña[:en]Password[:]');
+								echo __('[:es]Contraseña[:en]Password[:]');
 
 								
 								?>
 							</label>
-							<input type="email" name="recover_email" id="recover_email" value="<?php //echo $password_one; ?>">
+							<input type="password" name="password_one" id="password_one" value="<?php echo $password_one; ?>">
 						</div>
 
+						<div class="colum_dos">
+							<label>
+								<?php
+
+								echo __('[:es]Escribe de nuevo la contraseña[:en]Write the password again[:]');
+
+								
+								?>
+							</label>
+							<input type="password" name="password_two" id="password_two" value="<?php echo $password_two; ?>">
+							<span id='message'></span>
+						</div>
+
+						<!-- <label id="ver_password"><?php echo __('[:es]ver contraseña[:en]show password[:]'); ?></label> -->
+						
+						
 						<input type="hidden" name="spam">
 						
-						<input type="submit" name="" value="<?php echo __('[:es]Enviar[:en]Send[:]'); ?>" id="submitBot">
+						<input type="submit" name="" value="<?php echo __('[:es]Recuperar[:en]Recovery[:]'); ?>" id="submitBot">
 					</form>
-				
-				
+				<?php }else{ ?>
+				<?php echo $establece_true; ?>
+				<?php  } ?>
 
 				</div>
 			</div>
 		</section>
+
+		<script type="text/javascript">
+
+			$("#ver_password").click(function () {
+			    var password_one = document.getElementById("password_one");
+			    var password_two = document.getElementById("password_two");
+			    if (password_one.type === "password"||password_two.type === "password"){
+			        password_one.type = "text";
+			        password_two.type = "text";
+			    }else{
+			        password_one.type = "password";
+			        password_two.type = "password";
+			    }
+			});
+
+			// Validar que sea numero, mayúscula y minúscula.
+
+			$('#password_one, #password_two').on('keyup', function () {
+			  if ($('#password_one').val() == $('#password_two').val()) {
+			    	//$('#message').html('<?php echo __('[:es]Contraseña Correcta[:en]Correct password[:]'); ?>').css('color', 'green');
+			  } else{
+			    	//$('#message').html('<?php echo __('[:es]No coinciden[:en]Not Matching[:]'); ?>').css('color', 'red');
+				}
+			});
+
+		</script>
 
 
 

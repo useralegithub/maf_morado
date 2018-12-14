@@ -148,7 +148,7 @@ $wpdb_vip_user=$wpdb_email[0];
 					//$message=base64_encode($message);
 					$contenido=utf8_decode($message);
 					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-					$mailheader .= "Reply-To: " .$email."\r\n"; 
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
 					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 
 					$headers = "From:" . $email . "\r\n";
@@ -234,7 +234,7 @@ $wpdb_vip_user=$wpdb_email[0];
 					//$message=base64_encode($message);
 					$contenido=utf8_decode($message);
 					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-					$mailheader .= "Reply-To: " .$email."\r\n"; 
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
 					$mailheader .= "Content-type: text/html; charset=iso-8859-1\r\n"; 
 
 					$headers = "From:" . $email . "\r\n";

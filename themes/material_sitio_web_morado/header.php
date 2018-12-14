@@ -205,8 +205,11 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 				<div class="titulo_logo">
 					<a href="<?php echo home_url(); ?>">
 						<?php //include 'pages/svg/logo.php'; ?>
+
 						<?php
-						if ( get_post_type() === 'vip' ||get_queried_object()->post_name=='vip-login') { ?>
+						if ( get_post_type() === 'vip'||get_queried_object()->post_name=='login' ||get_queried_object()->post_name=='vip-login') { ?>
+
+
 
 						<a href="<?php echo home_url(); ?>">
 						<img  src="<?php echo get_template_directory_uri() ?>/img/big-logo_vip.png" ></a>
@@ -229,7 +232,13 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 						<li class=""><?php qtranxf_generateLanguageSelectCode('text'); ?></li>
 					</ul>
 				</div>
-				<div class="menu_botones">
+<?php
+
+session_start();
+
+if ($_SESSION['acceso']!='true'||!$_SESSION['acceso']||empty($_SESSION['acceso'])) { ?>
+
+	<div class="menu_botones">
 					<div class="columna_n_botones">
 						<p>Login:</p>
 					</div>
@@ -252,6 +261,9 @@ foreach (wp_get_nav_menu_items('Botón Home') as $b) {
 					</div>
 					
 				</div>
+
+<?php } ?>
+				
 
 				
 	</div>

@@ -108,9 +108,11 @@ $(".wrapper").stellar();
 		pos = $(this).scrollTop();
 		if (43 < pos){
 			$('.btn_responsive_vip').addClass('act');
+			$('.user_logout').addClass('act');
 			$('.menu_vip').addClass('act_scroll');
 		}else{
 			$('.btn_responsive_vip').removeClass('act');
+			$('.user_logout').removeClass('act');
 			$('.menu_vip').removeClass('act_scroll');
 		}
 

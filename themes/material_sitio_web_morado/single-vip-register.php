@@ -7,13 +7,13 @@
 		<div class="menu_navegacion">
 			<ul>
 				<li><a href="<?php echo home_url(); ?>"><img src="<?php echo get_template_directory_uri(); ?>/img/logo_barra.png"></a></li>
-				<li><?php echo __('[:es]Registro[:en]Register[:]'); ?></li>
+				<li><?php echo __('[:es]Registro VIP[:en]VIP Register[:]'); ?></li>
 			</ul>
 		</div>
 		<section>
 			<div class="section_int ">
 				<div class="texto texto_resgistro">
-					<h2><?php echo __('[:es]Registro VIP[:en]Register VIP[:]'); ?></h2>
+					<h2><?php echo __('[:es]Registro VIP[:en]VIP Register[:]'); ?></h2>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -90,18 +90,18 @@ $wpdb_vip_user=$wpdb_email[0];
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_aprobado) {
 
-			$es_txt = 'No necesitas volver a registrarte '.$wpdb_vip_user->users_vip_nombre.', con tu correo: '.$wpdb_vip_user->users_vip_email.'  puedes acceder a <a href="'.$page_login_link.'">VIP</a> o recuperar tu contraseña <a href="'.$enter_recupera_pass.'">aquí</a>.';
+			$es_txt = 'El email '.$wpdb_vip_user->users_vip_email.' ya se encuentra registrado. <a href="'.$page_login_link.'">Ingresa al portal VIP</a> o si no recuerdas tu contraseña, puedes <a href="'.$enter_recupera_pass.'">recuperarla</a>.';
 
-			$en_txt = 'You do not need to re-register '.$wpdb_vip_user->users_vip_nombre.' with your email: '. $wpdb_vip_user->users_vip_email.' You can access <a href="'.$page_login_link.'"> VIP </a> or retrieve your password <a href="'.$enter_recupera_pass.'"> here</a>.';
+			$en_txt = 'The email '. $wpdb_vip_user->users_vip_email.' is already registered. <a href="'.$page_login_link.'">login to the VIP portal</a> or if you forgot your password, you can <a href="'.$enter_recupera_pass.'"> recover it</a>.';
 
 			$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 		}
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_registrado) {
 
-			$es_txt = 'Ya existe una petición con el correo '.$wpdb_vip_user->users_vip_email.' y nombre: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.'  por favor espera a que se apruebe tu petición.';
+			$es_txt = 'El email '.$wpdb_vip_user->users_vip_email.' ya se encuentra registrado y tu cuenta se encuentra en en proceso de validación. Podrás ingresar una vez que hayamos aprobado tu solicitud.';
 
-			$en_txt = 'There is already a petition with the mail '.$wpdb_vip_user->users_vip_email.' and name: '.$wpdb_vip_user->users_vip_nombre.' '.$wpdb_vip_user->users_vip_apellido.' please wait for your request to be approved.';
+			$en_txt = 'The email '.$wpdb_vip_user->users_vip_email.' is already registered and you account is subject to a validation process. You can login once we approved your request.';
 
 			$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 
@@ -122,7 +122,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category_id'       => $categoria,
+										'users_vip_category_id'    => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -138,23 +138,25 @@ $wpdb_vip_user=$wpdb_email[0];
 
 			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
 
-				$es_txt = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';;
+				$es_txt = 'Muchas gracias por tu interés, <b>'.$nombre .' '.$apellido.'</b>. Se ha enviado una petición para acceder al portal VIP.';
 
-				$en_txt = 'Thank you very much '.$nombre .' '.$apellido.' a request to access VIP has been sent.';
+				$en_txt = 'Thank you for your interest, <b>'.$nombre .' '.$apellido.'</b>. A request to access to the VIP portal has been sent.';
 
 				//$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 				$wpdb_response_succes = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 
 			 	$class_form='visibility_form';
+			 	$success = TRUE;
+
 			 	if($spam == '' && $email != '' && filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email)){
 			 		date_default_timezone_set('America/Mexico_City');
 
 					$to = $email;
  
-					$subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); 
-					$atibuto_img =__('[:es]Material Art Fair Vol. VI[:en]Material Art Fair Vol. VI[:]');
+					$subject = __('[:es]Material Art Fair Vol. VI | Thanks for registering in VIP[:en]Feria de Arte Material Vol. VI | Gracias por registrarte en VIP[:]'); 
+					$atibuto_img =__('[:es]Feria de Arte Material Vol. VI[:en]Material Art Fair Vol. VI[:]');
 					$attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
-					$attr_twitter=__('[:es]Material at Twitter[:en]Material at Twitter[:]');
+					$attr_twitter=__('[:es]Material en Twitter[:en]Material at Twitter[:]');
 					$attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
 
                     $es='
@@ -226,9 +228,10 @@ $wpdb_vip_user=$wpdb_email[0];
 					$table_mensaje .='</table>';
 
 					$contenido=$table_mensaje;
-					$mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-					$mailheader .= "Reply-To: " .$email."\r\n"; 
-					$headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$mailheader .= __('[:es]From: Feria de Arte Material VIP <vip@material-fair.com>[:en]From: Material Art Fair VIP <vip@material-fair.com>[:]')."\r\n";
+					$mailheader .= 'MIME-Version: 1.0' . "\r\n";
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+					$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 
 					mail($to, $subject, $contenido, $mailheader);
@@ -238,7 +241,12 @@ $wpdb_vip_user=$wpdb_email[0];
 
 		if ($wpdb_vip_user->users_vip_estatus==$estatus_rechazado) {
 			
-			$wpdb_response = __('[:es]Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.[:en]Your account has been rejected, please contact the administrators to have more information.[:]');
+			//$wpdb_response = __('[:es]Tu cuenta ha sido rechazada, por favor contacta a los administradores para tener más información.[:en]Your account has been rejected, please contact the administrators to have more information.[:]');
+			$es_txt = 'El email '.$wpdb_vip_user->users_vip_email.' ya se encuentra registrado y tu cuenta se encuentra en en proceso de validación. Podrás ingresar una vez que hayamos aprobado tu solicitud.';
+
+			$en_txt = 'The email '.$wpdb_vip_user->users_vip_email.' is already registered and you account is subject to a validation process. You can login once we approved your request.';
+
+			$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 		}
 
 	}else{
@@ -268,7 +276,7 @@ $wpdb_vip_user=$wpdb_email[0];
 			 	$register_user = array(
 										'users_vip_nombre'         => $nombre,
 										'users_vip_apellido'       => $apellido,
-										'users_vip_category_id'       => $categoria,
+										'users_vip_category_id'    => $categoria,
 										'users_vip_rango_edad'     => $rango_edad,
 										'users_vip_afiliacion'     => $afiliacion,
 										'users_vip_pais'     	   => $pais_residencia,
@@ -283,24 +291,26 @@ $wpdb_vip_user=$wpdb_email[0];
 
 			 	$wpdb->insert('wp_users_vip',$register_user, $format_regiter );
 
-				$es_txt = 'Muchas gracias '.$nombre .' '.$apellido.'  Se ha mandado una petición para acceder a VIP.';;
+				$es_txt = 'Muchas gracias por tu interés, <b>'.$nombre .' '.$apellido.'</b>. Se ha enviado una petición para acceder al portal VIP.';
 
-				$en_txt = 'Thank you very much '.$nombre .' '.$apellido.' a request to access VIP has been sent.';
+				$en_txt = 'Thank you for your interest, <b>'.$nombre .' '.$apellido.'</b>. A request to access to the VIP portal has been sent.';
 
 				//$wpdb_response = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 
 				$wpdb_response_succes = __('[:es]'.$es_txt.'[:en]'.$en_txt.'[:]');
 				
 			 	$class_form='visibility_form';
+			 	$success = TRUE;
+
 			 	if($spam == '' && $email != ''&& filter_var($email, FILTER_VALIDATE_EMAIL)&&is_valid_email($email) ){
 			 		date_default_timezone_set('America/Mexico_City');
 
 					$to = $email;
  
 					$subject = __('[:es]Solicitud Pendiente[:en]Pending request[:]'); 
-					$atibuto_img =__('[:es]Material Art Fair Vol. VI[:en]Feria de Arte Material Vol. VI[:]');
+					$atibuto_img =__('[:es]Feria de Arte Material Vol. VI[:en]Material Art Fair Vol. VI[:]');
 					$attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
-					$attr_twitter=__('[:es]Material at Twitter[:en]Material at Twitter[:]');
+					$attr_twitter=__('[:es]Material en Twitter[:en]Material at Twitter[:]');
 					$attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
 
                     $es='
@@ -372,9 +382,9 @@ $wpdb_vip_user=$wpdb_email[0];
 					$table_mensaje .='</table>';
 
 					$contenido=$table_mensaje;
-					$mailheader .= "From: Material<noreply@material-fair.com>\r\n";
+					$mailheader .= __('[:es]From: Feria de Arte Material VIP <vip@material-fair.com>[:en]From: Material Art Fair VIP <vip@material-fair.com>[:]')."\r\n";
 					$mailheader .= 'MIME-Version: 1.0' . "\r\n";
-					$mailheader .= "Reply-To: " .$email."\r\n"; 
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
 					$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 
@@ -396,456 +406,455 @@ $wpdb_vip_user=$wpdb_email[0];
 
 				<div class="formularios">
 
-				<p class="mensaje_error_vip mesaje_estatus">
-					<?php echo $wpdb_response; ?>
-				</p>
+					<?php if(! empty($wpdb_response)){ ?>
+						<p class="mensaje_error_vip mesaje_estatus">
+							<?php echo $wpdb_response; ?>
+						</p>
+					<?php }
 
-				<p class="mensaje_succes mesaje_estatus">
-					<?php echo $wpdb_response_succes; ?>
-				</p>
+					if(! empty($wpdb_response_succes)){ ?>
+						<p class="mensaje_succes mesaje_estatus">
+							<?php echo $wpdb_response_succes; ?>
+						</p>
+					<?php }
 
-				<p>
+					if ( empty($nombre) || empty($apellido) || empty($email)|| $email=='' || filter_var($email, FILTER_VALIDATE_EMAIL)||is_valid_email($email) ) { ?>
+						<p><?= __('[:es]Campos indicados con "*" son obligatorios[:en]Fields marked with "*" are required[:]'); ?></p>
+					<?php }
+
+					if(! $success){ ?>
+						<form action="" method="post" name="form_registro" class="<?php echo $class_form; ?>" >
+						<?php
+
+							$nombre     = '';
+							$apellido   = '';
+							$email 	    = '';
+							$categoria  = '';
+							$contrasena = '';
+							$pais_residencia = '';
+							$rango_edad = '';
+							$afiliacion = '';
+
+							if ($_POST) {
+
+								$nombre     = strip_tags(trim( $_POST['nombre']    ));
+								$apellido   = strip_tags(trim( $_POST['apellido']  ));
+								$email 	    = strip_tags(trim( $_POST['email']     ));
+								$categoria  = strip_tags(trim( $_POST['categoria'] ));
+								$contrasena = strip_tags(trim( $_POST['contrasena']));
+								$pais_residencia = strip_tags(trim( $_POST['pais_residencia']));
+								$rango_edad = strip_tags(trim( $_POST['rango_edad']));
+								$afiliacion = substr(strip_tags(trim( $_POST['afiliacion'])),64);
+
+							}
+
+						?>
 
 					<?php
-							if (empty($nombre) || empty($apellido) || empty($email) ) {
-								echo __('[:es]Campos indicados con "*" son obligatorios[:en]Fields indicated with "*" are required[:]');
-							}
+
+						if (count($_POST)==0) {?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]Nombre*[:en]Name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
+							</div>
+
+					<?php }else{
+
+						if (empty($nombre)){ ?>
+
+							<div class="colum_dos campo_vacio">
+								<label>
+									<?php
+
+									echo __('[:es]Nombre*[:en]Name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
+							</div>
+
+					<?php }else{ ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]Nombre*[:en]Name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
+
+					<?php
+
+						if (count($_POST)==0) { ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]Apellido*[:en]Last name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
+							</div>
+
+					<?php }else{
+
+
+						if (empty($apellido)){ ?>
+
+							<div class="colum_dos campo_vacio">
+								<label>
+									<?php
+
+									echo __('[:es]Apellido*[:en]Last name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
+							</div>
+
+					<?php }else{ ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]Apellido*[:en]Last name*[:]');
+									
+									?>
+								</label>
+								<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
+
+					<?php
+
+						if (count($_POST)==0) { ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]E-mail*[:en]E-mail*[:]');
+									
+									?>
+								</label>
+								<input type="email" name="email" value="<?php echo $email; ?>">
+							</div>
+
+					<?php }else{
+
+						if (empty($email)|| $email=='' || filter_var($email, FILTER_VALIDATE_EMAIL)||is_valid_email($email) ){ ?>
+
+							<div class="colum_dos campo_vacio">
+								<label>
+									<?php
+
+									echo __('[:es]E-mail*[:en]E-mail*[:]');
+									
+									?>
+								</label>
+								<input type="email" name="email" value="<?php echo $email; ?>">
+							</div>
+
+					<?php }else{ ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+									echo __('[:es]E-mail*[:en]E-mail*[:]');
+									
+									?>
+								</label>
+								<input type="email" name="email" value="<?php echo $email; ?>">
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
+
+
+
+					<?php
+
+						if (count($_POST)==0) { ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+										echo __('[:es]País*[:en]Country*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="pais_residencia" >
+									  <?php
+
+											global $wpdb;
+											$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
+
+											foreach ($wpdb_paises as $key_pais => $pais) {
+												$selected = ($pais_residencia==$pais->id)?'selected':'';
+												echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
+											}
+
+									  ?>
+									</select>
+								</div>
+							</div>
+
+					<?php }else{
+
+						if (empty($pais_residencia)){ ?>
+
+							<div class="colum_dos campo_vacio">
+								<label>
+									<?php
+
+										echo __('[:es]País*[:en]Country*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="pais_residencia" >
+									  <?php
+
+											global $wpdb;
+											$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
+
+											foreach ($wpdb_paises as $key_pais => $pais) {
+												$selected = ($pais_residencia==$pais->id)?'selected':'';
+												echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
+											}
+
+									  ?>
+									</select>
+								</div>
+							</div>
+
+					<?php }else{ ?>
+
+							<div class="colum_dos">
+								<label>
+									<?php
+
+										echo __('[:es]País*[:en]Country*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="pais_residencia" >
+									  <?php
+
+											global $wpdb;
+											$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
+
+											foreach ($wpdb_paises as $key_pais => $pais) {
+												$selected = ($pais_residencia==$pais->id)?'selected':'';
+												echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
+											}
+
+									  ?>
+									</select>
+								</div>
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
+
+					<?php
+
+						if (count($_POST)==0) { ?>
+
+						<div class="colum_dos">
+								<label>
+									<?php
+
+										echo __('[:es]Rango de edad*[:en]Age range*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="rango_edad" >
+									<?php
+
+										$rango_edad_args = array("18-24","25-34","35-44","45+");
+	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
+
+										foreach ($rango_edad_args as $key_edad => $edad) {
+											//$selected = ($pais_residencia==$pais->id)?'selected':'';
+	                    					$key_edad=$key_edad+1;
+											$selected = ($rango_edad==$key_edad)?'selected':'';
+											echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
+											//print_r($edad);
+										}
+									?>
+										  
+										 
+									</select>
+								</div>
+							</div>
+
+					<?php }else{
+
+						if (empty($rango_edad)){ ?>
+
+						<div class="colum_dos campo_vacio">
+								<label>
+									<?php
+
+										echo __('[:es]Rango de edad*[:en]Age range*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="rango_edad" >
+									<?php
+
+										$rango_edad_args = array("18-24","25-34","35-44","45+");
+	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
+
+										foreach ($rango_edad_args as $key_edad => $edad) {
+											//$selected = ($pais_residencia==$pais->id)?'selected':'';
+	                    					$key_edad=$key_edad+1;
+											$selected = ($rango_edad==$key_edad)?'selected':'';
+											echo '<option value="'.$key_edad.'">'.$edad.'</option>';
+											//print_r($edad);
+										}
+									?>
+										  
+										 
+									</select>
+								</div>
+							</div>
+
+					<?php }else{ ?>
+
+						<div class="colum_dos">
+								<label>
+									<?php
+
+										echo __('[:es]Rango de edad*[:en]Age range*[:]');
+									
+									?>
+								</label>
+								<div class="selector">
+									<select name="rango_edad" >
+									<?php
+
+										$rango_edad_args = array("18-24","25-34","35-44","45+");
+	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
+
+										foreach ($rango_edad_args as $key_edad => $edad) {
+											//$selected = ($pais_residencia==$pais->id)?'selected':'';
+	                    					$key_edad=$key_edad+1;
+											$selected = ($rango_edad==$key_edad)?'selected':'';
+											echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
+											//print_r($edad);
+										}
+									?>
+										  
+										 
+									</select>
+								</div>
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
+
+							
 							
 
-					?>
-					
-				</p>
+							<div class="colum_dos">
+								<label>
+										<?php echo __('[:es]Perfil[:en]Profile[:]'); ?>
+								</label>
+								<div class="selector">
+									<select name="categoria" >
+									  <?php
 
-					<form action="" method="post" name="form_registro" class="<?php echo $class_form; ?>" >
-					<?php
+											global $wpdb;
+											$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un perfil[:en]Select a profile[:]').'</option>';
 
-						$nombre     = '';
-						$apellido   = '';
-						$email 	    = '';
-						$categoria  = '';
-						$contrasena = '';
-						$pais_residencia = '';
-						$rango_edad = '';
-						$afiliacion = '';
+											foreach ($wpdb_cat as $key_cat => $cat) {
+												$selected = ($categoria==$cat->id)?'selected':'';
+												echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
+											}
 
-						if ($_POST) {
-
-							$nombre     = strip_tags(trim( $_POST['nombre']    ));
-							$apellido   = strip_tags(trim( $_POST['apellido']  ));
-							$email 	    = strip_tags(trim( $_POST['email']     ));
-							$categoria  = strip_tags(trim( $_POST['categoria'] ));
-							$contrasena = strip_tags(trim( $_POST['contrasena']));
-							$pais_residencia = strip_tags(trim( $_POST['pais_residencia']));
-							$rango_edad = strip_tags(trim( $_POST['rango_edad']));
-							$afiliacion = substr(strip_tags(trim( $_POST['afiliacion'])),64);
-
-						}
-
-					?>
-
-				<?php
-
-					if (count($_POST)==0) {?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]Nombre*[:en]Name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
-						</div>
-
-				<?php }else{
-
-					if (empty($nombre)){ ?>
-
-						<div class="colum_dos campo_vacio">
-							<label>
-								<?php
-
-								echo __('[:es]Nombre*[:en]Name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
-						</div>
-
-				<?php }else{ ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]Nombre*[:en]Name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="nombre" value="<?php echo $nombre; ?>" >
-						</div>
-				
-				<?php		}
-						
-					}
-				
-				?>
-
-				<?php
-
-					if (count($_POST)==0) { ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]Apellido*[:en]Last name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
-						</div>
-
-				<?php }else{
-
-
-					if (empty($apellido)){ ?>
-
-						<div class="colum_dos campo_vacio">
-							<label>
-								<?php
-
-								echo __('[:es]Apellido*[:en]Last name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
-						</div>
-
-				<?php }else{ ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]Apellido*[:en]Last name*[:]');
-								
-								?>
-							</label>
-							<input type="text" name="apellido" value="<?php echo $apellido; ?>" >
-						</div>
-				
-				<?php		}
-						
-					}
-				
-				?>
-
-				<?php
-
-					if (count($_POST)==0) { ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]E-mail*[:en]E-mail*[:]');
-								
-								?>
-							</label>
-							<input type="email" name="email" value="<?php echo $email; ?>">
-						</div>
-
-				<?php }else{
-
-					if (empty($email)){ ?>
-
-						<div class="colum_dos campo_vacio">
-							<label>
-								<?php
-
-								echo __('[:es]E-mail*[:en]E-mail*[:]');
-								
-								?>
-							</label>
-							<input type="email" name="email" value="<?php echo $email; ?>">
-						</div>
-
-				<?php }else{ ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]E-mail*[:en]E-mail*[:]');
-								
-								?>
-							</label>
-							<input type="email" name="email" value="<?php echo $email; ?>">
-						</div>
-				
-				<?php		}
-						
-					}
-				
-				?>
-
-
-
-				<?php
-
-					if (count($_POST)==0) { ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-									echo __('[:es]País de Residencia*[:en]Country of Residence*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="pais_residencia" >
-								  <?php
-
-										global $wpdb;
-										$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
-                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
-
-										foreach ($wpdb_paises as $key_pais => $pais) {
-											$selected = ($pais_residencia==$pais->id)?'selected':'';
-											echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
-										}
-
-								  ?>
-								</select>
+									  ?>
+									</select>
+								</div>
 							</div>
-						</div>
 
-				<?php }else{
+							
 
-					if (empty($pais_residencia)){ ?>
+							<div class="colum_dos">
+								<label>
+									<?php
 
-						<div class="colum_dos campo_vacio">
-							<label>
-								<?php
+									echo __('[:es]Afiliación Organizacional[:en]Organizational Affiliation[:]');
 
-									echo __('[:es]País de Residencia*[:en]Country of Residence*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="pais_residencia" >
-								  <?php
+										/*if (count($_POST)==0) {
+											echo __('[:es]Afiliación Organizacional*[:en]Organizational Affiliation*[:]');
+										}else{
 
-										global $wpdb;
-										$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
-                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
+										if (empty($email)){
+												echo __('[:es]Afiliación Organizacional<span class="campo_vacio">*</span>[:en]Organizational Affiliation<span class="campo_vacio">*</span>[:]');
+										}else{
+												echo __('[:es]Afiliación Organizacional*[:en]Organizational Affiliations*[:]');
 
-										foreach ($wpdb_paises as $key_pais => $pais) {
-											$selected = ($pais_residencia==$pais->id)?'selected':'';
-											echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
-										}
-
-								  ?>
-								</select>
+											}
+											
+										}*/
+									
+									?>
+								</label>
+								<input type="text" name="afiliacion" maxlength="64" value="<?php echo $afiliacion; ?>">
 							</div>
-						</div>
-
-				<?php }else{ ?>
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-									echo __('[:es]País de Residencia*[:en]Country of Residence*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="pais_residencia" >
-								  <?php
-
-										global $wpdb;
-										$wpdb_paises=$wpdb->get_results( "SELECT * FROM maf_cat_countries ORDER BY id ASC ");
-                						echo '<option disabled selected>'.__('[:es]Selecciona un País[:en]Select a Country[:]').'</option>';
-
-										foreach ($wpdb_paises as $key_pais => $pais) {
-											$selected = ($pais_residencia==$pais->id)?'selected':'';
-											echo '<option value="'.$pais->id.'"  '.$selected.'>'.$pais->name.'</option>';
-										}
-
-								  ?>
-								</select>
-							</div>
-						</div>
-				
-				<?php		}
-						
-					}
-				
-				?>
-
-				<?php
-
-					if (count($_POST)==0) { ?>
-
-					<div class="colum_dos">
-							<label>
-								<?php
-
-									echo __('[:es]Rango de edad*[:en]Age Range*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="rango_edad" >
-								<?php
-
-									$rango_edad_args = array("18-24","25-34","35-44","45+");
-                					echo '<option disabled selected>'.__('[:es]Selecciona una Edad[:en]Select an Age[:]').'</option>';
-
-									foreach ($rango_edad_args as $key_edad => $edad) {
-										//$selected = ($pais_residencia==$pais->id)?'selected':'';
-                    					$key_edad=$key_edad+1;
-										$selected = ($rango_edad==$key_edad)?'selected':'';
-										echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
-										//print_r($edad);
-									}
-								?>
-									  
-									 
-								</select>
-							</div>
-						</div>
-
-				<?php }else{
-
-					if (empty($rango_edad)){ ?>
-
-					<div class="colum_dos campo_vacio">
-							<label>
-								<?php
-
-									echo __('[:es]Rango de edad*[:en]Age Range*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="rango_edad" >
-								<?php
-
-									$rango_edad_args = array("18-24","25-34","35-44","45+");
-                					echo '<option disabled selected>'.__('[:es]Selecciona una Edad[:en]Select an Age[:]').'</option>';
-
-									foreach ($rango_edad_args as $key_edad => $edad) {
-										//$selected = ($pais_residencia==$pais->id)?'selected':'';
-                    					$key_edad=$key_edad+1;
-										$selected = ($rango_edad==$key_edad)?'selected':'';
-										echo '<option value="'.$key_edad.'">'.$edad.'</option>';
-										//print_r($edad);
-									}
-								?>
-									  
-									 
-								</select>
-							</div>
-						</div>
-
-				<?php }else{ ?>
-
-					<div class="colum_dos">
-							<label>
-								<?php
-
-									echo __('[:es]Rango de edad*[:en]Age Range*[:]');
-								
-								?>
-							</label>
-							<div class="selector">
-								<select name="rango_edad" >
-								<?php
-
-									$rango_edad_args = array("18-24","25-34","35-44","45+");
-                					echo '<option disabled selected>'.__('[:es]Selecciona una Edad[:en]Select an Age[:]').'</option>';
-
-									foreach ($rango_edad_args as $key_edad => $edad) {
-										//$selected = ($pais_residencia==$pais->id)?'selected':'';
-                    					$key_edad=$key_edad+1;
-										$selected = ($rango_edad==$key_edad)?'selected':'';
-										echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
-										//print_r($edad);
-									}
-								?>
-									  
-									 
-								</select>
-							</div>
-						</div>
-				
-				<?php		}
-						
-					}
-				
-				?>
-
-						
-						
-
-						<div class="colum_dos">
-							<label>
-									<?php echo __('[:es]Perfil[:en]Profile[:]'); ?>
-							</label>
-							<div class="selector">
-								<select name="categoria" >
-								  <?php
-
-										global $wpdb;
-										$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category_id ORDER BY id ASC ");
-                						echo '<option disabled selected>'.__('[:es]Selecciona un Perfil[:en]Select a profile[:]').'</option>';
-
-										foreach ($wpdb_cat as $key_cat => $cat) {
-											$selected = ($categoria==$cat->id)?'selected':'';
-											echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
-										}
-
-								  ?>
-								</select>
-							</div>
-						</div>
-
-						
-
-						<div class="colum_dos">
-							<label>
-								<?php
-
-								echo __('[:es]Afiliación Organizacional[:en]Organizational Affiliations[:]');
-
-									/*if (count($_POST)==0) {
-										echo __('[:es]Afiliación Organizacional*[:en]Organizational Affiliations*[:]');
-									}else{
-
-									if (empty($email)){
-											echo __('[:es]Afiliación Organizacional<span class="campo_vacio">*</span>[:en]Organizational Affiliations<span class="campo_vacio">*</span>[:]');
-									}else{
-											echo __('[:es]Afiliación Organizacional*[:en]Organizational Affiliations*[:]');
-
-										}
-										
-									}*/
-								
-								?>
-							</label>
-							<input type="text" name="afiliacion" maxlength="64" value="<?php echo $afiliacion; ?>">
-						</div>
-						
-						<input type="hidden" name="spam">
-						
-						<input type="submit" name="" value="<?php echo __('[:es]Registro[:en]Register[:]'); ?>" id="submitBot">
-					</form>
-
+							
+							<input type="hidden" name="spam">
+							
+							<input type="submit" name="" value="<?php echo __('[:es]Registrar[:en]Register[:]'); ?>" id="submitBot">
+						</form>
+					<?php }else{ ?>
+						<p><a class="boton_volver" href="<?= home_url('/vip/login'); ?>"><?= __('[:es]Volver[:en]Back'); ?></a></p>
+					<?php } ?>
 				</div>
 			</div>
 		</section>

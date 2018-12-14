@@ -25,7 +25,7 @@
 				<div class="redes">
 
 				<?php
-				if ( get_post_type() === 'vip' ||get_queried_object()->post_name=='vip-login') { ?>
+				if ( get_post_type() === 'vip' ||get_queried_object()->post_name=='vip-login'||get_queried_object()->post_name=='login') { ?>
 						
 					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
 						<div class="red ">
@@ -33,7 +33,7 @@
 						</div>
 					</a>
 					    
-				<? }else{ ?>
+				<?php }else{ ?>
 						
 					<a href="<?php echo get_option( 'wp_redes_sociales_settings', $valor_por_defecto )['wp_redes_sociales_text_field_3']; ?>" target="_blank">
 						<div class="red ">

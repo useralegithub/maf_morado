@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if ($_SESSION['acceso']=='true') {
+	header('Location: '.home_url('/vip/bienvenido/'));
+}
+
 	include 'folder_custom_wp/user_estatus.php';
 	include 'folder_custom_wp/hashed.php';
 	global $wp_hasher;
@@ -7,6 +13,8 @@
 
 	//$post_vip_bienvenido=get_posts(array('post_type' =>'page' ,'name'=>'vip-login','post_status'=>"publish" ))[0];
 	//$link_vip_bienvenido=get_permalink($post_vip_bienvenido->ID);
+
+	$post=get_posts(array('post_type' =>'page' ,'name'=>'vip-login','post_status'=>"publish" ))[0];
 
 	$uv_email='';
 	$uv_pass = '';
@@ -24,8 +32,10 @@
 
 		if($wp_hasher->CheckPassword($uv_pass, $user_vip_pass_hashed)){
 	   	 	header('Location: '.$enter_bienvedidos);
+	   	 	session_start();
+	   	 	$_SESSION['acceso']  = 'true';
 		}else{
-			$wrong_acces = __('[:es]Email o contraseña incorrectos.[:en]Email or password wrong.[:]');
+			$wrong_acces = __('[:es]Email o contraseña incorrectos.[:en]Invalid email or password.[:]');
 		}
 	}
 	include 'header.php'; 
@@ -62,9 +72,9 @@
 
 			<div class="section_int ">
 				<div class="formularios">
-
-					<span><?php echo $wrong_acces; ?></span>
-
+					<?php if(isset($wrong_acces)){ ?>
+						<p class="mensaje_error_vip"><?php echo $wrong_acces; ?></p>
+					<?php } ?>
 					<form
 					action="<?php //echo $enter_bienvedidos; ?>"
 					method="post"
@@ -75,9 +85,9 @@
 							<input type="text" name='uv_mail' value="<?php echo $uv_email; ?>">
 							<label><?php echo __('[:es]Contraseña[:en]Password[:]'); ?></label>
 							<input type="password" name='uv_pass'>
-							<input type="submit" value="<?php echo __('[:es]Log In[:en]Log In[:]'); ?>">
+							<input type="submit" value="<?php echo __('[:es]Iniciar sesión[:en]Log In[:]'); ?>">
 			<?php
-				$enter_recupera_pass=get_posts(array('post_type' =>'vip' ,'name'=>'password-recovery','post_status'=>"publish" ))[0];
+				$enter_recupera_pass=get_posts(array('post_type' =>'vip' ,'name'=>'recovery','post_status'=>"publish" ))[0];
 				$enter_recupera_pass=get_permalink($enter_recupera_pass->ID);
 			?>
                      <a href="<?php echo $enter_recupera_pass; ?>">
@@ -94,11 +104,11 @@
 				
 				<a href="<?php echo $enter_registro; ?>">
 
-					<input type="button" class="rojo_registro_vip" value="<?php echo __('[:es]REGISTRAR[:en]REGISTER[:]'); ?>">
+					<input type="button" class="rojo_registro_vip" value="<?php echo __('[:es]Regístrate[:en]Register[:]'); ?>">
 
 					<!--
 						<div class="rojo_registro_vip">
-							<?php echo __('[:es]REGISTRO VIP[:en]VIP REGISTRATION[:]'); ?>
+							<?php echo __('[:es]REGISTRO VIP[:en]VIP REGISTER[:]'); ?>
 						</div>
 				    -->
 				</a>

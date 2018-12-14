@@ -37,11 +37,17 @@
 
 			<?php
 
-				$mensaje_invalido=__('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]');
+				$mensaje_info=__('[:es]Escribe tu contraseña igual en los dos campos.[:en]Enter your password in the same two fields.[:]');
+				$mensaje_invalido='';
 
-				$page_login = get_page_by_path( 'vip-login' );
+				//$page_login = get_page_by_path( 'vip-login' );
 
-				$page_login_link = get_permalink( $page_login->ID);
+				//$page_login_link = get_permalink( $page_login->ID);
+
+
+
+				$page_login=get_posts(array('post_type' =>'vip' ,'name'=>'login','post_status'=>"publish" ))[0];
+				$page_login_link=get_permalink($page_login->ID);
 
 				$establece_true = __('[:es]Bien hecho has establecido tu contraseña. Puedes acceder desde aquí <a href="'.$page_login_link.'">VIP</a>[:en]Well done you have established your password. You can access from here <a href="'.$page_login_link.'">VIP</a>');
 				$spam=$_POST['spam'];
@@ -108,9 +114,9 @@
 		                    $message =__('[:es]'.$es.'[:en]'.$en.'[:]');
 		                    //$contenido=utf8_decode($message);
 		                    $contenido=$message;
-		                    $mailheader .= "From: Material<noreply@material-fair.com>\r\n"; 
-		                    $mailheader .= "Reply-To: " .$email."\r\n"; 
-		                    $headers .='X-Mailer: PHP/' . phpversion() . "\r\n";
+		                    
+		                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+		                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		                    //mail($to, $subject, $contenido, $mailheader);
 
@@ -118,7 +124,7 @@
 
 						}else{//close key if password more strlen>=8 and cointaint letters and numbers
 							
-							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres e incluir minúsculas y mayúsculas.[:en]Your password must be greater than 8 characters and include uppercase and lowercase letters.[:]');
+							$mensaje_invalido = __('[:es]Tu contraseña debe de ser mayor a 8 caracteres, al menos un número, una letra mayúscula y una letra minúscula.[:en]Your password must be greater than 8 characters, at least one number, one uppercase letter and one lower case letter.[:]');
 						}
 
 					}else{//close key if spam=0 and same password
@@ -166,9 +172,7 @@
 
 				</p>
 
-				<p>
-					<?php echo $mensaje_invalido; ?>
-				</p>
+				<?php echo ($mensaje_invalido=='')?'<p>'.$mensaje_info.'</p>':'<p class="mensaje_error_vip">'.$mensaje_invalido.'</p>'; ?>
 
 					<form action="" method="post" name="form_establece_password" >
 
