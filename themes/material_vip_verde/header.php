@@ -244,15 +244,15 @@ if ($_SESSION['acceso']!='true'||!$_SESSION['acceso']||empty($_SESSION['acceso']
 						<p>Login:</p>
 					</div>
 					<div class="columna_n_botones">
+						<!-- <a href="<?php echo home_url(); ?>/vip/login">
+							<div class="boton_login">
+								vip							</div>
+						</a>  -->
 						<a href="<?php echo __('[:es]https://material-fair.com/2019/es/login/[:en]https://material-fair.com/2019/login/[:]'); ?>">
 							<div class="boton_login">
 								<?php echo __('[:es]Prensa[:en]Press[:]'); ?>
 							</div>
 						</a>
-						<!--<a href="https://material-fair.com/prensa/login">
-							<div class="boton_login">
-								PRENSA							</div>
-						</a>--> 
 						<a href="<?php echo __('[:es]https://material-fair.com/2019/es/login/[:en]https://material-fair.com/2019/en/login/[:]'); ?>">
 							<div class="boton_login">
 								<?php echo __('[:es]EXPOSITORES[:en]EXHIBITORS[:]'); ?>

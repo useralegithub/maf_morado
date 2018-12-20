@@ -630,20 +630,24 @@ function wpmt_metas_expositores() {
 function wpmt_metas_vip_museos_genero_zona() {
     add_meta_box( 'wpmt_meta_expositores_genero_zona', __( 'Genero y Zona', 'wpmt-textdomain' ), 'wpmt_function_vip_museos_genero_zona', 'vip' );
 }
+function wpmt_metas_vip_rsvp() {
+    add_meta_box( 'wpmt_meta_expositores_rsvp', __( 'Agregar Evento a RSVP', 'wpmt-textdomain' ), 'wpmt_function_vip_rsvp', 'vip' );
+}
 add_action( 'add_meta_boxes', 'wpmt_metas_programa' );
 add_action( 'add_meta_boxes', 'wpmt_metas_programa_add_calendario' );
 add_action( 'add_meta_boxes', 'wpmt_metas_prensa' );
 add_action( 'add_meta_boxes', 'wpmt_metas_expositores' );
 add_action( 'add_meta_boxes', 'wpmt_metas_vip_museos_genero_zona' );
+add_action( 'add_meta_boxes', 'wpmt_metas_vip_rsvp' );
 function wpmt_function( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
     $wpmt_get_post_meta = get_post_meta( $post->ID );
     ?>
  <table style="width:100%">
-    <tr>
+<!--     <tr>
                 <td style="width: 150px;"><label for="meta-subtitulo" class="wpmt-row-title hook_qtranslatex"><?php _e( 'Subtítulo de la entrada: ', 'wpmt-textdomain' )?></label></td>
                <td > <input type="text" style="width: 250px;"  name="programa-subtitulo" id="programa-subtitulo" class="hook_qtranslatex" value="<?php if ( isset ( $wpmt_get_post_meta['programa-subtitulo'] ) ) echo $wpmt_get_post_meta['programa-subtitulo'][0]; ?>"  placeholder="IMMATERIAL in MATERIALART FAIR"/></td>
-    </tr>
+    </tr> -->
 
     <tr>
         
@@ -755,6 +759,24 @@ function wpmt_function_vip_museos_genero_zona( $post ) {
  </table>
     <?php
 }
+
+function wpmt_function_vip_rsvp( $post ) {
+    wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
+    $wpmt_get_post_meta = get_post_meta( $post->ID );
+
+    ?>
+ <table style="width:100%">
+
+    <tr>
+        <input type="checkbox" name="meta-checkbox-rsvp" id="meta-checkbox-rsvp" value="yes" <?php if ( isset ( $wpmt_get_post_meta['meta-checkbox-rsvp'] ) ) checked( $wpmt_get_post_meta['meta-checkbox-rsvp'][0], 'yes' ); ?> />
+            <?php _e( 'RSVP', 'prfx-textdomain' )?>
+    </tr>
+
+    
+ </table>
+    <?php
+}
+
 function wpmt_function_programa_add_calendario( $post ) {
     wp_nonce_field( basename( __FILE__ ), 'wpmt_nonce' );
     $wpmt_get_post_meta = get_post_meta( $post->ID );?>
@@ -846,6 +868,12 @@ function wpmt_deed( $post_id ) {
     if( isset( $_POST[ 'vip-museos-zona' ] ) ) {
         update_post_meta( $post_id, 'vip-museos-zona', sanitize_text_field( $_POST[ 'vip-museos-zona' ] ) );
     }
+    if( isset( $_POST[ 'meta-checkbox-rsvp' ] ) ) {
+        update_post_meta( $post_id, 'meta-checkbox-rsvp', 'yes' );
+    } else {
+        update_post_meta( $post_id, 'meta-checkbox-rsvp', '' );
+    }
+
 }
 add_action( 'save_post', 'wpmt_deed' );
 
@@ -1058,7 +1086,7 @@ $wpdb->update('wp_users_vip', array(
                     $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
 
  
-                    $subject = ($lang=='es')?'Material Art Fair Vol. VI | Your VIP account has been approved':'Feria de Arte Material Vol. VI | Tu cuenta VIP ha sido aprobada';
+                    $subject = ($lang=='es')?'Feria de Arte Material Vol. VI | Tu cuenta VIP ha sido aprobada':'Material Art Fair Vol. VI | Your VIP account has been approved';
                     if ($lang=='es') {
 
                     $attr_img_es='Feria de Arte Material Vol. VI';
@@ -1069,15 +1097,11 @@ $wpdb->update('wp_users_vip', array(
                     $es='
                     
                     <p>Saludos '.$nombre.',</p>
-                    <p>Bienvenido al Programa VIP 2019 de la Feria de Arte Material, que se llevará a cabo del 7 al 10 de febrero del 2019 en el Frontón México de CDMX.</p>
+                    <p>Bienvenido al Programa VIP 2019 de la Feria de Arte Material.</p>
                     
-                    <p>En el Portal VIP encontrarás ofertas especiales de nuestros socios patrocinadores y todas las actividades que estamos preparando para la edición de 2019, así como también una lista de recomendaciones en la Ciudad de México para enriquecer tu experiencia alrededor de la feria. Te sugerimos revisar el sitio regularmente antes de que la feria empiece, ya que lo estaremos actualizando frecuentemente.</p>
-
-                    <p>Para ver nuestro Programa VIP y solicitar reservación para los eventos que te interesen, te pedimos amablemente que confirmes tu asistencia a la feria y actives tu cuenta del Portal utilizando el siguiente vínculo:</p>
+                    <p>En el Portal VIP encontrarás nuestra recomendaciones de la CDMX y nuestro Programa VIP. Te sugerimos consultarlo regularmente para que no te pierdas las últimas actualizaciones:</p>
                     
-                    <p><a href="'.$link_recover_es.'">ASISTIRÉ A LA FERIA DE ARTE MATERIAL VOL.6</a></p>
-
-                    <p>Te recordamos que esta invitación es de uso personal, no es transferible y la puedes usar para asistir con un acompañante. Cuando llegues a la feria podrás recoger tu acceso en la recepción VIP ubicada en el lobby del Frontón México.</p>
+                    <p><a href="'.$link_recover_es.'">PROGRAMA VIP DE LA FERIA DE ARTE MATERIAL VOL.6</a></p>                   
 
                     <p>Muchas gracias y te esperamos en el Preview de la feria el jueves 7 de febrero entre las 12 y 3 pm.</p>
 
@@ -1142,17 +1166,13 @@ $wpdb->update('wp_users_vip', array(
                     $en='
                     
                     <p>Dear '.$nombre.',</p>
-                    <p>Welcome to Material’s 2019 VIP Program. The fair will take place from February 7th through 10th, 2019, at the Frontón México in Mexico City.</p>
+                    <p>Welcome to Material’s 2019 VIP Program.</p>
                     
-                    <p>In the VIP Portal, you’ll find special offers from our partners and all the activities we’re preparing for this year’s edition, as well as our list of recommendations in Mexico City to enrich your experience around the fair. We suggest you check it regularly before the fair starts, since we will be making frequent updates.</p>
-
-                    <p>To see our VIP Program and RSVP to the events that interest you, we kindly ask you to confirm your assistance to the fair and activate your account using the following link:</p>
+                    <p>In the VIP Portal, you will find our list of recommendations in Mexico City and activities we’re preparing outside the fair. We suggest you to check regularly to get its last updates.</p>
                     
-                    <p><a href="'.$link_recover_en.'">ATTENDING MATERIAL ART FAIR VOL.6</a></p>
+                    <p><a href="'.$link_recover_en.'">MATERIAL ART FAIR VOL.6 VIP PROGRAM</a></p>
 
-                    <p>Please remember that your invitation is for personal use only and grants you access with one guest. Your VIP card will be available for you to pick up at the VIP desk at the fair entrance.</p>
-
-                    <p>We are looking forward to seeing you at the fair’s VIP Preview on Thursday, February 7 th , between 12 and 3 pm.</p>
+                    <p>We look forward to seeing you at the fair’s VIP Preview on Thursday, February 7th, between 12 and 3 pm.</p>
 
                     <p style="margin-top: 30px;">Kind regards,</p>
                     <p style="text-align: left;"><b>Isa Castilla</b><br><b>VIP Relations Director</b></p>
@@ -1852,15 +1872,42 @@ $wpdb->insert('wp_users_vip', array(
 
     <table class="wp-list-table widefat fixed striped users">
         <tr>
+            <td colspan="4"></td>
+            <td colspan="1">
             <?php
                     
+                $estatus_filter=$_GET['estatus_filter'];
                 $buscar=$_GET['s'];
 
             ?>
-            <td colspan="10"style="text-align: right;">
+                <form action="admin.php?page=usuarios_vip" method="get">
+                    <input type="hidden" name="page" value="usuarios_vip" />
+                    <input type="hidden" name="s" value="<?php echo $buscar; ?>" />
+                    <select name="estatus_filter" onchange="this.form.submit()">
+                      <option disabled selected>Selecciona</option>
+                    <?php
+
+                        $estatus_args = array('todos' =>'Todos','aprobado' =>'Aprobado','pendiente' =>'Pendiente','rechazado' =>'Rechazado' );
+
+                        foreach ($estatus_args as $key => $est) {
+                            $selected = ($estatus_filter==$key)?'selected':'';
+                            echo '<option value="'.$key.'"  '.$selected.'>'.$est.'</option>';
+                        }
+
+                    ?>
+                    </select>
+                </form>
+            </td>
+            <td colspan="3"></td>
+            <?php
+
+            ?>
+            <td colspan="2" style="text-align: right;">
                 <form action="admin.php?page=usuarios_vip" method="get">
                 <input type="hidden" name="page" value="usuarios_vip" />
+
                 Buscar: <input type="text" name="s" value="<?php echo $buscar; ?>" />
+                <input type="hidden" name="estatus_filter" value="<?php echo $estatus_filter; ?>" />
                 </form>
             </td>
         </tr>
@@ -1883,7 +1930,7 @@ $wpdb->insert('wp_users_vip', array(
 //$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC LIMIT 0,20");
 
 
-$registros=20;
+$registros=50;
 $pagina=(!$_GET['num'])?'1':''.$_GET['num'];
 if (is_numeric($pagina)) {
     $inicio=(($pagina-1)*$registros);
@@ -1896,32 +1943,84 @@ $estatus_registrado = 1;
 $estatus_aprobado   = 3;
 $estatus_rechazado  = 4;
 $estatus_eliminado  = 7;
+$mensaje_sin_resultados='';
 
-if ($buscar==''||empty($buscar)){
 
+        /*if ($estatus_filter=='todos'&&$buscar!='') {
+
+        echo "other case:_ V:";
+    $wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+
+    $wpdb_col=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC");
+
+    $wpdb_col_paginacion=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+        
+    }*/
+
+if ($estatus_filter=='todos'&&$buscar==''||!$estatus_filter&&!$buscar){
+
+//echo "tomas: ".$estatus_filter;
 $wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)  ORDER BY id DESC LIMIT  $inicio,$registros");
 
-$wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
+$wpdb_col=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)  ORDER BY id DESC");
 
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHER(E users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)   ORDER BY id DESC LIMIT  $inicio,$registros");
-
+$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado)   ORDER BY id DESC LIMIT  $inicio,$registros");
     
 }else{
+            
+    ($estatus_filter=='aprobado')?$filter ='3':'';
+    ($estatus_filter=='pendiente')?$filter ='1':'';
+    ($estatus_filter=='rechazado')?$filter ='4':'';
 
-$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%') ORDER BY id DESC LIMIT  $inicio,$registros");
+    if ($buscar=='') {
+        //echo "b emty\n";
+        if ($estatus_filter=='aprobado'||$estatus_filter=='pendiente'||$estatus_filter=='rechazado')  {
+            //echo "status\n";
 
-//$wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip ");
-$wpdb_col=$wpdb->get_col( "SELECT * FROM wp_users_vip WHERE (users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%') ORDER BY id DESC " );
+            $wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' ORDER BY id DESC LIMIT  $inicio,$registros");
 
-$wpdb_col_paginacion=$wpdb->get_col( "SELECT * FROM wp_users_vip WHER(E users_vip_estatus = $estatus_aprobado OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
-    
+            $wpdb_col=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' ORDER BY id DESC");
+
+            $wpdb_col_paginacion=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' ORDER BY id DESC LIMIT  $inicio,$registros");
+
+            $mensaje_sin_resultados =(empty($wp_users_vip))?"No econtramos resultados.":"";
+
+        }
+    }else{
+        //echo "vale cheto\n";
+
+
+        if ($estatus_filter=='') {
+            //echo "estatus filter empty";
+        $wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+
+        $wpdb_col=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC ");
+
+        $wpdb_col_paginacion=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE (users_vip_estatus = '$estatus_aprobado' OR users_vip_estatus = $estatus_registrado OR users_vip_estatus = $estatus_rechazado) AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+            $mensaje_sin_resultados =(empty($wp_users_vip))?"No econtramos resultados.":"";
+        }else{
+            //echo "no no no";
+        $wp_users_vip = $wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+
+        $wpdb_col=$wpdb->get_results("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%') ORDER BY id DESC ");
+
+        $wpdb_col_paginacion=$wpdb->get_col("SELECT * FROM wp_users_vip WHERE users_vip_estatus = '$filter' AND LOWER(users_vip_nombre) LIKE LOWER('%$buscar%') OR LOWER(users_vip_apellido) LIKE LOWER('%$buscar%') OR LOWER(users_vip_email) LIKE LOWER('%$buscar%')  ORDER BY id DESC LIMIT  $inicio,$registros");
+            $mensaje_sin_resultados =(empty($wp_users_vip))?"No econtramos resultados.":"";
+
+        }
+    }
 
 }
-
 
 $wp_users_vip_count_row=count($wpdb_col);
 $wp_users_vip_count_row_paginacion=count($wpdb_col_paginacion);
 $paginas=ceil($wp_users_vip_count_row/$registros);
+
+//echo "\npagination\n";
+//echo "wp_users_vip_count_row: ".$wp_users_vip_count_row;
+//echo "wp_users_vip_count_row_paginacion: ".$wp_users_vip_count_row_paginacion;
+//echo "paginas: ".$paginas;
+
 
 
 echo "\n <!-- \n";
@@ -2108,7 +2207,14 @@ echo '</tr>'.PHP_EOL;
                     class="btn_confirma"
             >X</button> */
 //<input type="submit"  value="X"> 
-?>  
+?>
+<?php
+    if ($mensaje_sin_resultados!='') {
+?>
+    <tr>
+        <td colspan="10" style="background-color: #d4d0d0;text-align: -webkit-center;font-size: x-large;"><?php echo $mensaje_sin_resultados; ?></td>
+    </tr>
+<?php } ?>
 
        <tr>
             <td></td>
@@ -2130,6 +2236,8 @@ echo '</tr>'.PHP_EOL;
                 <!-- <?php //echo admin_url('admin-ajax.php?action=csv_pull', 'https'); ?> -->
                 
             </td>
+            <td></td>
+            <td></td>
         </tr> 
             
     </table>
@@ -2152,7 +2260,7 @@ if ($buscar==''||empty($buscar)){
 }else{
 
 
-    echo ($pagina>1)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina-1).'&s='.$buscar.'">Anterior</a>':'';
+    echo ($pagina>1)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina-1).'&s='.$buscar.'&estatus_filter='.$estatus_filter.'">Anterior</a>':'';
 
     for ($cont=1; $cont <=$paginas; $cont++) { 
 
@@ -2160,7 +2268,7 @@ if ($buscar==''||empty($buscar)){
         echo ($cont==$pagina)?''.$cont:'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.$cont.'&s='.$buscar.'">'.$cont.'</a>';
         echo " ";
     }
-    echo ($pagina<$paginas)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina+1).'&s='.$buscar.'">Siguiente</a>':'';
+    echo ($pagina<$paginas)?'<a href="'.home_url().'/wp-admin/admin.php?page=usuarios_vip&num='.($pagina+1).'&s='.$buscar.'&estatus_filter='.$estatus_filter.'">Siguiente</a>':'';
 
 }
 ?>

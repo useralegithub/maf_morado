@@ -21,3 +21,22 @@
 .visibility_form{
 	visibility: hidden;
 }
+.od_text form .check_habilitado {
+    background-image: url(img/listc.png);
+    background-size: contain;
+    background-position: center;
+}
+.check_habilitado {
+    background-image: url(img/listc.png);
+    background-size: contain;
+    background-position: center;
+}
+.demora_rsvp{
+	color: tomato;
+    background-image: url(img/gif.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+}

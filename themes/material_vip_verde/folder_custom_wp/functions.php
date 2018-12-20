@@ -1058,7 +1058,7 @@ $wpdb->update('wp_users_vip', array(
                     $link_recover_en=$home_url.'/en/vip/password-setup/?c='.$code;
 
  
-                    $subject = ($lang=='es')?'Material Art Fair Vol. VI | Your VIP account has been approved':'Feria de Arte Material Vol. VI | Tu cuenta VIP ha sido aprobada';
+                    $subject = ($lang=='es')?'Feria de Arte Material Vol. VI | Tu cuenta VIP ha sido aprobada':'Material Art Fair Vol. VI | Your VIP account has been approved';
                     if ($lang=='es') {
 
                     $attr_img_es='Feria de Arte Material Vol. VI';
@@ -1210,9 +1210,9 @@ $wpdb->update('wp_users_vip', array(
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from; 
-                    //$mailheader .= "Reply-To: " .$email."\r\n"; 
-                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    $mailheader .= "Reply-To: " .$email."\r\n"; 
+                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
                     wp_mail($to, $subject, $contenido, $mailheader);
 
                 }
@@ -1479,9 +1479,9 @@ if ($_POST['users_vip_recupera_contrasena_id']){
                     $contenido=$table_mensaje;
                     $from = ($lang=='es')?'From: Feria de Arte Material VIP <vip@material-fair.com>':'"From: Material Art Fair VIP <vip@material-fair.com>\r\n";';
                     $mailheader .=$from;
-                    //$mailheader .= "Reply-To: " .$email."\r\n"; 
-                    //$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-                    //$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
+                    $mailheader .= "Reply-To: " .$email."\r\n"; 
+                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n";
                     wp_mail($to, $subject, $contenido, $mailheader);
 
                 }

@@ -221,19 +221,7 @@
 
 	var imgGal_img_body = $(".museos");
 	imgGal_img_body.hide();
-	
-	iIntAct_body = -1;
-	function fadeAuto_body(iInti_body,img) {
-		if(iIntAct_body != iInti_body) {
-			img.hide();
-			img.eq(iInti_body).show();
-			iIntAct_body = iInti_body;
-			iInt = iInti_body+1;
-			
-		}
-	}
-
-
+		
 	$(".recomendacion_post").each(function( index ) {
   		$(this).click(function(){
 		    var this_img     = $(this).index();
@@ -262,6 +250,17 @@
 		
 	}
 
+	iInt_img_bodyAct = -1;
+	function fadeAuto_body(iInti_body,img) {
+		if(iInt_img_bodyAct != iInti_body) {
+			img.hide();
+			img.eq(iInti_body).show();
+			iInt_img_bodyAct = iInti_body;
+			iInt_img_body = iInti_body+1;
+			
+		}
+	}
+
 		$(".m_f_d").click(function() {
 			fade_img_body(true,imgGal_img_body);
 		});
@@ -270,22 +269,10 @@
 			fade_img_body(false,imgGal_img_body);
 		});
 
-		/*---------*/
+	/*---------*/
 
 	var imgGal_img_body_gal_esp = $(".galeria_espacio");
 	imgGal_img_body_gal_esp.hide();
-	
-	iIntAct_body_gal_esp = -1;
-	function fadeAuto_body_gal_esp(iInti_body_gal_esp,img_gal_esp) {
-		if(iIntAct_body_gal_esp != iInti_body_gal_esp) {
-			img_gal_esp.hide();
-			img_gal_esp.eq(iInti_body_gal_esp).show();
-			iIntAct_body_gal_esp = iInti_body_gal_esp;
-			iInt_gal_esp = iInti_body_gal_esp+1;
-			
-		}
-	}
-
 
 	$(".galeria_espacio_post").each(function( index ) {
   		$(this).click(function(){
@@ -312,6 +299,17 @@
 		}
 		iInt_img_bodyAct_gal_esp = iInt_img_body_gal_esp - 1;
 	}
+	
+	iInt_img_bodyAct_gal_esp = -1;
+	function fadeAuto_body_gal_esp(iInti_body_gal_esp,img_gal_esp) {
+		if(iInt_img_bodyAct_gal_esp != iInti_body_gal_esp) {
+			img_gal_esp.hide();
+			img_gal_esp.eq(iInti_body_gal_esp).show();
+			iInt_img_bodyAct_gal_esp = iInti_body_gal_esp;
+			iInt_img_body_gal_esp = iInti_body_gal_esp+1;
+			
+		}
+	}
 
 		$(".g_f_d").click(function() {
 			fade_img_body_gal_esp(true,imgGal_img_body_gal_esp);
@@ -326,18 +324,6 @@
 	var imgGal_img_body_restaurante_bar = $(".restaurante_bar");
 	imgGal_img_body_restaurante_bar.hide();
 	
-	iIntAct_body_restaurante_bar = -1;
-	function fadeAuto_body_restaurante_bar(iInti_body_restaurante_bar,img_restaurante_bar) {
-		if(iIntAct_body_restaurante_bar != iInti_body_restaurante_bar) {
-			img_restaurante_bar.hide();
-			img_restaurante_bar.eq(iInti_body_restaurante_bar).show();
-			iIntAct_body_restaurante_bar = iInti_body_restaurante_bar;
-			iInt_restaurante_bar = iInti_body_restaurante_bar+1;
-			
-		}
-	}
-
-
 	$(".restaurante_bar_post").each(function( index ) {
   		$(this).click(function(){
 		    var this_img_restaurante_bar     = $(this).index();
@@ -345,7 +331,7 @@
 
 		});
 	});
-
+	
 	var iInt_img_body_restaurante_bar = 1;
 	function fade_img_body_restaurante_bar(next_restaurante_bar, img_restaurante_bar) {
 		if (img_restaurante_bar.length > 1 ) { 
@@ -364,6 +350,17 @@
 		iInt_img_bodyAct_restaurante_bar = iInt_img_body_restaurante_bar - 1;
 		
 		
+	}
+
+	iInt_img_bodyAct_restaurante_bar = -1;
+	function fadeAuto_body_restaurante_bar(iInti_body_restaurante_bar,img_restaurante_bar) {
+		if(iInt_img_bodyAct_restaurante_bar != iInti_body_restaurante_bar) {
+			img_restaurante_bar.hide();
+			img_restaurante_bar.eq(iInti_body_restaurante_bar).show();
+			iInt_img_bodyAct_restaurante_bar = iInti_body_restaurante_bar;
+			iInt_img_body_restaurante_bar = iInti_body_restaurante_bar+1;
+			
+		}
 	}
 
 		$(".r_f_d").click(function() {

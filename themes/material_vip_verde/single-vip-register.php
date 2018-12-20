@@ -153,7 +153,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$to = $email;
  
-					$subject = __('[:es]Material Art Fair Vol. VI | Thanks for registering in VIP[:en]Feria de Arte Material Vol. VI | Gracias por registrarte en VIP[:]'); 
+					$subject = __('[:es]Feria de Arte Material Vol. VI | Gracias por registrarte en VIP[:en]Material Art Fair Vol. VI | Thanks for registering in VIP[:]'); 
 					$atibuto_img =__('[:es]Feria de Arte Material Vol. VI[:en]Material Art Fair Vol. VI[:]');
 					$attr_facebook=__('[:es]Material en Facebook[:en]Material at Facebook[:]');
 					$attr_twitter=__('[:es]Material en Twitter[:en]Material at Twitter[:]');
@@ -229,10 +229,10 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$contenido=$table_mensaje;
 					$mailheader .= __('[:es]From: Feria de Arte Material VIP <vip@material-fair.com>[:en]From: Material Art Fair VIP <vip@material-fair.com>[:]')."\r\n";
-					//$mailheader .= 'MIME-Version: 1.0' . "\r\n";
-					//$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-					//$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-					//$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
+					$mailheader .= 'MIME-Version: 1.0' . "\r\n";
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+					$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 
 					wp_mail($to, $subject, $contenido, $mailheader);
 
@@ -259,7 +259,7 @@ $wpdb_vip_user=$wpdb_email[0];
 
 
 			//if ($nombre!=''||$apellido!=''||$categoria!=''||$email!=''||$contrasena!='') {
-			if ($nombre!=''&&$apellido!=''&&$email!=''&&filter_var($email, FILTER_VALIDATE_EMAIL)&&$pais_residencia!=''&&$rango_edad!='') {
+			if ($nombre!=''&&$apellido!=''&&$email!=''&&filter_var($email, FILTER_VALIDATE_EMAIL)&&$pais_residencia!=''&&$categoria!='') {
 
 
 				$latest_regiter=$wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC ")[0];
@@ -383,10 +383,10 @@ $wpdb_vip_user=$wpdb_email[0];
 
 					$contenido=$table_mensaje;
 					$mailheader .= __('[:es]From: Feria de Arte Material VIP <vip@material-fair.com>[:en]From: Material Art Fair VIP <vip@material-fair.com>[:]')."\r\n";
-					//$mailheader .= 'MIME-Version: 1.0' . "\r\n";
-					//$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-					//$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-					//$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
+					$mailheader .= 'MIME-Version: 1.0' . "\r\n";
+					$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+					$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+					$mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
 
 					wp_mail($to, $subject, $contenido, $mailheader);
 
@@ -420,7 +420,7 @@ $wpdb_vip_user=$wpdb_email[0];
 					
 
 					if(! $success){
-						if ( empty($nombre) || empty($apellido) || empty($email)|| $email=='' || ! filter_var($email, FILTER_VALIDATE_EMAIL) ) { ?>
+						if ( empty($nombre) || empty($apellido) || empty($categoria) || empty($email)|| $email=='' || ! filter_var($email, FILTER_VALIDATE_EMAIL) ) { ?>
 							<p><?= __('[:es]Campos indicados con "*" son obligatorios[:en]Fields marked with "*" are required[:]'); ?></p>
 						<?php } ?>
 
@@ -695,115 +695,42 @@ $wpdb_vip_user=$wpdb_email[0];
 					
 					?>
 
+					<div class="colum_dos">
+						<label>
+							<?php
+
+								echo __('[:es]Rango de edad[:en]Age range[:]');
+							
+							?>
+						</label>
+						<div class="selector">
+							<select name="rango_edad" >
+							<?php
+
+								$rango_edad_args = array("18-24","25-34","35-44","45+");
+            					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
+
+								foreach ($rango_edad_args as $key_edad => $edad) {
+									//$selected = ($pais_residencia==$pais->id)?'selected':'';
+                					$key_edad=$key_edad+1;
+									$selected = ($rango_edad==$key_edad)?'selected':'';
+									echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
+									//print_r($edad);
+								}
+							?>
+								  
+								 
+							</select>
+						</div>
+					</div>
+
 					<?php
 
 						if (count($_POST)==0) { ?>
 
 						<div class="colum_dos">
 								<label>
-									<?php
-
-										echo __('[:es]Rango de edad*[:en]Age range*[:]');
-									
-									?>
-								</label>
-								<div class="selector">
-									<select name="rango_edad" >
-									<?php
-
-										$rango_edad_args = array("18-24","25-34","35-44","45+");
-	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
-
-										foreach ($rango_edad_args as $key_edad => $edad) {
-											//$selected = ($pais_residencia==$pais->id)?'selected':'';
-	                    					$key_edad=$key_edad+1;
-											$selected = ($rango_edad==$key_edad)?'selected':'';
-											echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
-											//print_r($edad);
-										}
-									?>
-										  
-										 
-									</select>
-								</div>
-							</div>
-
-					<?php }else{
-
-						if (empty($rango_edad)){ ?>
-
-						<div class="colum_dos campo_vacio">
-								<label>
-									<?php
-
-										echo __('[:es]Rango de edad*[:en]Age range*[:]');
-									
-									?>
-								</label>
-								<div class="selector">
-									<select name="rango_edad" >
-									<?php
-
-										$rango_edad_args = array("18-24","25-34","35-44","45+");
-	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
-
-										foreach ($rango_edad_args as $key_edad => $edad) {
-											//$selected = ($pais_residencia==$pais->id)?'selected':'';
-	                    					$key_edad=$key_edad+1;
-											$selected = ($rango_edad==$key_edad)?'selected':'';
-											echo '<option value="'.$key_edad.'">'.$edad.'</option>';
-											//print_r($edad);
-										}
-									?>
-										  
-										 
-									</select>
-								</div>
-							</div>
-
-					<?php }else{ ?>
-
-						<div class="colum_dos">
-								<label>
-									<?php
-
-										echo __('[:es]Rango de edad*[:en]Age range*[:]');
-									
-									?>
-								</label>
-								<div class="selector">
-									<select name="rango_edad" >
-									<?php
-
-										$rango_edad_args = array("18-24","25-34","35-44","45+");
-	                					echo '<option disabled selected>'.__('[:es]Selecciona un rango[:en]Select a range[:]').'</option>';
-
-										foreach ($rango_edad_args as $key_edad => $edad) {
-											//$selected = ($pais_residencia==$pais->id)?'selected':'';
-	                    					$key_edad=$key_edad+1;
-											$selected = ($rango_edad==$key_edad)?'selected':'';
-											echo '<option value="'.$key_edad.'" '.$selected.'>'.$edad.'</option>';
-											//print_r($edad);
-										}
-									?>
-										  
-										 
-									</select>
-								</div>
-							</div>
-					
-					<?php		}
-							
-						}
-					
-					?>
-
-							
-							
-
-							<div class="colum_dos">
-								<label>
-										<?php echo __('[:es]Perfil[:en]Profile[:]'); ?>
+										<?php echo __('[:es]Perfil *[:en]Profile *[:]'); ?>
 								</label>
 								<div class="selector">
 									<select name="categoria" >
@@ -822,6 +749,62 @@ $wpdb_vip_user=$wpdb_email[0];
 									</select>
 								</div>
 							</div>
+
+					<?php }else{
+
+						if (empty($rango_edad)){ ?>
+
+						<div class="colum_dos campo_vacio">
+								<label>
+										<?php echo __('[:es]Perfil *[:en]Profile *[:]'); ?>
+								</label>
+								<div class="selector">
+									<select name="categoria" >
+									  <?php
+
+											global $wpdb;
+											$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un perfil[:en]Select a profile[:]').'</option>';
+
+											foreach ($wpdb_cat as $key_cat => $cat) {
+												$selected = ($categoria==$cat->id)?'selected':'';
+												echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
+											}
+
+									  ?>
+									</select>
+								</div>
+							</div>
+
+					<?php }else{ ?>
+
+						<div class="colum_dos">
+								<label>
+										<?php echo __('[:es]Perfil *[:en]Profile *[:]'); ?>
+								</label>
+								<div class="selector">
+									<select name="categoria" >
+									  <?php
+
+											global $wpdb;
+											$wpdb_cat=$wpdb->get_results( "SELECT * FROM users_vip_category ORDER BY id ASC ");
+	                						echo '<option disabled selected>'.__('[:es]Selecciona un perfil[:en]Select a profile[:]').'</option>';
+
+											foreach ($wpdb_cat as $key_cat => $cat) {
+												$selected = ($categoria==$cat->id)?'selected':'';
+												echo '<option value="'.$cat->id.'"  '.$selected.'>'.__($cat->nombre_cateogria).'</option>';
+											}
+
+									  ?>
+									</select>
+								</div>
+							</div>
+					
+					<?php		}
+							
+						}
+					
+					?>
 
 							
 

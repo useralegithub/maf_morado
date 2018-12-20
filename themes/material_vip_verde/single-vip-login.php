@@ -34,6 +34,7 @@ if ($_SESSION['acceso']=='true') {
 	   	 	header('Location: '.$enter_bienvedidos);
 	   	 	session_start();
 	   	 	$_SESSION['acceso']  = 'true';
+	   	 	$_SESSION['user_vip']  = $user_vip;
 		}else{
 			$wrong_acces = __('[:es]Email o contraseña incorrectos.[:en]Invalid email or password.[:]');
 		}
@@ -91,7 +92,7 @@ if ($_SESSION['acceso']=='true') {
 				$enter_recupera_pass=get_permalink($enter_recupera_pass->ID);
 			?>
                      <a href="<?php echo $enter_recupera_pass; ?>">
-                     	<?php echo __('[:es]Recuperar Contraseña[:en]Password Recovery[:]'); ?>
+                     	<?php echo __('[:es]Olvidé mi contraseña[:en]I forgot my passwod[:]'); ?>
                    	</a>
     					</div>
 						

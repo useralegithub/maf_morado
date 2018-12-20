@@ -76,22 +76,13 @@
 
 			?>
 				<div class="botones_vip">
-					<a href="<?php echo $programa_link; ?>" class="boton_cuadrado">
-						<div class="bc_imagen" style="background-image: url(<?php echo get_template_directory_uri(); ?>/upload/vip/programa.jpg);"></div>
-						<p><?php echo __('[:es]Programa VIP 2018[:en]VIP Program 2018d[:]'); ?></p>
-					</a>
+					
 					<a href="<?php echo $hotel_oficial_link; ?>" class="boton_cuadrado">
 						<div class="bc_imagen" style="background-image: url(<?php echo get_template_directory_uri(); ?>/upload/vip/travel.jpg);"></div>
 						<p><?php echo __('[:es]Viaje y Alojamiento[:en]Travel and Accommodation[:]'); ?></p>
 					</a>
-					<a href="<?php echo $recomendaciones_link; ?>" class="boton_cuadrado">
-						<div class="bc_imagen" style="background-image: url(<?php echo get_template_directory_uri(); ?>/upload/vip/recomendaciones.jpg);"></div>
-						<p><?php echo __('[:es]Recomendaciones[:en]Recommendations[:]'); ?></p>
-					</a>
-					<a href="<?php echo $aliados_link; ?>" class="boton_cuadrado">
-						<div class="bc_imagen" style="background-image: url(<?php echo get_template_directory_uri(); ?>/upload/vip/travel.jpg);"></div>
-						<p><?php echo __('[:es]Aliados VIP[:en]VIP allies[:]'); ?></p>
-					</a>
+					
+					
 				</div>
 			</div>
 		</section>

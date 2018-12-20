@@ -50,9 +50,14 @@
 				$establece_true = __('[:es]Bien hecho has establecido tu contraseña. Puedes acceder desde aquí <a href="'.$page_login_link.'">VIP</a>[:en]Well done you have established your password. You can access from here <a href="'.$page_login_link.'">VIP</a>');
 				$spam=$_POST['spam'];
 
+
+
 				if (!empty($_POST)){
 
+
 					if ($_POST['spam']==''&&$_POST['password_one']==$_POST['password_two']){
+
+
 
 						if (strlen($_POST['password_one']) > 7&&preg_match('#^\S*(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$#',$_POST['password_one'])){
 
@@ -111,7 +116,7 @@
 		                    $mailheader .= "Reply-To: " .$email."\r\n"; 
 		                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
-		                    //mail($to, $subject, $contenido, $mailheader);
+		                    //wp_mail($to, $subject, $contenido, $mailheader);
 
 		                } //close key sen email
 

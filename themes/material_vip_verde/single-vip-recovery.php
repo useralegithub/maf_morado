@@ -83,17 +83,6 @@
 
 			                if($spam == '' && $user_email != '' ){
 				 				date_default_timezone_set('America/Mexico_City');
-				 				
-				 				add_filter('wp_mail_from', function(){
-									return 'vip@material-fair.com';
-								});
-								add_filter('wp_mail_content_type', function(){
-									return 'text/html';
-								});
-								add_filter('wp_mail_from_name', function(){
-									return 'Material Art Fair';
-								});
-
 			                    $email=$user_email;
 			                    $to = $email;
 								$link=get_posts(array('post_type' =>'vip' ,'name'=>'password-recovery','post_status'=>"publish" ))[0];
@@ -109,8 +98,8 @@
 								$attr_twitter=__('[:es]Material en Twitter[:en]Material at Twitter[:]');
 								$attr_instagram=__('[:es]Material en Instagram[:en]Material at Instagram[:]');
 
-				                $from_es = 'From: Feria de Arte Material VIP ES <vip@material-fair.com>' . "\r\n";
-				                $from_en = 'From: Material Art Fair VIP EN <vip@material-fair.com>' . "\r\n";
+				                $from_es = 'From: Feria de Arte Material VIP <vip@material-fair.com>' . "\r\n";
+				                $from_en = 'From: Material Art Fair VIP <vip@material-fair.com>' . "\r\n";
 				                $from_gral=($lang=='es')?$from_es:$from_en;
 
 			                    $es='
@@ -198,14 +187,16 @@
 								//$mailheader .= __('[:es]From: Feria de Arte Material VIP <vip@material-fair.com>[:en]From: Material Art Fair VIP <vip@material-fair.com>[:]')."\r\n";
 
 								$mailheader .= $from_gral;
-								//$mailheader .= 'MIME-Version: 1.0' . "\r\n";
-								//$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
-								//$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
-								//$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";  
+								$mailheader .= 'MIME-Version: 1.0' . "\r\n";
+								$mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
+								$mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
+								$mailheader .= "Content-type: text/html; charset=UTF-8\r\n";  
 								
-			                    wp_mail($to,$subject,$contenido,$mailheader);
+								
+			                    wp_mail($to, $subject, $contenido, $mailheader);
 
 			                }
+
 
 							$success = TRUE;
 							$mensaje_response=__('[:es]Se enviado un mensaje con las instrucciones para recuperar tu contraseña al email proporcionado.[:en]A message has been sent to the email you provided with the instructions to recover you password.[:]');

@@ -116,7 +116,7 @@
 		                    $mailheader .= "Reply-To: vip@material-fair.com\r\n"; 
 		                    $mailheader .='X-Mailer: PHP/' . phpversion() . "\r\n";
 		                    $mailheader .= "Content-type: text/html; charset=UTF-8\r\n"; 
-		                    //mail($to, $subject, $contenido, $mailheader);
+		                    //wp_mail($to, $subject, $contenido, $mailheader);
 
 		                } //close key sen email
 

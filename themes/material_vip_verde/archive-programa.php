@@ -158,7 +158,7 @@ foreach ($set_dias as $dias => $dia) {
 								<div class="columna">
 									<div class="texto ">
 										<p><?php
-										echo !get_post_meta($programa->ID,'programa-ubicacion',true)?'':str_replace(array("<p>","</p>"),"",apply_filters('the_content','[:es]Ubicación:[:en]Location:[:] ')).''.get_post_meta($programa->ID,'programa-ubicacion',true); ?></p>
+										echo !get_post_meta($programa->ID,'programa-ubicacion',true)?'':str_replace(array("<p>","</p>"),"",apply_filters('the_content','[:es][:en][:] ')).''.get_post_meta($programa->ID,'programa-ubicacion',true); ?></p>
 
 										<?php
 											$programa_link=!get_post_meta($programa->ID,'programa-link',true)?'<a href=""></a>':''.get_post_meta($programa->ID,'programa-link',true);
