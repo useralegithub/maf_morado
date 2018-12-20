@@ -891,13 +891,13 @@ add_menu_page(  'Usuarios VIP',
                 'register_options_page',
                 'dashicons-universal-access-alt' );
 
-add_submenu_page(
+/*add_submenu_page(
                 'usuarios_vip', 
                 '', 
                 '',
                 'manage_options', 
                 'usuarios_vip_editar',
-                'usuarios_vip_editar_function' );
+                'usuarios_vip_editar_function' );*/
 
 }
 
@@ -2796,13 +2796,32 @@ class CSVExport {
       echo $csv;
       exit;
     }
+    if (isset($_GET['rsvp'])) {
+        date_default_timezone_set('America/Mexico_City');
+      $filename = "lista_rsvp_".date("Y-m-d_H-i",time()).".csv";
+       // $filename = "report_";
+      $csv_rsvp = $this->generate_csv_rsvp();
+
+      header("Pragma: public");
+      header("Expires: 0");
+      header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+      header("Cache-Control: private", false);
+      header('Content-Type: text/html; charset=utf-8');
+      header("Content-Disposition: attachment; filename=\"$filename\";");
+      header("Content-Transfer-Encoding: binary");
+
+      echo $csv_rsvp;
+      exit;
+    }
 
 // Add extra menu items for admins
     add_action('admin_menu', array($this, 'admin_menu'));
 
 // Create end-points
     add_filter('query_vars', array($this, 'query_vars'));
+    add_filter('query_vars', array($this, 'query_vars_rsvp'));
     add_action('parse_request', array($this, 'parse_request'));
+    add_action('parse_request', array($this, 'parse_request_rsvp'));
   }
 
   /**
@@ -2825,6 +2844,22 @@ class CSVExport {
                 'download_report',
                array($this, 'download_report')
                 );
+
+    add_submenu_page(
+                'usuarios_vip', 
+                'Descargar Lista RSVP', 
+                'Descargar Lista RSVP', 
+                'manage_options', 
+                'download_report_rsvp',
+               array($this, 'download_report_rsvp')
+                );
+    add_submenu_page(
+                'usuarios_vip', 
+                '', 
+                '',
+                'manage_options', 
+                'usuarios_vip_editar',
+                'usuarios_vip_editar_function' );
   }
 
   /**
@@ -2854,6 +2889,35 @@ class CSVExport {
 </div>';
     echo '<h2>Descargar Reporte</h2>';
     echo '<p><a href="?page=download_report&report=users">Exportar los Usuarios VIP</a></p>';
+  }
+
+  /**
+   * Allow for custom query variables
+   */
+  public function query_vars_rsvp($query_vars_rsvp) {
+    $query_vars_rsvp[] = 'download_report_rsvp';
+    return $query_vars_rsvp;
+  }
+
+  /**
+   * Parse the request
+   */
+  public function parse_request_rsvp(&$wp) {
+    if (array_key_exists('download_report_rsvp', $wp->query_vars_rsvp)) {
+      $this->download_report();
+      exit;
+    }
+  }
+
+  /**
+   * Download report
+   */
+  public function download_report_rsvp() {
+    echo '<div class="wrap">';
+    echo '<div id="icon-tools" class="icon32">
+</div>';
+    echo '<h2>Descargar Reporte</h2>';
+    echo '<p><a href="?page=download_report_rsvp&rsvp=users">Exportar lista RSVP</a></p>';
   }
 
   /**
@@ -2911,6 +2975,39 @@ global $wpdb;
 
 
     return $csv_format;
+  }
+  public function generate_csv_rsvp() {
+    $csv_output = '';
+global $wpdb;
+ 
+  //$results = $wpdb->get_results("SELECT * FROM wp_users_vip ORDER BY id DESC",ARRAY_A);
+
+ $results = $wpdb->get_results("SELECT posts.post_title AS title,usuarios.users_vip_nombre,usuarios.users_vip_apellido FROM ((wp_posts AS posts INNER JOIN wp_eventos_vip AS eventos ON eventos.post_id=posts.ID) INNER JOIN wp_users_vip AS usuarios ON eventos.id_usuario_vip=usuarios.id) ORDER BY eventos.post_id DESC",ARRAY_A);
+
+  $users_vip_count=count($results);
+
+
+  $csv_format_rsvp='"Evento","Usuario","Apellido"'."\n";
+
+  foreach ($results as $key => $row) {
+    
+    $evento        = $row['title'];
+    $nombre        = $row['users_vip_nombre'];
+    $apellido      = $row['users_vip_apellido'];
+
+    if (qtranxf_getLanguage() == 'en') {
+        $evento = apply_filters('translate_text', $evento , 'en', 0);
+    } elseif (qtranxf_getLanguage() == 'es') {
+            $evento = apply_filters('translate_text', $evento , 'es', 0);
+    }
+
+    $csv_format_rsvp .='"'.$evento.'",'.'"'.$nombre.'",'.'"'.$apellido.'",';
+    $csv_format_rsvp.="\n";
+
+
+  }
+   //$csv_output .= "\n";
+    return $csv_format_rsvp;
   }
 
 }

@@ -124,7 +124,14 @@
 		<div class="od_icon_cerrar"></div>
 		<div class="od_flecha_der m_f_d"></div>
 		<div class="od_flecha_izq m_f_i"></div>
-
+<?php
+global $wpdb;
+session_start();
+$users_vip_id=$_SESSION['user_vip']->id;
+$users_vip_nombre=$_SESSION['user_vip']->users_vip_nombre;
+$users_vip_apellido=$_SESSION['user_vip']->users_vip_apellido;
+$users_vip_email=$_SESSION['user_vip']->users_vip_email;
+?>
 <?php foreach ($posts as $key => $entrada) { ?>
 		<div class="over_dia_int entrada_over">
 			<div class="od_titulo">
@@ -171,14 +178,21 @@
 					if ($check_rsvp=='yes'){
 				?>
 					<form>
+				<?php
+				
+					$wp_users_vip = $wpdb->get_results("SELECT * FROM wp_eventos_vip WHERE post_id = '$entrada->ID'
+														AND id_usuario_vip = '$users_vip_id' ");
+					$check_id = $wp_users_vip[0]->id;
+				?>
 						<div 
-							class="check_rsvp check act"
+							class="check_rsvp check act <?php echo ($check_id!='')?'check_habilitado':''; ?>"
 							id="check_rsvp"
 							data-title_rsvp='<?php echo $entrada->post_title; ?>'
+							data-post_id='<?php echo $entrada->ID; ?>'
 							data-rsvp_activo='no'>
 							<div class="check_int"></div>
 						</div>
-						<label>RSVP</label><label id="demora_rsvp"></label>
+						<label>RSVP</label><label class="demora_rsvp"></label>
 					</form>
 			    <?php } ?>
 			</div>
@@ -195,13 +209,45 @@
 
 
 <?php
-session_start();
-print_r($_SESSION);
-$users_vip_id=$_SESSION['user_vip']->id;
-$users_vip_nombre=$_SESSION['user_vip']->users_vip_nombre;
-$users_vip_apellido=$_SESSION['user_vip']->users_vip_apellido;
-$users_vip_email=$_SESSION['user_vip']->users_vip_email;
 
+
+
+print_r($_SESSION);
+echo "\n";
+//print_r($wp_users_vip);
+
+ $results = $wpdb->get_results("SELECT posts.post_title AS title,usuarios.users_vip_nombre,usuarios.users_vip_apellido FROM ((wp_posts AS posts INNER JOIN wp_eventos_vip AS eventos ON eventos.post_id=posts.ID) INNER JOIN wp_users_vip AS usuarios ON eventos.id_usuario_vip=usuarios.id) ORDER BY eventos.post_id DESC",ARRAY_A);
+
+
+  $csv_format_rsvp='"Evento","Usuario","Apellido"'."\n";
+
+  foreach ($results as $key => $row) {
+    
+    $evento        = $row['title'];
+    $nombre        = $row['users_vip_nombre'];
+    $apellido      = $row['users_vip_apellido'];
+
+    //echo "evento ".$evento;
+
+    if (qtranxf_getLanguage() == 'en') {
+    	$evento = apply_filters('translate_text', $evento , 'en', 0);
+  		echo $evento."\n";
+	} elseif (qtranxf_getLanguage() == 'es') {
+	    	$evento = apply_filters('translate_text', $evento , 'es', 0);
+	  		echo $evento."\n";
+	}
+
+    //print_r(explode(']', $evento));
+
+    //$csv_format_rsvp .='"'.$evento.'",'.'"'.$nombre.'",'.'"'.$apellido.'",';
+    //$csv_format_rsvp.="\n";
+
+
+  }
+   //$csv_output .= "\n";
+   
+  echo 'csv: ';
+  //print_r($csv_format_rsvp);
 ?>
 <script type="text/javascript">
 $(function() {
@@ -210,38 +256,52 @@ $(function() {
     var usuario_nombre   = '<?php echo $users_vip_nombre; ?>';
     var usuario_apellido = '<?php echo $users_vip_apellido; ?>';
     var usuario_email    = '<?php echo $users_vip_email; ?>';
-    var rsvp_title 	     = $(this).data("title_rsvp");
-    var rsvp_activo      = $(this).data("activo");
+
     var themeurl         = '<?php echo get_template_directory_uri(); ?>';
 
-	$('#check_rsvp').click(function(){
+	$('.check_rsvp').each(function(e){
+			
+		$(this).click(function(){
+			//alert("ksks");
+			var rsvp_title 	     = $(this).data("title_rsvp");
+	    	var rsvp_activo      = $(this).data("rsvp_activo");
+			var post_id 	     = $(this).data("post_id");
+			var the_this 		 = $(this);
 
-		$("#demora_rsvp").addClass("demora_rsvp");
+			$(".demora_rsvp").addClass("demora_rsvp_call");
 
-		$.ajax({
-	    	type : 'POST',
-	    	url : themeurl+'/folder_custom_wp/rsvp.php',
-	        data : {
-        		"usuario_id":usuario_id,
-        		"usuario_nombre":usuario_nombre,
-        		"usuario_apellido":usuario_apellido,
-        		"usuario_email":usuario_email,
-        		"rsvp_title":rsvp_title,
-        		"rsvp_activo":rsvp_activo
-        	},
-	    	success:function ( response ) { 
-	        	//content_insert.html(response);
-	        	//$('#loading').html(empty);
-	        	$("#demora_rsvp").removeClass("demora_rsvp")
-	        	$('#check_rsvp').addClass("check_habilitado");
-	    	} ,
-	    	error: function(errorThrown){
-	    		console.log(errorThrown);  
-			}
+			//console.log("rsvp_activo "+rsvp_activo);
+
+			rsvp_activo=='no'?$(this).attr("data-rsvp_activo","si"):$(this).attr("data-rsvp_activo","no");
+
+			$.ajax({
+		    	type : 'POST',
+		    	url : themeurl+'/folder_custom_wp/rsvp.php',
+		        data : {
+	        		"usuario_id":usuario_id,
+	        		"usuario_nombre":usuario_nombre,
+	        		"usuario_apellido":usuario_apellido,
+	        		"usuario_email":usuario_email,
+	        		"rsvp_title":rsvp_title,
+	        		"post_id":post_id,
+	        		"rsvp_activo":rsvp_activo
+	        	},
+		    	success:function ( response ) { 
+		    		console.log(response);
+		        	//content_insert.html(response);
+		        	//$('#loading').html(empty);
+		        	$(".demora_rsvp").removeClass("demora_rsvp_call")
+		        	//$("#check_rsvp").data("rsvp_activo")?
+		        	
+		        	response=='si'?the_this.addClass("check_habilitado"):the_this.removeClass("check_habilitado");
+
+		    	} ,
+		    	error: function(errorThrown){
+		    		console.log(errorThrown);  
+				}
+			});
 		});
-
 	});
-
 
     /*$.ajax({
         type : 'POST',
